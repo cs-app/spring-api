@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="30">
+    <Properties>
+        <Property name="LOG_NAME">teman-dawai-api</Property>
+        <Property name="LOG_PATH">logs</Property>
+        <Property name="LOG_PATTERN">
+            %d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${hostName} --- [%15.15t] %-40.40c{1.} : %m%n%ex
+        </Property>
+    </Properties>
+    <Appenders>
+        <!-- Console -->
+        <Console name="ConsoleAppender" target="SYSTEM_OUT" follow="true">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </Console>
+        <!-- Rolling File Appender log -->
+        <RollingFile name="FileAppender" fileName="${LOG_PATH}/${LOG_NAME}/${LOG_NAME}.log"
+                     filePattern="${LOG_PATH}/${LOG_NAME}/${LOG_NAME}-%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout>
+                <Pattern>${LOG_PATTERN}</Pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="100MB"/>
+                <TimeBasedTriggeringPolicy interval="1"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+        <!-- Rolling File Appender error -->
+        <RollingFile name="FileAppenderError" fileName="${LOG_PATH}/${LOG_NAME}/${LOG_NAME}-error.log"
+                     filePattern="${LOG_PATH}/${LOG_NAME}/${LOG_NAME}-error-%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout>
+                <Pattern>${LOG_PATTERN}</Pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="100MB"/>
+                <TimeBasedTriggeringPolicy interval="1"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+
+        <!-- Log SQL statements -->
+        <AsyncLogger name="org.springframework" level="info" additivity="false">
+            <AppenderRef ref="ConsoleAppender"/>
+        </AsyncLogger>
+
+        <AsyncLogger name="org.hibernate" level="info" additivity="false">
+            <AppenderRef ref="ConsoleAppender"/>
+        </AsyncLogger>
+
+        <!-- Log SQL statements -->
+        <AsyncLogger name="org.hibernate.SQL" level="info" additivity="false">
+            <AppenderRef ref="ConsoleAppender"/>
+        </AsyncLogger>
+
+        <!-- Log JDBC bind parameters -->
+        <AsyncLogger name="org.hibernate.type.descriptor.sql" level="info" additivity="false">
+            <AppenderRef ref="ConsoleAppender"/>
+            <AppenderRef ref="FileAppender"/>
+        </AsyncLogger>
+
+        <!-- Log apps with async-->
+        <AsyncLogger name="com.neta.emp.experience" includeLocation="true" additivity="false">
+            <AppenderRef ref="ConsoleAppender"/>
+            <AppenderRef ref="FileAppender"/>
+            <AppenderRef ref="FileAppenderError" level="error"/>
+        </AsyncLogger>
+
+        <!-- Log apps with async-->
+        <AsyncLogger name="com.cise.test" includeLocation="true" additivity="false">
+            <AppenderRef ref="ConsoleAppender"/>
+            <AppenderRef ref="FileAppender"/>
+            <AppenderRef ref="FileAppenderError" level="error"/>
+        </AsyncLogger>
+
+        <!-- mandatory log 1 root-->
+        <Root level="info" includeLocation="true">
+            <AppenderRef ref="ConsoleAppender" level="debug"/>
+            <AppenderRef ref="FileAppender" level="info"/>
+            <AppenderRef ref="FileAppenderError" level="error"/>
+        </Root>
+
+    </Loggers>
+</Configuration>
