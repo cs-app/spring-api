@@ -1,36 +1,72 @@
 package com.neta.teman.dawai.api.models.payload.response;
 
-import com.neta.teman.dawai.api.models.dao.Employee;
-import com.neta.teman.dawai.api.models.dao.Role;
-import com.neta.teman.dawai.api.models.dao.User;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.neta.teman.dawai.api.applications.commons.BeanCopy;
+import com.neta.teman.dawai.api.models.dao.*;
 import lombok.Data;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.springframework.beans.BeanUtils;
 
+import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
+import java.util.Date;
+import java.util.List;
+
 @Data
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class LoginResponse {
-
-    private String nip;
-
-    private String name;
-
-    private Long roleId;
 
     private String role;
 
-    private String jabatan;
+    private String username;
+
+    private String nip;
+
+    private String nik;
+
+    private String kk;
+
+    private String name;
+
+    private String pob;
+
+    private Date dob;
+
+    private String address;
+
+    private String gender;
+
+    private String maritalStatus;
+
+    private Date maritalDate;
+
+    private String picture;
+
+    private String docKTP;
+
+    private String docBirth;
+
+    private String docKK;
+
+    private String docMarriage;
+
+    private List<EmployeeContact> contacts;
+
+    private List<EmployeeFamily> families;
+
+    private List<EmployeeEducation> educations;
 
     public LoginResponse(User user) {
         Role role = user.getRole();
         Employee employee = user.getEmployee();
-        BeanUtils.copyProperties(user, this);
-        BeanUtils.copyProperties(role, this);
-        BeanUtils.copyProperties(employee, this);
-//        this.nip = employee.getNip();
-//        this.name = employee.getNama();
-//        if (Objects.nonNull(role)) {
-//            this.roleId = role.getId();
-//            this.role = role.getName();
-//        }
+        BeanCopy.copy(this, user, employee);
+        this.contacts = BeanCopy.copyCollection(employee.getContacts());
+        this.educations = BeanCopy.copyCollection(employee.getEducations());
+        this.families = BeanCopy.copyCollection(employee.getFamilies());
+        this.role = role.getName();
     }
 
 }

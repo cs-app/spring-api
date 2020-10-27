@@ -4,6 +4,7 @@ import com.neta.teman.dawai.api.applications.base.BaseRestControllers;
 import com.neta.teman.dawai.api.applications.base.ServiceResolver;
 import com.neta.teman.dawai.api.models.dao.User;
 import com.neta.teman.dawai.api.models.payload.request.LoginRequest;
+import com.neta.teman.dawai.api.models.payload.response.LoginResponse;
 import com.neta.teman.dawai.api.services.UserServices;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,6 @@ public class UserController extends BaseRestControllers {
         }
         ServiceResolver<User> resolver = userServices.findByUsernameAndPasswordSimpeg(request.getUsername(), request.getPassword());
         if (resolver.isError()) return responseError(resolver);
-        return response(resolver);
+        return response(new LoginResponse(resolver.getResult()));
     }
 }
