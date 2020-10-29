@@ -46,3 +46,7 @@ configurations {
 test {
 	useJUnitPlatform()
 }
+
+bootJar {
+	launchScript()
+}
