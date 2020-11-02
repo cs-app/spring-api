@@ -15,9 +15,14 @@ import java.util.List;
 import java.util.Objects;
 
 @Slf4j
+@SuppressWarnings({"unchecked"})
 public class BeanCopy {
 
-    // private static ObjectMapper mapper = new ObjectMapper();
+    public static <T> T copy(Object source, Class<T> tClass) {
+        T o = BeanUtils.instantiateClass(tClass);
+        BeanUtils.copyProperties(source, o);
+        return o;
+    }
 
     public static void copy(Object destination, Object... sources) {
         copy(destination, new String[]{}, sources);
@@ -30,15 +35,15 @@ public class BeanCopy {
     }
 
     // collection
-    @SuppressWarnings({"unchecked"})
-    public static <E, T> List<T> copyCollection(List<E> source) {
-        return copyCollection(source, new ArrayList<T>());
+    public static <E, T> List<T> copyCollection(List<E> source, Class<T> tClass) {
+        return copyCollection(source, new ArrayList<T>(), tClass);
     }
 
-    public static <E, T> List<T> copyCollection(List<E> sources, List<T> destination) {
-        ObjectMapper mapper = new ObjectMapper();
+    // collection
+    public static <E, T> List<T> copyCollection(List<E> sources, List<T> destination, Class<T> tClass) {
         for (Object source : sources) {
-            T o = mapper.convertValue(source, new TypeReference<T>() {});
+            T o = BeanUtils.instantiateClass(tClass);
+            BeanUtils.copyProperties(source, o);
             destination.add(o);
         }
         return destination;

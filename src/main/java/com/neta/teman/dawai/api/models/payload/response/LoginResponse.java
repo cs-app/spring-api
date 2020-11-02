@@ -63,9 +63,9 @@ public class LoginResponse {
         Role role = user.getRole();
         Employee employee = user.getEmployee();
         BeanCopy.copy(this, user, employee);
-        this.contacts = BeanCopy.copyCollection(employee.getContacts());
-        this.educations = BeanCopy.copyCollection(employee.getEducations());
-        this.families = BeanCopy.copyCollection(employee.getFamilies());
+        this.contacts = BeanCopy.copyCollection(employee.getContacts(), EmployeeContact.class);
+        this.educations = BeanCopy.copyCollection(employee.getEducations(), EmployeeEducation.class);
+        this.families = BeanCopy.copyCollection(employee.getFamilies(), EmployeeFamily.class);
         this.role = role.getName();
     }
 

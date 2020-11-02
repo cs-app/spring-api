@@ -17,6 +17,8 @@ import reactor.core.publisher.Mono;
 @Service
 public class SimpegServiceImpl extends BaseService implements SimpegService {
 
+    protected final String USER_NOT_EXIST = "USER_NOT_EXIST";
+
     @Autowired
     WebClient webClient;
 

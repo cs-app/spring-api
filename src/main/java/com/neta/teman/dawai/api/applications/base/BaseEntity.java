@@ -5,6 +5,8 @@ import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -21,12 +23,14 @@ public class BaseEntity implements Serializable {
 
     @JsonIgnore
     @Column(updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)
     protected Date createdDate;
 
     @JsonIgnore
     protected Long modifiedBy;
 
     @JsonIgnore
+    @Temporal(TemporalType.TIMESTAMP)
     protected Date modifiedDate;
 
 }

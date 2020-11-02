@@ -27,6 +27,7 @@ public class BaseRestControllers {
     }
 
     protected <T> ResponseEntity response(ServiceResolver resolver) {
+        if (resolver.isError()) return responseError(resolver);
         return response(resolver.getResult());
     }
 

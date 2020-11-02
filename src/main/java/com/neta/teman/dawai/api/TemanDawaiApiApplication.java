@@ -40,8 +40,8 @@ public class TemanDawaiApiApplication implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        initRole();
-        initUser();
+//        initRole();
+//        initUser();
     }
 
     @Transactional

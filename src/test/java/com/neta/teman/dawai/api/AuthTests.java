@@ -18,7 +18,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @SpringBootTest
 @TestPropertySource(locations = "classpath:test.properties")
-class TemanDawaiApiApplicationTests {
+class AuthTests {
 
     Logger log = LoggerFactory.getLogger(getClass());
 

@@ -64,8 +64,8 @@ public class UserServicesImpl extends SimpegServiceImpl implements UserServices 
         User user = userRepository.findByUsername(simpegAuth.getUsername());
         if (nonNull(user)) {
             // debug only
-            userRepository.delete(user);
-//            return user;
+//            userRepository.delete(user);
+            return user;
         }
         // employee
         Employee employee = updateDataUmumEmployee(simpegAuth);

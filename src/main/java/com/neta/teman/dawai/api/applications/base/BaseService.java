@@ -1,7 +1,9 @@
 package com.neta.teman.dawai.api.applications.base;
 
 import com.neta.teman.dawai.api.applications.commons.ValueValidation;
+import com.neta.teman.dawai.api.models.dao.User;
 
+import java.util.Date;
 import java.util.Objects;
 
 @SuppressWarnings({"rawtypes"})
@@ -61,6 +63,25 @@ public abstract class BaseService {
 
     protected <T> ServiceResolver<T> error(int code, String message, T result) {
         return new ServiceResolver<T>(code, message, result);
+    }
+
+    protected <T extends BaseEntity> T signature(T value) {
+        return signature(value, null);
+    }
+
+    protected <T extends BaseEntity> T signature(T value, User user) {
+        if (value instanceof BaseEntity) {
+            if (ValueValidation.isNull(value.getCreatedDate())) {
+                value.setCreatedDate(new Date());
+            } else value.setModifiedDate(new Date());
+            if (Objects.nonNull(user)) {
+                if (ValueValidation.isNull(value.getCreatedBy())) {
+                    value.setCreatedBy(user.getId());
+                }
+                value.setModifiedBy(user.getId());
+            }
+        }
+        return value;
     }
 
 }

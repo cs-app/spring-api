@@ -30,6 +30,7 @@ public class User extends BaseEntity {
     private String password;
 
     @JsonIgnore
+    @Column(columnDefinition = "TEXT")
     private String tokenSimpeg;
 
     @NotFound(action = NotFoundAction.IGNORE)
