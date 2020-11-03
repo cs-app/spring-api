@@ -28,8 +28,5 @@ public class CutiSummaryHistory extends BaseEntity {
 
     private Integer kuotaPastCuti;
 
-    private Integer sisaCuti;
-
-    private Integer sisaPastCuti;
 
 }
