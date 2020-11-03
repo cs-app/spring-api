@@ -1,6 +1,6 @@
 package com.neta.teman.dawai.api.modules.login.controllers;
 
-import com.neta.teman.dawai.api.applications.base.BaseRestControllers;
+import com.neta.teman.dawai.api.applications.base.BaseRestController;
 import com.neta.teman.dawai.api.applications.base.ServiceResolver;
 import com.neta.teman.dawai.api.models.dao.User;
 import com.neta.teman.dawai.api.models.payload.request.LoginRequest;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1")
 @SuppressWarnings({"unchecked"})
-public class UserController extends BaseRestControllers {
+public class UserController extends BaseRestController {
 
     @Autowired
     UserServices userServices;

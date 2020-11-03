@@ -16,4 +16,6 @@ public interface HolidayRepository extends JpaRepository<Holiday, Long>, JpaSpec
     Holiday findByDate(Date date);
 
     int countByDateBetweenAndDayNotIn(Date startDate, Date finishDate, List<Integer> asList);
+
+    List<Holiday> findAllByDateGreaterThan(Date date);
 }

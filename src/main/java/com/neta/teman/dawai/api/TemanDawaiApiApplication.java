@@ -7,6 +7,7 @@ import com.neta.teman.dawai.api.models.mapper.RoleMapper;
 import com.neta.teman.dawai.api.models.repository.RoleRepository;
 import com.neta.teman.dawai.api.models.repository.UserRepository;
 import com.neta.teman.dawai.api.models.spech.UserSpecs;
+import com.neta.teman.dawai.api.services.CutiServices;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,9 @@ public class TemanDawaiApiApplication implements ApplicationRunner {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    CutiServices cutiServices;
+
     public static void main(String[] args) {
         SpringApplication.run(TemanDawaiApiApplication.class, args);
     }
@@ -42,6 +46,7 @@ public class TemanDawaiApiApplication implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
 //        initRole();
 //        initUser();
+        initCutiPegawai();
     }
 
     @Transactional
@@ -80,5 +85,9 @@ public class TemanDawaiApiApplication implements ApplicationRunner {
         user.setRole(role);
 
         userRepository.save(user);
+    }
+
+    private void initCutiPegawai() {
+        cutiServices.initCutiPegawai();
     }
 }

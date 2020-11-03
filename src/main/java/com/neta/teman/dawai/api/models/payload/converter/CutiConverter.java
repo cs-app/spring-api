@@ -1,6 +1,7 @@
 package com.neta.teman.dawai.api.models.payload.converter;
 
 import com.neta.teman.dawai.api.applications.commons.BeanCopy;
+import com.neta.teman.dawai.api.applications.commons.ResponseConverter;
 import com.neta.teman.dawai.api.models.dao.Cuti;
 import com.neta.teman.dawai.api.models.payload.response.CutiResponse;
 
@@ -8,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class CutiConverter {
+public class CutiConverter implements ResponseConverter<List<CutiResponse>, List<Cuti>> {
 
-    public static List<CutiResponse> convert(List<Cuti> cutis) {
+    public List<CutiResponse> convert(List<Cuti> cutis) {
         List<CutiResponse> result = new ArrayList<>();
         for (Cuti s : cutis) {
             CutiResponse o = new CutiResponse();

@@ -31,9 +31,7 @@ dependencies {
 	implementation 'org.projectreactor:reactor-spring:1.0.1.RELEASE'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-	}
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 configurations {
@@ -41,6 +39,7 @@ configurations {
 	compile.exclude module: 'spring-boot-starter-tomcat'
 	compile.exclude module: 'spring-boot-starter-logging'
 	compile.exclude module: 'ch.qos.logback:logback-classic'
+	compile.exclude module: 'junit-vintage-engine'
 }
 
 test {

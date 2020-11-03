@@ -44,18 +44,25 @@ public class DateTimeUtils {
         finish.setTime(timeFinish);
         start.clear(Calendar.MILLISECOND);
         finish.clear(Calendar.MILLISECOND);
-        finish.add(Calendar.DATE, 1);
-        int days = 0;
-        log.info("last date {}", finish.getTime());
-        do {
+        if (finish.before(start)) return 0;
+        int days = 1;
+        log.debug("last date {}", finish.getTime());
+//        do {
+//            int numDay = start.get(Calendar.DAY_OF_WEEK);
+//            if (numDay != 1 && numDay != 7) {
+//                ++days;
+//                log.debug("num day {} last date {}, add", numDay, start.getTime());
+//            } else log.debug("num day {} last date {}, skip", numDay, start.getTime());
+//            start.add(Calendar.DATE, 1);
+//        } while (start.before(finish));
+        while (start.before(finish)) {
             int numDay = start.get(Calendar.DAY_OF_WEEK);
             if (numDay != 1 && numDay != 7) {
                 ++days;
-                log.info("num day {} last date {}, add", numDay, start.getTime());
-            } else log.info("num day {} last date {}, skip", numDay, start.getTime());
+                log.debug("num day {} last date {}, add", numDay, start.getTime());
+            } else log.debug("num day {} last date {}, skip", numDay, start.getTime());
             start.add(Calendar.DATE, 1);
-        } while (start.before(finish));
-
+        }
         return days;
     }
 }
