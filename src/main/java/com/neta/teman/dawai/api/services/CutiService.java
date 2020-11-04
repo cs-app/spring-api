@@ -10,7 +10,7 @@ import com.neta.teman.dawai.api.models.payload.request.HolidayRequest;
 import java.util.List;
 
 @SuppressWarnings({"rawtypes"})
-public interface CutiServices {
+public interface CutiService {
 
     ServiceResolver<Boolean> submitCuti(CutiRequest request);
 

@@ -7,8 +7,7 @@ import com.neta.teman.dawai.api.models.mapper.RoleMapper;
 import com.neta.teman.dawai.api.models.repository.RoleRepository;
 import com.neta.teman.dawai.api.models.repository.UserRepository;
 import com.neta.teman.dawai.api.models.spech.UserSpecs;
-import com.neta.teman.dawai.api.services.CutiServices;
-import lombok.extern.slf4j.Slf4j;
+import com.neta.teman.dawai.api.services.CutiService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -18,8 +17,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
+import lombok.extern.slf4j.Slf4j;
 
-import java.util.List;
 import java.util.Objects;
 
 @Slf4j
@@ -36,7 +35,7 @@ public class TemanDawaiApiApplication implements ApplicationRunner {
     JdbcTemplate jdbcTemplate;
 
     @Autowired
-    CutiServices cutiServices;
+    CutiService cutiService;
 
     public static void main(String[] args) {
         SpringApplication.run(TemanDawaiApiApplication.class, args);
@@ -46,7 +45,8 @@ public class TemanDawaiApiApplication implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
 //        initRole();
 //        initUser();
-        initCutiPegawai();
+//        initCutiPegawai();
+        cutiService.initCutiPegawai();
     }
 
     @Transactional
@@ -88,6 +88,6 @@ public class TemanDawaiApiApplication implements ApplicationRunner {
     }
 
     private void initCutiPegawai() {
-        cutiServices.initCutiPegawai();
+
     }
 }

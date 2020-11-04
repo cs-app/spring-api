@@ -3,7 +3,6 @@ package com.neta.teman.dawai.api.modules.cuti.controllers;
 import com.neta.teman.dawai.api.applications.base.BaseRestController;
 import com.neta.teman.dawai.api.applications.base.Response;
 import com.neta.teman.dawai.api.applications.base.ServiceResolver;
-import com.neta.teman.dawai.api.applications.commons.BeanCopy;
 import com.neta.teman.dawai.api.models.dao.Cuti;
 import com.neta.teman.dawai.api.models.dao.Holiday;
 import com.neta.teman.dawai.api.models.dao.User;
@@ -13,7 +12,7 @@ import com.neta.teman.dawai.api.models.payload.request.CutiRequest;
 import com.neta.teman.dawai.api.models.payload.request.HolidayRequest;
 import com.neta.teman.dawai.api.models.payload.response.CutiResponse;
 import com.neta.teman.dawai.api.models.payload.response.HolidayResponse;
-import com.neta.teman.dawai.api.services.CutiServices;
+import com.neta.teman.dawai.api.services.CutiService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +27,7 @@ import java.util.List;
 public class CutiController extends BaseRestController {
 
     @Autowired
-    CutiServices cutiServices;
+    CutiService cutiService;
 
     @PostMapping(value = "/cuti")
     public ResponseEntity<Boolean> cuti(@RequestBody CutiRequest request) {
@@ -36,7 +35,7 @@ public class CutiController extends BaseRestController {
                 request.getTlpAddress(), request.getCutiAddress())) {
             return responseError(401, ERROR_MANDATORY_FIELD);
         }
-        ServiceResolver<Boolean> resolver = cutiServices.submitCuti(request);
+        ServiceResolver<Boolean> resolver = cutiService.submitCuti(request);
         return response(resolver);
     }
 
@@ -45,7 +44,7 @@ public class CutiController extends BaseRestController {
         if (isNull(request.getStartDate(), request.getFinishDate())) {
             return response(0);
         }
-        ServiceResolver<Integer> resolver = cutiServices.daysCuti(request);
+        ServiceResolver<Integer> resolver = cutiService.daysCuti(request);
         return response(resolver);
     }
 
@@ -54,7 +53,7 @@ public class CutiController extends BaseRestController {
         if (isNull(request.getId())) {
             return responseError(401, ERROR_MANDATORY_FIELD);
         }
-        ServiceResolver<Boolean> resolver = cutiServices.cancelCuti(request);
+        ServiceResolver<Boolean> resolver = cutiService.cancelCuti(request);
         return response(resolver);
     }
 
@@ -63,7 +62,7 @@ public class CutiController extends BaseRestController {
         if (isNull(request.getId())) {
             return responseError(401, ERROR_MANDATORY_FIELD);
         }
-        ServiceResolver<Boolean> resolver = cutiServices.approveAtasan(request);
+        ServiceResolver<Boolean> resolver = cutiService.approveAtasan(request);
         return response(resolver);
     }
 
@@ -72,7 +71,7 @@ public class CutiController extends BaseRestController {
         if (isNull(request.getId())) {
             return responseError(401, ERROR_MANDATORY_FIELD);
         }
-        ServiceResolver<Boolean> resolver = cutiServices.approvePejabat(request);
+        ServiceResolver<Boolean> resolver = cutiService.approvePejabat(request);
         return response(resolver);
     }
 
@@ -81,7 +80,7 @@ public class CutiController extends BaseRestController {
         if (isNull(request.getNip())) {
             return responseError(401, ERROR_MANDATORY_FIELD);
         }
-        ServiceResolver<List<Cuti>> resolver = cutiServices.userCuti(request);
+        ServiceResolver<List<Cuti>> resolver = cutiService.userCuti(request);
         return response(resolver, CutiConverter.class);
     }
 
@@ -90,7 +89,7 @@ public class CutiController extends BaseRestController {
         if (isNull(request.getDate(), request.getDescription())) {
             return responseError(401, ERROR_MANDATORY_FIELD);
         }
-        ServiceResolver resolver = cutiServices.addHolidayDate(request);
+        ServiceResolver resolver = cutiService.addHolidayDate(request);
         return response(resolver);
     }
 
@@ -99,19 +98,19 @@ public class CutiController extends BaseRestController {
         if (isNull(request.getId())) {
             return responseError(401, ERROR_MANDATORY_FIELD);
         }
-        ServiceResolver resolver = cutiServices.removeHolidayDate(request);
+        ServiceResolver resolver = cutiService.removeHolidayDate(request);
         return response(resolver);
     }
 
     @GetMapping(value = "/cuti/holiday/list")
     public ResponseEntity<List<HolidayResponse>> existHolidayDate() {
-        ServiceResolver<List<Holiday>> resolver = cutiServices.existHolidayDate();
+        ServiceResolver<List<Holiday>> resolver = cutiService.existHolidayDate();
         return response(resolver, HolidayConverter.class);
     }
 
     @GetMapping(value = "/cuti/holiday/future")
     public ResponseEntity<List<HolidayResponse>> existHolidayDateFuture() {
-        ServiceResolver<List<Holiday>> resolver = cutiServices.existHolidayDateFuture();
+        ServiceResolver<List<Holiday>> resolver = cutiService.existHolidayDateFuture();
         return response(resolver, HolidayConverter.class);
     }
 }

@@ -3,7 +3,7 @@ package com.neta.teman.dawai.api.services;
 import com.neta.teman.dawai.api.applications.base.ServiceResolver;
 import com.neta.teman.dawai.api.models.dao.User;
 
-public interface UserServices {
+public interface UserService {
 
     User findByUsernameAndPassword(String username, String password);
 

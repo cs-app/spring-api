@@ -15,10 +15,8 @@ import com.neta.teman.dawai.api.plugins.simpeg.services.SimpegServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
-
 @Service
-public class UserServicesImpl extends SimpegServiceImpl implements UserServices {
+public class UserServiceImpl extends SimpegServiceImpl implements UserService {
 
     @Autowired
     UserRepository userRepository;

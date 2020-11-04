@@ -30,6 +30,9 @@ public class CutiResponse {
     private CutiUserResponse user;
     private CutiUserResponse atasan;
     private CutiUserResponse pejabat;
+    private String descriptionAtasan;
+    private String descriptionPejabat;
+    private Date createdDate;
 
     public CutiResponse(Cuti cuti) {
         BeanCopy.copy(this, cuti);

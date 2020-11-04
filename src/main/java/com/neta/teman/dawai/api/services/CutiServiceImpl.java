@@ -19,7 +19,7 @@ import java.util.*;
 @Service
 @Slf4j
 @SuppressWarnings({"unchecked", "rawtypes"})
-public class CutiServicesImpl extends SimpegServiceImpl implements CutiServices {
+public class CutiServiceImpl extends SimpegServiceImpl implements CutiService {
 
     @Autowired
     CutiRepository cutiRepository;
@@ -139,6 +139,7 @@ public class CutiServicesImpl extends SimpegServiceImpl implements CutiServices 
             return error(403, USER_NOT_EXIST);
         }
         List<Cuti> cutis = cutiRepository.findAllByUser(user);
+        cutis.sort(Comparator.comparing(Cuti::getStartDate));
         return success(cutis);
     }
 
@@ -201,9 +202,8 @@ public class CutiServicesImpl extends SimpegServiceImpl implements CutiServices 
         for (User o : users) {
             CutiSummary cutiSummaryExist = cutiSummaryRepository.findByUser(o);
             if (Objects.nonNull(cutiSummaryExist)) {
-                if (month > 5 && cutiSummaryExist.getSisaPastCuti() > 0) {
+                if (month > 5 && cutiSummaryExist.getKuotaPastCuti() > 0) {
                     cutiSummaryExist.setKuotaPastCuti(0);
-                    cutiSummaryExist.setSisaPastCuti(0);
                     cutiSummaryRepository.save(signature(cutiSummaryExist));
                     CutiSummaryHistory history = BeanCopy.copy(cutiSummaryExist, CutiSummaryHistory.class);
                     history.setId(null);
@@ -212,11 +212,10 @@ public class CutiServicesImpl extends SimpegServiceImpl implements CutiServices 
                     log.debug("create cuti for user {}", o.getEmployee().getNip());
                 } else {
                     // migrasi data cuti, jan ke mar
-                    if (cutiSummaryExist.getTahun() < year && cutiSummaryExist.getSisaPastCuti() > 0) {
+                    if (cutiSummaryExist.getTahun() < year && cutiSummaryExist.getKuotaPastCuti() > 0) {
                         cutiSummaryExist.setTahun(year);
-                        int maxSisa = cutiSummaryExist.getSisaPastCuti() > 6 ? 6 : cutiSummaryExist.getSisaPastCuti();
+                        int maxSisa = cutiSummaryExist.getKuotaPastCuti() > 6 ? 6 : cutiSummaryExist.getKuotaPastCuti();
                         cutiSummaryExist.setKuotaPastCuti(maxSisa);
-                        cutiSummaryExist.setSisaPastCuti(0);
                         cutiSummaryRepository.save(signature(cutiSummaryExist));
                         CutiSummaryHistory history = BeanCopy.copy(cutiSummaryExist, CutiSummaryHistory.class);
                         history.setId(null);
@@ -231,8 +230,6 @@ public class CutiServicesImpl extends SimpegServiceImpl implements CutiServices 
             cutiSummary.setUser(o);
             cutiSummary.setKuotaCuti(12);
             cutiSummary.setKuotaPastCuti(0);
-            cutiSummary.setSisaCuti(0);
-            cutiSummary.setSisaPastCuti(0);
             cutiSummaryRepository.save(signature(cutiSummary));
             CutiSummaryHistory history = BeanCopy.copy(cutiSummary, CutiSummaryHistory.class);
             history.setId(null);
@@ -247,12 +244,12 @@ public class CutiServicesImpl extends SimpegServiceImpl implements CutiServices 
         CutiSummary cutiSummary = cutiSummaryRepository.findByUser(user);
         // ambil dari sisa terlebih dahulu
         // int cuti yang diambil
-        if (cutiSummary.getSisaPastCuti() >= countCuti) {
+        if (cutiSummary.getKuotaPastCuti() >= countCuti) {
             // ambil dari sisa
-            cutiSummary.setKuotaPastCuti(cutiSummary.getSisaPastCuti() - countCuti);
+            cutiSummary.setKuotaPastCuti(cutiSummary.getKuotaPastCuti() - countCuti);
         } else {
             // sisa cuti kurang, ambil dari main cuti
-            int newCutiCount = countCuti - cutiSummary.getSisaPastCuti();
+            int newCutiCount = countCuti - cutiSummary.getKuotaPastCuti();
             cutiSummary.setKuotaPastCuti(0);
             cutiSummary.setKuotaCuti(cutiSummary.getKuotaCuti() - newCutiCount);
         }

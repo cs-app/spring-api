@@ -9,7 +9,7 @@ import com.neta.teman.dawai.api.models.repository.CutiRepository;
 import com.neta.teman.dawai.api.models.repository.HolidayRepository;
 import com.neta.teman.dawai.api.models.repository.RoleRepository;
 import com.neta.teman.dawai.api.models.repository.UserRepository;
-import com.neta.teman.dawai.api.services.CutiServices;
+import com.neta.teman.dawai.api.services.CutiService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
