@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.neta.teman.dawai.api.applications.base.BaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
@@ -12,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "app_employee")
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
@@ -38,6 +40,8 @@ public class Employee extends BaseEntity {
 
     private Date maritalDate;
 
+    private Date perkiraanPensiun;
+
     private String picture;
 
     private String docKTP;
@@ -47,6 +51,16 @@ public class Employee extends BaseEntity {
     private String docKK;
 
     private String docMarriage;
+
+    private String noKarpeg;
+
+    private String noAkses;
+
+    private String npwp;
+
+    private String noTaspen;
+
+    private String noKarisSu;
 
     @NotFound(action = NotFoundAction.IGNORE)
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
@@ -59,5 +73,13 @@ public class Employee extends BaseEntity {
     @NotFound(action = NotFoundAction.IGNORE)
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private List<EmployeeEducation> educations;
+
+    @NotFound(action = NotFoundAction.IGNORE)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    private List<EmployeeMutasi> mutasis;
+//
+    @NotFound(action = NotFoundAction.IGNORE)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    private List<EmployeePangkat> pangkats;
 
 }

@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "name": "USER",
+    "description": "Pegawai"
+  },
+  {
+    "id": 2,
+    "name": "ADMIN",
+    "description": "Super Admin"
+  },
+  {
+    "id": 3,
+    "name": "ADMIN_SATKER_SIMPEG",
+    "description": "Admin Satker Simpeg"
+  },
+  {
+    "id": 4,
+    "name": "ADMIN_SATKER_PRESENSI",
+    "description": "Admin Satker Presensi"
+  },
+  {
+    "id": 5,
+    "name": "PEJABAT_SATKER",
+    "description": "Pejabat Satker"
+  },
+  {
+    "id": 6,
+    "name": "ADMIN_PUSAT_SIMPEG",
+    "description": "Admin Pusat Simpeg"
+  },
+  {
+    "id": 7,
+    "name": "ADMIN_PUSAT_PRESENSI",
+    "description": "Admin Pusat Presensi"
+  },
+  {
+    "id": 8,
+    "name": "PEJABAT_PUSAT",
+    "description": "Pejabat Pusat"
+  }
+]

@@ -1,15 +1,10 @@
 package com.neta.teman.dawai.api.models.converter;
 
+import com.neta.teman.dawai.api.applications.commons.BeanCopy;
 import com.neta.teman.dawai.api.applications.commons.ValueValidation;
 import com.neta.teman.dawai.api.applications.constants.AppConstants;
-import com.neta.teman.dawai.api.models.dao.Employee;
-import com.neta.teman.dawai.api.models.dao.EmployeeContact;
-import com.neta.teman.dawai.api.models.dao.EmployeeEducation;
-import com.neta.teman.dawai.api.models.dao.EmployeeFamily;
-import com.neta.teman.dawai.api.plugins.simpeg.models.SimpegAuth;
-import com.neta.teman.dawai.api.plugins.simpeg.models.SimpegEmployee;
-import com.neta.teman.dawai.api.plugins.simpeg.models.SimpegKeluarga;
-import com.neta.teman.dawai.api.plugins.simpeg.models.SimpegPendidikan;
+import com.neta.teman.dawai.api.models.dao.*;
+import com.neta.teman.dawai.api.plugins.simpeg.models.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +12,7 @@ import java.util.Objects;
 
 public class SimpegConverter {
 
-    public static void merge(SimpegEmployee source, Employee employee) {
+    public static void mergeUmum(SimpegEmployeeDataUmum source, Employee employee) {
         employee.setNik(source.getNoKTP());
         employee.setKk(source.getNoKK());
         employee.setName(source.getNama());
@@ -27,16 +22,44 @@ public class SimpegConverter {
         employee.setGender(source.getKelamin());
         employee.setMaritalStatus(source.getStatusDiri());
         employee.setMaritalDate(source.getTanggalPernikahan());
+        employee.setPerkiraanPensiun(source.getPerkiraanPensiun());
         // contacts
         initializeContact(source, employee);
         // keluarga
         initializeFamily(source, employee);
-        // pendidikan, education
+
+    }
+
+    public static void mergeRiwayat(SimpegEmployeeRiwayat source, Employee employee) {
         initializeEducation(source, employee);
+        initializeMutasi(source, employee);
+        initializePangkat(source, employee);
+        BeanCopy.copy(employee, source.getDataPendukung());
+    }
+
+    private static void initializePangkat(SimpegEmployeeRiwayat source, Employee employee) {
+        List<EmployeePangkat> pangkats = employee.getPangkats();
+        if (Objects.isNull(pangkats)) pangkats = new ArrayList<>();
+        pangkats.clear();
+        for (SimpegPangkat o : source.getPangkat()) {
+            EmployeePangkat pangkat = BeanCopy.copy(o, EmployeePangkat.class);
+            pangkats.add(pangkat);
+        }
+        employee.setPangkats(pangkats);
+    }
+
+    private static void initializeMutasi(SimpegEmployeeRiwayat source, Employee employee) {
+        List<EmployeeMutasi> mutasis = employee.getMutasis();
+        if (Objects.isNull(mutasis)) mutasis = new ArrayList<>();
+        mutasis.clear();
+        for (SimpegMutasi o : source.getMutasi()) {
+            mutasis.add(BeanCopy.copy(o, EmployeeMutasi.class));
+        }
+        employee.setMutasis(mutasis);
     }
 
     // contact, 1=phone, 2=email
-    public static void initializeContact(SimpegEmployee source, Employee employee) {
+    public static void initializeContact(SimpegEmployeeDataUmum source, Employee employee) {
         List<EmployeeContact> contacts = employee.getContacts();
         if (Objects.isNull(contacts)) contacts = new ArrayList<>();
         if (!ValueValidation.isNull(source.getNoTelepon())) {
@@ -73,7 +96,7 @@ public class SimpegConverter {
         return false;
     }
 
-    private static void initializeFamily(SimpegEmployee source, Employee employee) {
+    private static void initializeFamily(SimpegEmployeeDataUmum source, Employee employee) {
         if (ValueValidation.isNull(source.getKeluarga()) || source.getKeluarga().isEmpty()) return;
         List<EmployeeFamily> families = employee.getFamilies();
         if (Objects.isNull(families)) families = new ArrayList<>();
@@ -139,7 +162,7 @@ public class SimpegConverter {
         return family;
     }
 
-    private static void initializeEducation(SimpegEmployee source, Employee employee) {
+    private static void initializeEducation(SimpegEmployeeRiwayat source, Employee employee) {
         List<EmployeeEducation> educations = employee.getEducations();
         if (Objects.isNull(educations)) educations = new ArrayList<>();
         educations.clear();

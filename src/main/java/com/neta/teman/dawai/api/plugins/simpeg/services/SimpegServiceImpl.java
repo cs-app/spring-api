@@ -1,15 +1,9 @@
 package com.neta.teman.dawai.api.plugins.simpeg.services;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.neta.teman.dawai.api.applications.base.BaseService;
-import com.neta.teman.dawai.api.plugins.simpeg.exceptions.SimpegException;
-import com.neta.teman.dawai.api.plugins.simpeg.models.SimpegAuth;
-import com.neta.teman.dawai.api.plugins.simpeg.models.SimpegAuthRequest;
-import com.neta.teman.dawai.api.plugins.simpeg.models.SimpegEmployee;
-import com.neta.teman.dawai.api.plugins.simpeg.models.SimpegResponse;
+import com.neta.teman.dawai.api.plugins.simpeg.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -37,24 +31,26 @@ public class SimpegServiceImpl extends BaseService implements SimpegService {
     }
 
     @Override
-    public SimpegResponse<SimpegEmployee> dataUmum(String token, String nip) {
+    public SimpegResponse<SimpegEmployeeDataUmum> dataUmum(String token, String nip) {
         String url = "https://simpeg.masmana.id/pegawai/general-data/" + nip;
-        ParameterizedTypeReference<SimpegResponse<SimpegEmployee>> bean = new ParameterizedTypeReference<SimpegResponse<SimpegEmployee>>() {
+        ParameterizedTypeReference<SimpegResponse<SimpegEmployeeDataUmum>> bean = new ParameterizedTypeReference<SimpegResponse<SimpegEmployeeDataUmum>>() {
         };
-        Mono<SimpegResponse<SimpegEmployee>> response = webClient.get()
+        Mono<SimpegResponse<SimpegEmployeeDataUmum>> response = webClient.get()
                 .uri(url)
                 .header("Authorization", "Bearer " + token)
-//                .exchange()
-//                .flatMap(clientResponse -> {
-//                    if (clientResponse.statusCode().is2xxSuccessful()) {
-//                        return clientResponse.bodyToMono(bean);
-//                    }
-//                    if (clientResponse.statusCode().is4xxClientError()) {
-//                        return Mono.error(new SimpegException("AUTH ERROR " + clientResponse.statusCode().value()));
-//                    }
-//                    return Mono.error(new SimpegException("INTERNAL ERROR " + clientResponse.statusCode().value()));
-//                });
-//                .body(Mono.just(new SimpegAuthRequest(username, password)), SimpegAuthRequest.class)
+                .retrieve()
+                .bodyToMono(bean);
+        return response.block();
+    }
+
+    @Override
+    public SimpegResponse<SimpegEmployeeRiwayat> dataRiwayat(String token, String nip) {
+        String url = "https://simpeg.masmana.id/pegawai/history-data/" + nip;
+        ParameterizedTypeReference<SimpegResponse<SimpegEmployeeRiwayat>> bean = new ParameterizedTypeReference<SimpegResponse<SimpegEmployeeRiwayat>>() {
+        };
+        Mono<SimpegResponse<SimpegEmployeeRiwayat>> response = webClient.get()
+                .uri(url)
+                .header("Authorization", "Bearer " + token)
                 .retrieve()
                 .bodyToMono(bean);
         return response.block();

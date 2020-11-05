@@ -45,7 +45,7 @@ class CutiTests {
     HolidayRepository holidayRepository;
 
     @Autowired
-    CutiServices cutiServices;
+    CutiService cutiService;
 
 
     private Cuti cutiIfnotExist(User user, Date start) {
@@ -69,7 +69,7 @@ class CutiTests {
      */
     @BeforeAll
     void preparedData() {
-        cutiServices.initCutiPegawai();
+        cutiService.initCutiPegawai();
         TestAdminConstant.roleAnduserIfNotExist(roleRepository, userRepository);
     }
 
@@ -127,19 +127,19 @@ class CutiTests {
         request.setStartDate(cuti.getStartDate());
         request.setFinishDate(cuti.getFinishDate());
         // same date
-        boolean isAvailable = cutiServices.availableCutiDate(request);
+        boolean isAvailable = cutiService.availableCutiDate(request);
         Assertions.assertFalse(isAvailable);
 
         // start date before
         request.setStartDate(null);
         request.setFinishDate(null);
-        isAvailable = cutiServices.availableCutiDate(request);
+        isAvailable = cutiService.availableCutiDate(request);
         Assertions.assertFalse(isAvailable);
 
         // start date before
         request.setStartDate(cuti.getFinishDate());
         request.setFinishDate(cuti.getStartDate());
-        isAvailable = cutiServices.availableCutiDate(request);
+        isAvailable = cutiService.availableCutiDate(request);
         Assertions.assertFalse(isAvailable);
 
         // start date between
@@ -147,13 +147,13 @@ class CutiTests {
         calendar.add(Calendar.DATE, -3);
         request.setStartDate(cuti.getStartDate());
         request.setFinishDate(cutiDate);
-        isAvailable = cutiServices.availableCutiDate(request);
+        isAvailable = cutiService.availableCutiDate(request);
         Assertions.assertFalse(isAvailable);
 
         // finish date between
         request.setStartDate(cutiDate);
         request.setFinishDate(cuti.getFinishDate());
-        isAvailable = cutiServices.availableCutiDate(request);
+        isAvailable = cutiService.availableCutiDate(request);
         Assertions.assertFalse(isAvailable);
 
         // start before finish after start, finish after in exist db
@@ -163,14 +163,14 @@ class CutiTests {
         calendar.add(Calendar.DATE, 1);
         request.setStartDate(calendar.getTime());
         request.setFinishDate(cuti.getFinishDate());
-        isAvailable = cutiServices.availableCutiDate(request);
+        isAvailable = cutiService.availableCutiDate(request);
         Assertions.assertFalse(isAvailable);
 
         // start before, finish after in exist db
         calendar.add(Calendar.DATE, -10);
         request.setStartDate(calendar.getTime());
         request.setFinishDate(cuti.getFinishDate());
-        isAvailable = cutiServices.availableCutiDate(request);
+        isAvailable = cutiService.availableCutiDate(request);
         Assertions.assertFalse(isAvailable);
 
 

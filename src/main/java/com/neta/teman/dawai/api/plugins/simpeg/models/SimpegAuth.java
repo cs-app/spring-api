@@ -26,6 +26,8 @@ import java.util.Date;
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class SimpegAuth {
 
+    Long id;
+
     String username;
 
     @JsonProperty("NIP")

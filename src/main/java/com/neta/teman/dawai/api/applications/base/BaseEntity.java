@@ -18,11 +18,11 @@ public class BaseEntity implements Serializable {
     protected String status = "A";
 
     @JsonIgnore
-    @Column(updatable = false)
+//    @Column(updatable = false)
     protected Long createdBy;
 
     @JsonIgnore
-    @Column(updatable = false)
+//    @Column(updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     protected Date createdDate;
 

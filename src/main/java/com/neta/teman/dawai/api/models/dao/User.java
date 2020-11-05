@@ -7,12 +7,14 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.neta.teman.dawai.api.applications.base.BaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "app_user")
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
@@ -23,6 +25,8 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     //@JsonAlias({"id", "userId"})
     private Long id;
+
+    private Long externalId;
 
     private String username;
 

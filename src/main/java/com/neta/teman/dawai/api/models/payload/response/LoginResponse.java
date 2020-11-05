@@ -53,11 +53,25 @@ public class LoginResponse {
 
     private String docMarriage;
 
+    private String noKarpeg;
+
+    private String noAkses;
+
+    private String npwp;
+
+    private String noTaspen;
+
+    private String noKarisSu;
+
     private List<EmployeeContact> contacts;
 
     private List<EmployeeFamily> families;
 
     private List<EmployeeEducation> educations;
+
+    private List<EmployeeMutasi> mutasis;
+
+    private List<EmployeePangkat> pangkats;
 
     public LoginResponse(User user) {
         Role role = user.getRole();
@@ -66,6 +80,8 @@ public class LoginResponse {
         this.contacts = BeanCopy.copyCollection(employee.getContacts(), EmployeeContact.class);
         this.educations = BeanCopy.copyCollection(employee.getEducations(), EmployeeEducation.class);
         this.families = BeanCopy.copyCollection(employee.getFamilies(), EmployeeFamily.class);
+        this.mutasis = BeanCopy.copyCollection(employee.getMutasis(), EmployeeMutasi.class);
+        this.pangkats = BeanCopy.copyCollection(employee.getPangkats(), EmployeePangkat.class);
         this.role = role.getName();
     }
 

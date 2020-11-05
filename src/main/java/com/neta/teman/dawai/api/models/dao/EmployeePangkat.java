@@ -1,6 +1,5 @@
 package com.neta.teman.dawai.api.models.dao;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.neta.teman.dawai.api.applications.base.BaseEntity;
@@ -8,21 +7,23 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "app_role")
+@Table(name = "app_employee_pangkat_history")
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class Role extends BaseEntity {
+public class EmployeePangkat extends BaseEntity {
 
-    // @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private Date tmt;
 
-    private String description;
+    private String gol;
+
+    private String pangkat;
 
 }

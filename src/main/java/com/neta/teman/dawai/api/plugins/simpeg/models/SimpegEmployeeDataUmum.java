@@ -13,13 +13,14 @@ import java.util.List;
 
 @Data
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class SimpegEmployee {
+public class SimpegEmployeeDataUmum {
 
     String nama;
 
     String tempatLahir;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd MMMM yyyy")
+    // @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd MMMM yyyy")
+    @JsonDeserialize(converter = JsonDateConverter.class)
     Date tanggalLahir;
 
     String alamat;
@@ -44,7 +45,10 @@ public class SimpegEmployee {
 
     String emailAddress;
 
+    @JsonDeserialize(converter = JsonDateConverter.class)
+    Date perkiraanPensiun;
+
     List<SimpegKeluarga> keluarga;
 
-    List<SimpegPendidikan> pendidikan;
+//    List<SimpegPendidikan> pendidikan;
 }
