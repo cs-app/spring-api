@@ -1,5 +1,6 @@
 package com.neta.teman.dawai.api.models.payload.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.neta.teman.dawai.api.applications.commons.BeanCopy;
@@ -19,31 +20,58 @@ import java.util.List;
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class LoginResponse {
 
-    private String role;
+    String role;
 
-    private String username;
+    String nip;
 
-    private String nip;
+    String nama;
 
-    private String nik;
+    String presensiId;
 
-    private String kk;
+    String photo;
 
-    private String name;
+    String tempatLahir;
 
-    private String pob;
+    Date tanggalLahir;
 
-    private Date dob;
+    String usia;
 
-    private String address;
+    String kelamin;
 
-    private String gender;
+    String statusDiri;
 
-    private String maritalStatus;
+    String agama;
 
-    private Date maritalDate;
+    String alamat;
 
-    private String picture;
+    String kelurahan;
+
+    String kelurahanData;
+
+    String kecamatan;
+
+    String kecamatanData;
+
+    String kebupaten;
+
+    String kebupatenData;
+
+    String provinsi;
+
+    String provinsiData;
+
+    @JsonProperty("rt_rw")
+    String rtRW;
+
+    String kodePos;
+
+
+    private String noAkses;
+
+    private String npwp;
+
+    private String noTaspen;
+
 
     private String docKTP;
 
@@ -53,15 +81,40 @@ public class LoginResponse {
 
     private String docMarriage;
 
-    private String noKarpeg;
+    // data kepegawaian
+    String statusPeg;
+    String jenisPeg;
+    String mks;
+    String mkg;
+    String noKarpeg;
+    String noKarisSu;
+    @JsonProperty("PMK")
+    String pmk;
+    String statusAktif;
+    String perkiraanPensiun;
 
-    private String noAkses;
+    @JsonProperty("tgl_mulai_cpns")
+    Date tglMulaiCPNS;
 
-    private String npwp;
+    @JsonProperty("no_sk_cpns")
+    String noSKCPNS;
 
-    private String noTaspen;
+    @JsonProperty("tgl_sk_cpns")
+    Date tglSKCPNS;
 
-    private String noKarisSu;
+    @JsonProperty("tgl_mulai_pns")
+    Date tglMulaiPNS;
+
+    @JsonProperty("no_sk_pns")
+    String noSKPNS;
+
+    @JsonProperty("tgl_sk_pns")
+    Date tglSKPNS;
+    String jabatan;
+    String eselon;
+    Date tmtJabatan;
+    String noSkJabatan;
+    Date tglSkJabatan;
 
     private List<EmployeeContact> contacts;
 
@@ -83,6 +136,7 @@ public class LoginResponse {
         this.mutasis = BeanCopy.copyCollection(employee.getMutasis(), EmployeeMutasi.class);
         this.pangkats = BeanCopy.copyCollection(employee.getPangkats(), EmployeePangkat.class);
         this.role = role.getName();
+        this.nip = employee.getNip();
     }
 
 }

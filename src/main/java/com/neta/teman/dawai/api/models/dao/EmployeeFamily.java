@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -22,6 +23,12 @@ public class EmployeeFamily extends BaseEntity {
     private Integer type;
 
     private String name;
+
+    private String pob;
+
+    private Date dob;
+
+    private Date mob;
 
     private String occupation;
 

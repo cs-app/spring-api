@@ -19,6 +19,7 @@ public class SimpegServiceImpl extends BaseService implements SimpegService {
     @Override
     public SimpegResponse<SimpegAuth> auth(String username, String password) {
         String url = "https://simpeg.masmana.id/auth/login";
+        url = "https://simpeg.masmana.id/auth/login";
         ParameterizedTypeReference<SimpegResponse<SimpegAuth>> bean = new ParameterizedTypeReference<SimpegResponse<SimpegAuth>>() {
         };
         Mono<SimpegResponse<SimpegAuth>> response = webClient.post()

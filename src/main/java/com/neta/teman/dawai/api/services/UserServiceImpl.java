@@ -9,12 +9,13 @@ import com.neta.teman.dawai.api.models.repository.RoleRepository;
 import com.neta.teman.dawai.api.models.repository.UserRepository;
 import com.neta.teman.dawai.api.models.spech.UserSpecs;
 import com.neta.teman.dawai.api.plugins.simpeg.models.SimpegAuth;
-import com.neta.teman.dawai.api.plugins.simpeg.models.SimpegEmployeeDataUmum;
 import com.neta.teman.dawai.api.plugins.simpeg.models.SimpegEmployeeRiwayat;
 import com.neta.teman.dawai.api.plugins.simpeg.models.SimpegResponse;
 import com.neta.teman.dawai.api.plugins.simpeg.services.SimpegServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 @Service
 public class UserServiceImpl extends SimpegServiceImpl implements UserService {
@@ -35,60 +36,38 @@ public class UserServiceImpl extends SimpegServiceImpl implements UserService {
      */
     @Override
     public ServiceResolver<User> findByUsernameAndPasswordSimpeg(String username, String password) {
-        SimpegResponse<SimpegAuth> simpegResponse = auth(username, password);
-        if (!simpegResponse.isStatus()) {
-            return error(1001, simpegResponse.getMessage());
+        SimpegResponse<SimpegAuth> response = auth(username, password);
+        if (!response.isStatus()) {
+            return error(1001, response.getMessage());
         }
-        SimpegAuth simpegAuth = simpegResponse.getData();
-        simpegAuth.setNip("197706242005012002"); // debug
-        if (isNull(simpegAuth.getRole(), simpegAuth.getUsername(), simpegAuth.getToken(), simpegAuth.getNip())) {
-            return error(1002, "Invalid user!");
+        SimpegAuth data = response.getData();
+        if (isNull(data) || isNull(data.getPersonal(), data.getEmployee())) {
+            return error(1002, "invalid response");
         }
-        // get role, auto create when role not found in system
-        Role role = roleRepository.findByName(simpegAuth.getRole());
-        User user = createUserIfNotExist(simpegAuth, role);
-        return success(user);
-    }
-
-    private User createUserIfNotExist(SimpegAuth simpegAuth, Role role) {
-        User user = userRepository.findByUsername(simpegAuth.getUsername());
-        if (nonNull(user)) {
-            updateDataUmumEmployee(simpegAuth, user.getEmployee());
-            updateDataRiwayat(simpegAuth, user.getEmployee());
-            user.setTokenSimpeg(simpegAuth.getToken());
+        User userExist = userRepository.findByUsername(username);
+        if (Objects.isNull(userExist)) {
+            Role role = roleRepository.findByName("USER");
+            // create
+            User user = new User();
+            user.setRole(role);
+            user.setUsername(username);
+            user.setTokenSimpeg(data.getToken());
+            user.setEmployee(new Employee());
+            buildEmployee(user.getEmployee(), data, username);
             userRepository.save(user);
-            return user;
+        } else {
+            // update
+            userExist.setTokenSimpeg(data.getToken());
+            buildEmployee(userExist.getEmployee(), data, username);
+            userRepository.save(userExist);
         }
-        // employee
-        Employee employee = new Employee();
-        updateDataUmumEmployee(simpegAuth, employee);
-        updateDataRiwayat(simpegAuth, employee);
-        // user
-        User newUser = new User();
-        newUser(simpegAuth, role, newUser, employee);
-        return userRepository.save(newUser);
+        return success(userExist);
     }
 
-    private void newUser(SimpegAuth simpegAuth, Role role, User user, Employee employee) {
-        user.setRole(role);
-        user.setExternalId(simpegAuth.getId());
-        user.setUsername(simpegAuth.getUsername());
-        user.setTokenSimpeg(simpegAuth.getToken());
-        user.setEmployee(employee);
+    private void buildEmployee(Employee employee, SimpegAuth simpegAuth ,String username) {
+        SimpegConverter.merge(employee, simpegAuth);
+        SimpegResponse<SimpegEmployeeRiwayat> dataRiwayat = dataRiwayat(simpegAuth.getToken(), username);
+        SimpegConverter.mergeRiwayat(employee, dataRiwayat.getData());
     }
 
-    private void updateDataUmumEmployee(SimpegAuth simpegAuth, Employee employee) {
-        SimpegResponse<SimpegEmployeeDataUmum> simpegResponse = dataUmum(simpegAuth.getToken(), simpegAuth.getNip());
-        SimpegConverter.mergeUmum(simpegResponse.getData(), employee);
-        employee.setNip(simpegAuth.getNip());
-        // picture
-        if (nonNull(simpegAuth.getPersonal()) && nonNull(simpegAuth.getPersonal().getPhoto())) {
-            employee.setPicture(simpegAuth.getPersonal().getPhoto());
-        }
-    }
-
-    private void updateDataRiwayat(SimpegAuth simpegAuth, Employee employee) {
-        SimpegResponse<SimpegEmployeeRiwayat> simpegResponse = dataRiwayat(simpegAuth.getToken(), simpegAuth.getNip());
-        SimpegConverter.mergeRiwayat(simpegResponse.getData(), employee);
-    }
 }
