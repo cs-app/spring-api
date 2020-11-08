@@ -5,6 +5,7 @@ import com.neta.teman.dawai.api.applications.commons.ValueValidation;
 import com.neta.teman.dawai.api.applications.constants.AppConstants;
 import com.neta.teman.dawai.api.models.dao.*;
 import com.neta.teman.dawai.api.plugins.simpeg.models.*;
+import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,17 +23,87 @@ public class SimpegConverter {
         mergeContact(employee, personal.getLainnya());
         mergeFamily(employee, source.getKeluarga());
         mergeDataLain(employee, source);
+        mergeJabatanEselon(employee, source);
+        mergeJabatanGolonganPangkat(employee, source);
+        mergeUnitKerja(employee, source);
+    }
+
+    private static void mergeUnitKerja(Employee employee, SimpegAuth source) {
+        SimpegAuth.EmployeeUnitKerja unitKerja = source.getUnitKerja();
+        if (Objects.isNull(unitKerja)) return;
+        List<EmployeeUnit> units = employee.getUnits();
+        if (Objects.isNull(units)) {
+            units = new ArrayList<>();
+            employee.setUnits(units);
+        } else {
+            units.clear();
+        }
+        // unit 1
+        if (Objects.nonNull(unitKerja.getUnitUtama())) {
+            EmployeeUnit unit = BeanCopy.copy(unitKerja.getUnitUtama(), EmployeeUnit.class);
+            unit.setUnit(1);
+            units.add(unit);
+        }
+        // unit 2
+        if (Objects.nonNull(unitKerja.getUnitKerja2())) {
+            EmployeeUnit unit = BeanCopy.copy(unitKerja.getUnitKerja2(), EmployeeUnit.class);
+            unit.setUnit(2);
+            units.add(unit);
+        }
+        // unit 3
+        if (Objects.nonNull(unitKerja.getUnitKerja3())) {
+            EmployeeUnit unit = BeanCopy.copy(unitKerja.getUnitKerja3(), EmployeeUnit.class);
+            unit.setUnit(3);
+            units.add(unit);
+        }
+        // unit 4
+        if (Objects.nonNull(unitKerja.getUnitKerja4())) {
+            EmployeeUnit unit = BeanCopy.copy(unitKerja.getUnitKerja4(), EmployeeUnit.class);
+            unit.setUnit(4);
+            units.add(unit);
+        }
+    }
+
+    private static void mergeJabatanGolonganPangkat(Employee employee, SimpegAuth source) {
+        SimpegAuth.Employee.EmployeeGolonganPangkat golonganPangkat = source.getEmployee().getGolonganPangkat();
+        EmployeeGolongan golongan = employee.getGolonganDetail();
+        if (Objects.isNull(golongan)) {
+            golongan = new EmployeeGolongan();
+            employee.setGolonganDetail(golongan);
+        }
+        BeanUtils.copyProperties(golonganPangkat.getGolData(), golongan, "id");
+        EmployeePangkat pangkat = employee.getPangkatDetail();
+        if (Objects.isNull(pangkat)) {
+            pangkat = new EmployeePangkat();
+            employee.setPangkatDetail(pangkat);
+        }
+        BeanUtils.copyProperties(golonganPangkat.getPangkatData(), pangkat, "id");
+        // BeanUtils.copyProperties(golonganPangkat.getGolData(), employee);
+
+    }
+
+    private static void mergeJabatanEselon(Employee employee, SimpegAuth source) {
+        SimpegAuth.Employee.EmployeeJabatanEselon jabatanEselon = source.getEmployee().getJabatanEselon();
+        EmployeeJabatan jabatan = employee.getJabatanDetail();
+        if (Objects.isNull(jabatan)) {
+            jabatan = new EmployeeJabatan();
+            employee.setJabatanDetail(jabatan);
+        }
+        BeanUtils.copyProperties(jabatanEselon.getJabatanData(), jabatan, "id");
+
+        EmployeeEselon eselon = employee.getEselonDetail();
+        if (Objects.isNull(eselon)) {
+            eselon = new EmployeeEselon();
+            employee.setEselonDetail(eselon);
+        }
+        BeanUtils.copyProperties(jabatanEselon.getEselonData(), eselon, "id");
+        BeanUtils.copyProperties(jabatanEselon.getEselonData(), employee);
+
     }
 
     private static void mergeDataLain(Employee employee, SimpegAuth source) {
         BeanCopy.copy(employee, source.getPersonal().getLainnya());
         BeanCopy.copy(employee, source.getEmployee());
-//        employee.setNpwp(source.getPersonal().getLainnya().getNpwp());
-//        employee.setNoTaspen(source.getPersonal().getLainnya().getNoTaspen());
-//        employee.setNoKarpeg(source.getEmployee().getNoKarpeg());
-//        employee.setNoKarisSu(source.getEmployee().getNoKarisSu());
-//        employee.setStatusPegawai(source.getEmployee().getStatusPeg());
-
     }
 
     /**
@@ -95,7 +166,7 @@ public class SimpegConverter {
         employee.setFamilies(families);
     }
 
-    private static void copyFamily(EmployeeFamily family, SimpegAuth.Keluarga.KeluargaDetail o){
+    private static void copyFamily(EmployeeFamily family, SimpegAuth.Keluarga.KeluargaDetail o) {
         family.setName(o.getNama());
         family.setOccupation(o.getPekerjaan());
         family.setDob(o.getTanggalLahir());
@@ -144,11 +215,11 @@ public class SimpegConverter {
     }
 
     private static void initializePangkat(SimpegEmployeeRiwayat source, Employee employee) {
-        List<EmployeePangkat> pangkats = employee.getPangkats();
+        List<EmployeePangkatHis> pangkats = employee.getPangkats();
         if (Objects.isNull(pangkats)) pangkats = new ArrayList<>();
         pangkats.clear();
         for (SimpegPangkat o : source.getPangkat()) {
-            EmployeePangkat pangkat = BeanCopy.copy(o, EmployeePangkat.class);
+            EmployeePangkatHis pangkat = BeanCopy.copy(o, EmployeePangkatHis.class);
             pangkats.add(pangkat);
         }
         employee.setPangkats(pangkats);

@@ -9,8 +9,8 @@ import java.util.Date;
 public class JsonDateConverter extends StdConverter<String, Date> {
 
     private final SimpleDateFormat[] formats = {
-            new SimpleDateFormat("dd-MMM-yyyy"),
             new SimpleDateFormat("dd MMMM yyyy"),
+            new SimpleDateFormat("dd-MMM-yyyy"),
             new SimpleDateFormat("yyyy-MM-dd")
     };
 
@@ -18,6 +18,9 @@ public class JsonDateConverter extends StdConverter<String, Date> {
     public Date convert(final String value) {
         if (value == null || value.equals("NULL")) {
             return null;
+        }
+        if("01 February 2019".equals(value)) {
+
         }
         for (SimpleDateFormat s : formats) {
             try {

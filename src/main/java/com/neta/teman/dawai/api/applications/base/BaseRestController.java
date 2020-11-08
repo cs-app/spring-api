@@ -4,12 +4,17 @@ import com.neta.teman.dawai.api.applications.commons.ResponseConverter;
 import com.neta.teman.dawai.api.applications.commons.ValueValidation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+
+import javax.servlet.ServletContext;
 
 @Slf4j
 @SuppressWarnings({"unchecked", "rawtypes", "unused"})
 public class BaseRestController {
 
+    @Autowired
+    protected ServletContext servletContext;
     protected String SUCCESS = "success";
     protected String ERROR_MANDATORY_FIELD = "mandatory field not complete";
 

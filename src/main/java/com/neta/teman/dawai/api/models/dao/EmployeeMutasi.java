@@ -1,10 +1,8 @@
 package com.neta.teman.dawai.api.models.dao;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.neta.teman.dawai.api.applications.base.BaseEntity;
-import com.neta.teman.dawai.api.models.converter.JsonDateConverter;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

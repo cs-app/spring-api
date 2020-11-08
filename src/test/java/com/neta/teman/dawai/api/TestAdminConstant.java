@@ -29,9 +29,8 @@ public class TestAdminConstant {
         user.setPassword(DigestUtils.md5Hex("password"));
         user.setRole(role);
         Employee employee = new Employee();
-        employee.setName("TEST");
+        employee.setNama("TEST");
         employee.setNip(NIP);
-        employee.setNik(NIK);
         user.setEmployee(employee);
         return user;
     }

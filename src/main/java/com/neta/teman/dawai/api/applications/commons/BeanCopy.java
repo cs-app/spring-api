@@ -1,18 +1,10 @@
 package com.neta.teman.dawai.api.applications.commons;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.neta.teman.dawai.api.plugins.simpeg.models.SimpegAuth;
-import com.neta.teman.dawai.api.plugins.simpeg.models.SimpegResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.core.ParameterizedTypeReference;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Slf4j
 @SuppressWarnings({"unchecked"})

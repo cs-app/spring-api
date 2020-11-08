@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 
 @Service
-public class UserServiceImpl extends SimpegServiceImpl implements UserService {
+public class UserServiceImpl extends RoleServiceImpl implements UserService {
 
     @Autowired
     UserRepository userRepository;
@@ -26,9 +26,17 @@ public class UserServiceImpl extends SimpegServiceImpl implements UserService {
     @Autowired
     RoleRepository roleRepository;
 
+    @Autowired
+    RoleService roleService;
+
+    @Autowired
+    CutiService cutiService;
+
     @Override
-    public User findByUsernameAndPassword(String nip, String password) {
-        return userRepository.findOne(UserSpecs.login(nip, password)).orElse(null);
+    public ServiceResolver<User> findByNip(String nip) {
+        User userExist = userRepository.findOne(UserSpecs.nip(nip)).orElse(null);
+        if (Objects.isNull(userExist)) return error(404, "User not found");
+        return success(userExist);
     }
 
     /**
@@ -46,25 +54,30 @@ public class UserServiceImpl extends SimpegServiceImpl implements UserService {
         }
         User userExist = userRepository.findByUsername(username);
         if (Objects.isNull(userExist)) {
-            Role role = roleRepository.findByName("USER");
             // create
+            Role role = roleRepository.findByName("USER");
+            if (Objects.isNull(role)) {
+                initializeRole();
+                role = roleRepository.findByName("USER");
+            }
             User user = new User();
-            user.setRole(role);
             user.setUsername(username);
             user.setTokenSimpeg(data.getToken());
             user.setEmployee(new Employee());
             buildEmployee(user.getEmployee(), data, username);
-            userRepository.save(user);
+            user.setRole(role);
+            userRepository.save(signature(user));
+            cutiService.initCutiPegawai();
+            return success(user);
         } else {
             // update
             userExist.setTokenSimpeg(data.getToken());
             buildEmployee(userExist.getEmployee(), data, username);
-            userRepository.save(userExist);
+            return success(userRepository.save(signature(userExist)));
         }
-        return success(userExist);
     }
 
-    private void buildEmployee(Employee employee, SimpegAuth simpegAuth ,String username) {
+    private void buildEmployee(Employee employee, SimpegAuth simpegAuth, String username) {
         SimpegConverter.merge(employee, simpegAuth);
         SimpegResponse<SimpegEmployeeRiwayat> dataRiwayat = dataRiwayat(simpegAuth.getToken(), username);
         SimpegConverter.mergeRiwayat(employee, dataRiwayat.getData());

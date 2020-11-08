@@ -19,10 +19,9 @@ import java.sql.*;
 import java.util.List;
 import java.util.Objects;
 
-@Service
 @Slf4j
 @SuppressWarnings({"unchecked", "rawtypes"})
-public class RoleServiceImpl extends SimpegServiceImpl implements RoleService {
+public class RoleServiceImpl extends SimpegServiceImpl {
 
     @Autowired
     ResourceLoader resourceLoader;
@@ -33,7 +32,6 @@ public class RoleServiceImpl extends SimpegServiceImpl implements RoleService {
     @Autowired
     RoleRepository roleRepository;
 
-    @Override
     public void initializeRole() {
         try {
             int[] types = new int[]{Types.INTEGER};

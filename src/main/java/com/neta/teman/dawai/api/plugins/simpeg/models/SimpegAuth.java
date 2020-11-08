@@ -45,6 +45,8 @@ public class SimpegAuth {
 
     Keluarga keluarga;
 
+    EmployeeUnitKerja unitKerja;
+
     Integer deleted;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
@@ -185,6 +187,7 @@ public class SimpegAuth {
         EmployeeCPNS cpns;
         EmployeePNS pns;
         EmployeeJabatanEselon jabatanEselon;
+        EmployeeGolonganPangkat golonganPangkat;
 
         @Data
         @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
@@ -265,8 +268,10 @@ public class SimpegAuth {
 
             String gol;
             String pangkat;
+            @JsonDeserialize(converter = JsonDateConverter.class)
             Date tmtGol;
             String noSkGol;
+            @JsonDeserialize(converter = JsonDateConverter.class)
             Date tglSkGol;
             EmployeeGolonganPangkatGolData golData;
             EmployeeGolonganPangkatData pangkatData;
@@ -288,6 +293,7 @@ public class SimpegAuth {
                 String refId;
             }
         }
+
     }
 
     @Data
@@ -321,6 +327,41 @@ public class SimpegAuth {
             @JsonDeserialize(converter = JsonDateConverter.class)
             Date tanggalNikah;
         }
+    }
+
+    @Data
+    @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+    public static class EmployeeUnitKerja {
+
+        EmployeeUnitKerjaDetail unitUtama;
+
+        @JsonProperty("unit_kerja_2")
+        EmployeeUnitKerjaDetail unitKerja2;
+        @JsonProperty("unit_kerja_3")
+        EmployeeUnitKerjaDetail unitKerja3;
+        @JsonProperty("unit_kerja_4")
+        EmployeeUnitKerjaDetail unitKerja4;
+
+        @Data
+        @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+        public static class EmployeeUnitKerjaDetail {
+            Integer unit;
+            String unitUtamaId;
+            String namaUnitUtama;
+            String singkatan;
+            String unitAktif;
+            @JsonProperty("unit_kerja_2_id")
+            String unitKerja2Id;
+            @JsonProperty("nama_unit_kerja_2")
+            String namaUnitKerja2;
+            @JsonProperty("unit_kerja_3_id")
+            String unitKerja3Id;
+            @JsonProperty("nama_unit_kerja_3")
+            String namaUnitKerja3;
+            String ukGroupId;
+
+        }
+
     }
 
 }

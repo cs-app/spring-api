@@ -38,11 +38,11 @@ public class SimpegConverterBAK {
     }
 
     private static void initializePangkat(SimpegEmployeeRiwayat source, Employee employee) {
-        List<EmployeePangkat> pangkats = employee.getPangkats();
+        List<EmployeePangkatHis> pangkats = employee.getPangkats();
         if (Objects.isNull(pangkats)) pangkats = new ArrayList<>();
         pangkats.clear();
         for (SimpegPangkat o : source.getPangkat()) {
-            EmployeePangkat pangkat = BeanCopy.copy(o, EmployeePangkat.class);
+            EmployeePangkatHis pangkat = BeanCopy.copy(o, EmployeePangkatHis.class);
             pangkats.add(pangkat);
         }
         employee.setPangkats(pangkats);

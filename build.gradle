@@ -1,7 +1,7 @@
 plugins {
-	id 'org.springframework.boot' version '2.3.4.RELEASE'
-	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-	id 'java'
+    id 'org.springframework.boot' version '2.3.4.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'java'
 }
 
 group = 'com.neta.teman.dawai'
@@ -9,43 +9,50 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-undertow'
-	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-log4j2'
-	implementation 'org.mariadb.jdbc:mariadb-java-client:2.4.1'
-	implementation 'com.lmax:disruptor:3.4.2'
-	implementation 'commons-codec:commons-codec:1.13'
-	implementation 'org.springframework.boot:spring-boot-starter-webflux'
-	implementation 'org.projectreactor:reactor-spring:1.0.1.RELEASE'
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation fileTree(dir: 'libs', include: '*.jar')
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-undertow'
+    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.mariadb.jdbc:mariadb-java-client:2.4.1'
+    implementation 'com.lmax:disruptor:3.4.2'
+    implementation 'org.projectreactor:reactor-spring:1.0.1.RELEASE'
+    implementation 'org.apache.commons:commons-collections4:4.4'
+    implementation 'commons-codec:commons-codec:1.13'
+    implementation 'commons-digester:commons-digester:2.1'
+    implementation 'joda-time:joda-time:2.10.8'
+    implementation 'com.lowagie:itext:2.1.7'
+
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 configurations {
-	compile.exclude group: 'org.apache.tomcat'
-	compile.exclude module: 'spring-boot-starter-tomcat'
-	compile.exclude module: 'spring-boot-starter-logging'
-	compile.exclude module: 'ch.qos.logback:logback-classic'
-	compile.exclude module: 'junit-vintage-engine'
+    compile.exclude group: 'org.apache.tomcat'
+    compile.exclude module: 'spring-boot-starter-tomcat'
+    compile.exclude module: 'spring-boot-starter-logging'
+    compile.exclude module: 'ch.qos.logback:logback-classic'
+    compile.exclude module: 'junit-vintage-engine'
 }
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
 
 bootJar {
-	launchScript()
+    launchScript()
 }

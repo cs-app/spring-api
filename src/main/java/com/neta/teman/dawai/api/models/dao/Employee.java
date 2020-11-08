@@ -2,10 +2,9 @@ package com.neta.teman.dawai.api.models.dao;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.neta.teman.dawai.api.applications.base.BaseEntity;
-import com.neta.teman.dawai.api.models.converter.JsonDateConverter;
+import com.neta.teman.dawai.api.plugins.simpeg.models.SimpegAuth;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.NotFound;
@@ -107,11 +106,39 @@ public class Employee extends BaseEntity {
 
     @JsonProperty("tgl_sk_pns")
     Date tglSKPNS;
+
     String jabatan;
-    String eselon;
+
     Date tmtJabatan;
+
     String noSkJabatan;
+
     Date tglSkJabatan;
+
+    Date tmtGol;
+
+    String noSkGol;
+
+    Date tglSkGol;
+
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    EmployeeJabatan jabatanDetail;
+
+    String eselon;
+
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    EmployeeEselon eselonDetail;
+
+    String gol;
+
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    EmployeeGolongan golonganDetail;
+
+    String pangkat;
+
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    EmployeePangkat pangkatDetail;
+
 
     @NotFound(action = NotFoundAction.IGNORE)
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
@@ -131,6 +158,10 @@ public class Employee extends BaseEntity {
 //
     @NotFound(action = NotFoundAction.IGNORE)
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    private List<EmployeePangkat> pangkats;
+    private List<EmployeePangkatHis> pangkats;
+
+    @NotFound(action = NotFoundAction.IGNORE)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    private List<EmployeeUnit> units;
 
 }

@@ -12,7 +12,7 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "app_employee_pangkat_history")
+@Table(name = "app_employee_pangkat")
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class EmployeePangkat extends BaseEntity {
 
@@ -20,10 +20,11 @@ public class EmployeePangkat extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Date tmt;
+    Integer pangkatId;
+    String gol;
 
-    private String gol;
+    String pangkat;
 
-    private String pangkat;
+    String refId;
 
 }
