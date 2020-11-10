@@ -1,0 +1,104 @@
+[
+  {
+    "id": 1,
+    "group": 1,
+    "jenis": "Juru Muda",
+    "golongan": "Ia"
+  },
+  {
+    "id": 2,
+    "group": 1,
+    "jenis": "Juru Muda Tingkat I",
+    "golongan": "Ib"
+  },
+  {
+    "id": 3,
+    "group": 1,
+    "jenis": "Juru",
+    "golongan": "Ic"
+  },
+  {
+    "id": 4,
+    "group": 1,
+    "jenis": "Juru Tingkat I",
+    "golongan": "Id"
+  },
+  {
+    "id": 5,
+    "group": 2,
+    "jenis": "Pengatur Muda",
+    "golongan": "IIa"
+  },
+  {
+    "id": 6,
+    "group": 2,
+    "jenis": "Pengatur Muda Tingkat I",
+    "golongan": "IIb"
+  },
+  {
+    "id": 7,
+    "group": 2,
+    "jenis": "Pengatur",
+    "golongan": "IIc"
+  },
+  {
+    "id": 8,
+    "group": 2,
+    "jenis": "Pengatur Tingkat I",
+    "golongan": "IId"
+  },
+  {
+    "id": 9,
+    "group": 3,
+    "jenis": "Penata Muda",
+    "golongan": "IIIa"
+  },
+  {
+    "id": 10,
+    "group": 3,
+    "jenis": "Penata Muda Tingkat I",
+    "golongan": "IIIb"
+  },
+  {
+    "id": 11,
+    "group": 3,
+    "jenis": "Penata",
+    "golongan": "IIIc"
+  },
+  {
+    "id": 12,
+    "group": 3,
+    "jenis": "Penata Tingkat I",
+    "golongan": "IIId"
+  },
+  {
+    "id": 13,
+    "group": 4,
+    "jenis": "Pembina",
+    "golongan": "IVa"
+  },
+  {
+    "id": 14,
+    "group": 4,
+    "jenis": "Pembina Tingkat I",
+    "golongan": "IVb"
+  },
+  {
+    "id": 15,
+    "group": 4,
+    "jenis": "Pembina Utama Muda",
+    "golongan": "IVc"
+  },
+  {
+    "id": 16,
+    "group": 4,
+    "jenis": "Pembina UtamaMady",
+    "golongan": "IVd"
+  },
+  {
+    "id": 17,
+    "group": 4,
+    "jenis": "Pembina Utama",
+    "golongan": "IVe"
+  }
+]

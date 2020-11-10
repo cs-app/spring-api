@@ -31,6 +31,7 @@ public class TemanDawaiApiApplication implements ApplicationRunner {
     public void run(ApplicationArguments args) {
         reportService.initTemplate();
         userService.initializeRole();
+        userService.initializePangkatGolongan();
         cutiService.initCutiPegawai();
     }
 }

@@ -172,8 +172,6 @@ class CutiTests {
         request.setFinishDate(cuti.getFinishDate());
         isAvailable = cutiService.availableCutiDate(request);
         Assertions.assertFalse(isAvailable);
-
-
     }
 
 
