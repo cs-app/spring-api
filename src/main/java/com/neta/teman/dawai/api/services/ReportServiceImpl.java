@@ -44,12 +44,12 @@ public class ReportServiceImpl implements ReportService {
                 log.info("report generate folder template already exist");
             }
         }
-        String[] fileName = {"pegawai_cv"};
+        String[] fileName = {"pegawai_cv", "pegawai_cv_keluarga"};
         String baseProject = "C:\\Users\\demOn\\JaspersoftWorkspace\\Teman Dawai\\report\\";
         for (String s : fileName) {
             try {
-                InputStream employeeReportStream = resourceLoader.getResource("classpath:reports/" + s + ".jrxml").getInputStream();
-//                InputStream employeeReportStream = new FileInputStream(new File(baseProject + s + ".jrxml")); // test only
+//                InputStream employeeReportStream = resourceLoader.getResource("classpath:reports/" + s + ".jrxml").getInputStream();
+                InputStream employeeReportStream = new FileInputStream(new File(baseProject + s + ".jrxml")); // test only
                 JasperReport jasperReport = JasperCompileManager.compileReport(employeeReportStream);
                 JRSaver.saveObject(jasperReport, AppConstants.reportTemplate + s + ".jasper");
             } catch (JRException | IOException e) {
@@ -66,10 +66,14 @@ public class ReportServiceImpl implements ReportService {
             if (Objects.isNull(user)) return;
             LoginResponse response = new LoginResponse(user);
             Map<String, Object> userMapOrigin = new ObjectMapper().convertValue(response, Map.class);
+            JRBeanCollectionDataSource profileDataSource = new JRBeanCollectionDataSource(ReportConverter.profile(userMapOrigin, user));
+            // sub report datasource
+            JRBeanCollectionDataSource familyDataSource = new JRBeanCollectionDataSource(ReportConverter.profile(userMapOrigin, user));
 
-            JRBeanCollectionDataSource collectionDataSource = new JRBeanCollectionDataSource(ReportConverter.profile(userMapOrigin, user));
+            userMapOrigin.put("FAMILY_DATASOURCE", familyDataSource);
+
             JasperReport jasperReport = (JasperReport) JRLoader.loadObject(new File(AppConstants.reportTemplate + "pegawai_cv.jasper"));
-            JasperPrint print = JasperFillManager.fillReport(jasperReport, userMapOrigin, collectionDataSource);
+            JasperPrint print = JasperFillManager.fillReport(jasperReport, userMapOrigin, profileDataSource);
             JRPdfExporter exporter = new JRPdfExporter();
             exporter.setExporterInput(new SimpleExporterInput(print));
             exporter.setExporterOutput(new SimpleOutputStreamExporterOutput("cv.pdf"));
