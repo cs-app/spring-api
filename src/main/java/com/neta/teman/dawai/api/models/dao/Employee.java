@@ -24,9 +24,13 @@ public class Employee extends BaseEntity {
     @Id
     private String nip;
 
-    String nama;
+    String ktp;
+
+    String kk;
 
     String presensiId;
+
+    String nama;
 
     String photo;
 

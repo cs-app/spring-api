@@ -41,8 +41,13 @@ class ReportTests {
     }
 
     @Test
-    void auth() throws JsonProcessingException {
+    void printCV() throws JsonProcessingException {
         reportService.printCV("196406241987032001", null);
+    }
+
+    @Test
+    void printCUti() throws JsonProcessingException {
+        reportService.printCuti(null, null, null);
     }
 
 

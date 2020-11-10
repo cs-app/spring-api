@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.neta.teman.dawai.api.applications.commons.ResourceUtils;
 import com.neta.teman.dawai.api.models.dao.PangkatGolongan;
 import com.neta.teman.dawai.api.models.dao.Role;
-import com.neta.teman.dawai.api.models.mapper.RoleMapper;
 import com.neta.teman.dawai.api.models.repository.PangkatGolonganRepository;
 import com.neta.teman.dawai.api.models.repository.RoleRepository;
 import com.neta.teman.dawai.api.plugins.simpeg.services.SimpegServiceImpl;
@@ -17,11 +16,12 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import java.sql.*;
+import java.sql.Types;
 import java.util.List;
 import java.util.Objects;
 
 @Slf4j
+@Service
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class RoleServiceImpl extends SimpegServiceImpl {
 
@@ -72,7 +72,7 @@ public class RoleServiceImpl extends SimpegServiceImpl {
             List<PangkatGolongan> pangkatGolongans = new ObjectMapper().readValue(values, new TypeReference<List<PangkatGolongan>>() {
             });
             for (PangkatGolongan o : pangkatGolongans) {
-                log.info("Pangkat Golongan data {} - {}", o.getGroup(), o.getGolongan());
+//                log.info("Pangkat Golongan data {} - {}", o.getGroup(), o.getGolongan());
                 Object[] params = new Object[]{o.getId()};
                 String query = "SELECT COUNT(1) FROM APP_PANGKAT_GOLONGAN WHERE ID = ?";
                 int foundInDB = jdbcTemplate.queryForObject(query, params, Integer.class);

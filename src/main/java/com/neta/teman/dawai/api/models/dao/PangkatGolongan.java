@@ -19,9 +19,10 @@ public class PangkatGolongan extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long group;
+    private Long pangkat;
 
-    private String jenis;
+    private String nama;
 
     private String golongan;
+
 }

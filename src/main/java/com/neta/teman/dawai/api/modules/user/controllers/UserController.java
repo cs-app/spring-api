@@ -74,4 +74,23 @@ public class UserController extends BaseRestController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName)
                 .body(stream);
     }
+
+    @GetMapping(value = "/download/cuti/{nip}")
+    public ResponseEntity<StreamingResponseBody> downloadCuti(@PathVariable String nip) {
+        ServiceResolver<User> resolver = userService.findByNip(nip);
+        if (resolver.isError()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        User user = resolver.getResult();
+        Employee employee = user.getEmployee();
+        if (Objects.isNull(employee)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        String fileName = employee.getNip() + "-" + employee.getNama() + ".pdf";
+        StreamingResponseBody stream = out -> reportService.printCuti(null, null, out);
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName)
+                .body(stream);
+    }
 }

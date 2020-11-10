@@ -16,4 +16,5 @@ public class AppConstants {
     }
 
     public static String reportTemplate = "reports" + File.separator + "template" + File.separator;
+    public static String reportExport = "reports" + File.separator + "export" + File.separator;
 }

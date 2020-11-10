@@ -1,31 +1,27 @@
 package com.neta.teman.dawai.api.models.converter;
 
 import com.neta.teman.dawai.api.applications.commons.DTFomat;
-import com.neta.teman.dawai.api.models.dao.EmployeeContact;
-import com.neta.teman.dawai.api.models.dao.EmployeeFamily;
-import com.neta.teman.dawai.api.models.dao.User;
+import com.neta.teman.dawai.api.models.dao.*;
 import com.neta.teman.dawai.api.models.reports.Profile;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class ReportConverter {
 
     public static List<Profile> profile(Map map, User user) {
         List<Profile> profiles = new ArrayList<>();
-        newProfile(profiles, "NIP", map.get("nip"));
-        newProfile(profiles, "Nama", map.get("nama"));
-        newProfile(profiles, "Status Pegawai (Aktif/Pensiun/Pindah/CTLN)", map.get("status_aktif"));
-        newProfile(profiles, "Tempat, Tanggal Lahir", map.get("tempat_lahir") + ", " + DTFomat.format((Long) map.get("tanggal_lahir")));
-        newProfile(profiles, "Alamat Tinggal", map.get("alamat"));
-        newProfile(profiles, "No. KTP", map.get("ktp"));
-        newProfile(profiles, "No. KK", map.get("kk"));
-        newProfile(profiles, "Jenis Kelamin", map.get("kelamin"));
-        newProfile(profiles, "Status Perkawinan", map.get("status_diri"));
+        Employee employee = user.getEmployee();
+        newProfile(profiles, "NIP", employee.getNip());
+        newProfile(profiles, "Nama", employee.getNama());
+        newProfile(profiles, "Status Pegawai (Aktif/Pensiun/Pindah/CTLN)", employee.getStatusAktif());
+        newProfile(profiles, "Tempat, Tanggal Lahir", map.get("tempat_lahir") + ", " + DTFomat.format(employee.getTanggalLahir()));
+        newProfile(profiles, "Alamat Tinggal", employee.getAlamat());
+        newProfile(profiles, "No. KTP", employee.getKtp());
+        newProfile(profiles, "No. KK", employee.getKk());
+        newProfile(profiles, "Jenis Kelamin", employee.getKelamin());
+        newProfile(profiles, "Status Perkawinan", employee.getStatusDiri());
         String tglPernikahan = "";
-        List<EmployeeFamily> families = new ArrayList<>();
+        List<EmployeeFamily> families = employee.getFamilies();
         for (EmployeeFamily f : families) {
             if (f.getType() == 1) {
                 tglPernikahan = DTFomat.format(f.getMob());
@@ -42,16 +38,71 @@ public class ReportConverter {
             } else email = c.getValue();
         }
         newProfile(profiles, "No. HP", noTlp);
-        newProfile(profiles, "No. Tlp", map.get("kelamin"));
+//        newProfile(profiles, "No. Tlp", map.get("kelamin"));
         newProfile(profiles, "Email", email);
+        newProfile(profiles, "Perkiraan Pensiun", employee.getPerkiraanPensiun());
         return profiles;
     }
 
     private static void newProfile(List<Profile> profiles, String key, Object val) {
-        if(Objects.isNull(val)) {
+        if (Objects.isNull(val)) {
             profiles.add(new Profile(key, ""));
             return;
         }
         profiles.add(new Profile(key, String.valueOf(val)));
+    }
+
+    public static Collection<?> family(User user) {
+        List<EmployeeFamily> employeeFamilies = user.getEmployee().getFamilies();
+        if (Objects.isNull(employeeFamilies)) return new ArrayList<>();
+        for (EmployeeFamily o : employeeFamilies) {
+            if("SAUDARAKANDUNG".equalsIgnoreCase(o.getFamilyStatus())) {
+                o.setFamilyStatus("SAUDARA KANDUNG");
+            }
+            if("IBUMERTUA".equalsIgnoreCase(o.getFamilyStatus())) {
+                o.setFamilyStatus("IBU MERTUA");
+            }
+            if("BAPAKMERTUA".equalsIgnoreCase(o.getFamilyStatus())) {
+                o.setFamilyStatus("BAPAK MERTUA");
+            }
+            if("IBUKANDUNG".equalsIgnoreCase(o.getFamilyStatus())) {
+                o.setFamilyStatus("IBU KANDUNG");
+            }
+            if("BAPAKKANDUNG".equalsIgnoreCase(o.getFamilyStatus())) {
+                o.setFamilyStatus("BAPAK KANDUNG");
+            }
+        }
+        employeeFamilies.sort(Comparator.comparing(EmployeeFamily::getType));//.thenComparingInt(EmployeeFamily::getAge));
+
+        return employeeFamilies;
+    }
+
+    public static Collection<?> container() {
+        ArrayList<Profile> detail = new ArrayList<>();
+        detail.add(new Profile("P","Q"));
+        return detail;
+
+    }
+
+    public static Collection<?> education(User user) {
+        List<EmployeeEducation> education = user.getEmployee().getEducations();
+        if(Objects.isNull(education)) return new ArrayList<>();
+        return education;
+    }
+
+    public static Collection<?> mutasi(User user) {
+        List<EmployeeMutasi> education = user.getEmployee().getMutasis();
+        if(Objects.isNull(education)) return new ArrayList<>();
+        return education;
+    }
+
+    public static Collection<?> pendukung(User user) {
+        List<Profile> profiles = new ArrayList<>();
+        Employee employee = user.getEmployee();
+        newProfile(profiles, "ID Karpeg", employee.getNoKarpeg());
+        newProfile(profiles, "NPWP", employee.getNpwp());
+        newProfile(profiles, "ID Taspen", employee.getNoTaspen());
+        newProfile(profiles, "ID Karis", employee.getNoKarisSu());
+        return profiles;
     }
 }
