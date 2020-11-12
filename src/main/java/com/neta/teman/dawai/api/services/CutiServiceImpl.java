@@ -284,4 +284,11 @@ public class CutiServiceImpl extends SimpegServiceImpl implements CutiService {
         history.setUser(user);
         cutiSummaryHistoryRepository.save(signature(history));
     }
+
+    @Override
+    public ServiceResolver<Cuti> findByCutiUserAndId(User user, Long cutiId) {
+        Cuti cuti = cutiRepository.findByUserAndId(user, cutiId);
+        if(Objects.isNull(cuti)) return error(404, "cuti not found");
+        return success(cuti);
+    }
 }

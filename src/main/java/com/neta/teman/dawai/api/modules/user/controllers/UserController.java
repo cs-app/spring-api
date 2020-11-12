@@ -2,17 +2,12 @@ package com.neta.teman.dawai.api.modules.user.controllers;
 
 import com.neta.teman.dawai.api.applications.base.BaseRestController;
 import com.neta.teman.dawai.api.applications.base.ServiceResolver;
-import com.neta.teman.dawai.api.models.dao.Document;
-import com.neta.teman.dawai.api.models.dao.Employee;
-import com.neta.teman.dawai.api.models.dao.EmployeeDocument;
-import com.neta.teman.dawai.api.models.dao.User;
+import com.neta.teman.dawai.api.applications.commons.DTFomat;
+import com.neta.teman.dawai.api.models.dao.*;
 import com.neta.teman.dawai.api.models.payload.request.LoginRequest;
 import com.neta.teman.dawai.api.models.payload.request.UploadRequest;
 import com.neta.teman.dawai.api.models.payload.response.LoginResponse;
-import com.neta.teman.dawai.api.services.DocumentService;
-import com.neta.teman.dawai.api.services.FileService;
-import com.neta.teman.dawai.api.services.ReportService;
-import com.neta.teman.dawai.api.services.UserService;
+import com.neta.teman.dawai.api.services.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +33,9 @@ public class UserController extends BaseRestController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    CutiService cutiService;
 
     @Autowired
     ReportService reportService;
@@ -116,26 +114,37 @@ public class UserController extends BaseRestController {
         StreamingResponseBody stream = out -> reportService.printCV(nip, out);
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\"" + fileName + "\"")
                 .body(stream);
     }
 
-    @GetMapping(value = "/download/cuti/{nip}")
-    public ResponseEntity<StreamingResponseBody> downloadCuti(@PathVariable String nip) {
+    @GetMapping(value = "/download/cuti/{nip}/{cutiId}")
+    public ResponseEntity<StreamingResponseBody> downloadCuti(@PathVariable String nip, @PathVariable Long cutiId) {
         ServiceResolver<User> resolver = userService.findByNip(nip);
         if (resolver.isError()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         User user = resolver.getResult();
+        if (Objects.isNull(user)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
         Employee employee = user.getEmployee();
         if (Objects.isNull(employee)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        String fileName = employee.getNip() + "-" + employee.getNama() + ".pdf";
-        StreamingResponseBody stream = out -> reportService.printCuti(null, null, out);
+        ServiceResolver<Cuti> cutiResolver = cutiService.findByCutiUserAndId(user, cutiId);
+        if (cutiResolver.isError()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        Cuti cuti = cutiResolver.getResult();
+        if (Objects.isNull(cuti)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        String fileName = employee.getNip() + "_cuti_"+ DTFomat.format(cuti.getStartDate()) +"_" + employee.getNama() + ".pdf";
+        StreamingResponseBody stream = out -> reportService.printCuti(user, cutiResolver.getResult(), out);
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\"" + fileName + "\"")
                 .body(stream);
     }
 
@@ -156,7 +165,7 @@ public class UserController extends BaseRestController {
             if (0 == doc.getId().compareTo(documentId)) {
                 found = true;
                 filePath = doc.getPath();
-                fileName = nip + "_" + doc.getDocument().getName() + FilenameUtils.getExtension(filePath).replaceAll(" ","_");
+                fileName = nip + "_" + doc.getDocument().getName() + FilenameUtils.getExtension(filePath).replaceAll(" ", "_");
                 break;
             }
         }

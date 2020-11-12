@@ -40,4 +40,5 @@ public interface CutiService {
 
     void addCutiUser(User user, Integer countCuti);
 
+    ServiceResolver<Cuti> findByCutiUserAndId(User user, Long cutiId);
 }

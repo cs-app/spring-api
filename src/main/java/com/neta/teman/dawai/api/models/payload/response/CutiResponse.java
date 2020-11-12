@@ -45,7 +45,7 @@ public class CutiResponse {
     public static class CutiUserResponse {
 
         private String nip;
-        private String name;
+        private String nama;
 
     }
 }

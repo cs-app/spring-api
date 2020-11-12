@@ -1,11 +1,12 @@
 package com.neta.teman.dawai.api.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.neta.teman.dawai.api.applications.commons.DTFomat;
 import com.neta.teman.dawai.api.applications.constants.AppConstants;
 import com.neta.teman.dawai.api.models.converter.ReportConverter;
-import com.neta.teman.dawai.api.models.dao.Cuti;
-import com.neta.teman.dawai.api.models.dao.User;
+import com.neta.teman.dawai.api.models.dao.*;
 import com.neta.teman.dawai.api.models.payload.response.LoginResponse;
+import com.neta.teman.dawai.api.models.repository.CutiSummaryRepository;
 import com.neta.teman.dawai.api.models.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jasperreports.engine.*;
@@ -40,6 +41,9 @@ public class ReportServiceImpl implements ReportService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    CutiSummaryRepository cutiSummaryRepository;
 
     @Override
     public void initTemplate() {
@@ -81,43 +85,81 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public void printCuti(User userx, Cuti cutix, OutputStream outputStream) {
+    public void printCuti(User user, Cuti cuti, OutputStream outputStream) {
         try {
-            /*
-            User user = userRepository.findByUsername(nip);
-            if (Objects.isNull(user)) return;
-            LoginResponse response = new LoginResponse(user);
-            Map<String, Object> userMapOrigin = new ObjectMapper().convertValue(response, Map.class);
-            JRBeanCollectionDataSource profileDataSource = new JRBeanCollectionDataSource(ReportConverter.profile(userMapOrigin, user));
-            // sub report datasource
-            JRBeanCollectionDataSource container = new JRBeanCollectionDataSource(ReportConverter.container());
-            JRBeanCollectionDataSource familyDataSource = new JRBeanCollectionDataSource(ReportConverter.family(user));
-            JRBeanCollectionDataSource educationDataSource = new JRBeanCollectionDataSource(ReportConverter.education(user));
-            JRBeanCollectionDataSource mutasiDataSource = new JRBeanCollectionDataSource(ReportConverter.mutasi(user));
-            JRBeanCollectionDataSource pendukungDataSource = new JRBeanCollectionDataSource(ReportConverter.pendukung(user));
-
-//            userMapOrigin.put("SUB_DIR", "C:\\Users\\demOn\\Documents\\Workspace\\Zuliadin\\teman-dawai-api\\reports\\template\\");
-            userMapOrigin.put("SUB_DIR", AppConstants.reportTemplate);
-            userMapOrigin.put("CONTAINER_DATASOURCE", container);
-            userMapOrigin.put("FAMILY_DATASOURCE", familyDataSource);
-            userMapOrigin.put("EDUCATION_DATASOURCE", educationDataSource);
-            userMapOrigin.put("MUTASI_DATASOURCE", mutasiDataSource);
-            userMapOrigin.put("PENDUKUNG_DATASOURCE", pendukungDataSource);
-             */
-            Map<String, Object> userMapOrigin = new HashMap<>();
-            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(new File(basePathReport + File.separator + "template" + File.separator + "form_cuti.jasper"));
-            JasperPrint print = JasperFillManager.fillReport(jasperReport, userMapOrigin);
-            JRPdfExporter exporter = new JRPdfExporter();
-            exporter.setExporterInput(new SimpleExporterInput(print));
-            exporter.setExporterOutput(new SimpleOutputStreamExporterOutput("reports/export/cuti.pdf"));
-            if (Desktop.isDesktopSupported()) {
-                try {
-                    File myFile = new File("reports/export/cuti.pdf");
-                    Desktop.getDesktop().open(myFile);
-                } catch (IOException ex) {
-                    // no application registered for PDFs
+            Map<String, Object> map = new HashMap<>();
+            Employee employee = user.getEmployee();
+            map.put("NIP", employee.getNip());
+            map.put("NIPL", "NIP. " + employee.getNip());
+            map.put("NAMA", employee.getNama());
+            map.put("JABATAN", employee.getJabatan());
+            String unit = "";
+            if (Objects.nonNull(employee.getUnits())) {
+                for (EmployeeUnit u : employee.getUnits()) {
+                    if (1 == u.getUnit()) {
+                        unit = u.getNamaUnitUtama();
+                        break;
+                    }
                 }
             }
+            map.put("UNIT_KERJA", unit);
+            // jenis
+            map.put("JENIS_CUTI_1", 1 == cuti.getJenisCuti() ? "✓" : "");
+            map.put("JENIS_CUTI_2", 2 == cuti.getJenisCuti() ? "✓" : "");
+            map.put("JENIS_CUTI_3", 3 == cuti.getJenisCuti() ? "✓" : "");
+            map.put("JENIS_CUTI_4", 4 == cuti.getJenisCuti() ? "✓" : "");
+            map.put("JENIS_CUTI_5", 5 == cuti.getJenisCuti() ? "✓" : "");
+            map.put("JENIS_CUTI_6", 6 == cuti.getJenisCuti() ? "✓" : "");
+            map.put("KETERANGAN", cuti.getDescription());
+
+            map.put("LAMA_CUTI", String.valueOf(cuti.getTotalDays()));
+            map.put("START", DTFomat.format(cuti.getStartDate()));
+            map.put("FINISH", DTFomat.format(cuti.getFinishDate()));
+
+            CutiSummary cutiSummary = cutiSummaryRepository.findByUser(user);
+
+            map.put("N", String.valueOf(cutiSummary.getKuotaCuti()));
+            map.put("N-1", String.valueOf(cutiSummary.getKuotaPastCuti()));
+
+            map.put("ALAMAT", cuti.getCutiAddress());
+            map.put("TELP", cuti.getTlpAddress());
+            if (Objects.nonNull(cuti.getAtasan())) {
+                map.put("ATASAN_NIP", "NIP. " + cuti.getAtasan().getEmployee().getNip());
+                map.put("ATASAN_NAMA", "NIP. " + cuti.getAtasan().getEmployee().getNama());
+            } else {
+                map.put("ATASAN_NIP", "NIP. ");
+                map.put("ATASAN_NAMA", "");
+            }
+
+            if (Objects.nonNull(cuti.getPejabat())) {
+                map.put("PEJABAT_NIP", cuti.getAtasan().getEmployee().getNip());
+                map.put("PEJABAT_NAMA", cuti.getAtasan().getEmployee().getNama());
+            } else {
+                map.put("PEJABAT_NIP", "NIP. ");
+                map.put("PEJABAT_NAMA", "");
+            }
+            //
+            StringBuilder sb = new StringBuilder();
+            for (Map.Entry<String, ?> entry : map.entrySet()) {
+                sb.append("<parameter name=\"" + entry.getKey() + "\" class=\"java.lang.String\"/>");
+            }
+//            log.info("\n{}", sb.toString());
+//            String url = "C:\\Users\\demOn\\JaspersoftWorkspace\\Teman Dawai\\report\\";
+//            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(new File(url + "form_cuti.jasper"));
+            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(new File(basePathReport + File.separator + "template" + File.separator + "form_cuti.jasper"));
+            JasperPrint print = JasperFillManager.fillReport(jasperReport, map);
+            JRPdfExporter exporter = new JRPdfExporter();
+            exporter.setExporterInput(new SimpleExporterInput(print));
+
+//            exporter.setExporterOutput(new SimpleOutputStreamExporterOutput("reports/export/cuti.pdf"));
+//            if (Desktop.isDesktopSupported()) {
+//                try {
+//                    File myFile = new File("reports/export/cuti.pdf");
+//                    Desktop.getDesktop().open(myFile);
+//                } catch (IOException ex) {
+//                    // no application registered for PDFs
+//                }
+//            }
 
             SimplePdfReportConfiguration reportConfig = new SimplePdfReportConfiguration();
             reportConfig.setSizePageToContent(true);

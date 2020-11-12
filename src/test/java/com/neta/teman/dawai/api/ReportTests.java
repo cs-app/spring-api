@@ -2,7 +2,11 @@ package com.neta.teman.dawai.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.neta.teman.dawai.api.applications.constants.AppConstants;
+import com.neta.teman.dawai.api.models.dao.Cuti;
+import com.neta.teman.dawai.api.models.dao.User;
+import com.neta.teman.dawai.api.models.repository.CutiRepository;
 import com.neta.teman.dawai.api.services.ReportService;
+import com.neta.teman.dawai.api.services.UserService;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperReport;
@@ -21,6 +25,7 @@ import org.springframework.test.context.TestPropertySource;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -33,7 +38,13 @@ class ReportTests {
     ResourceLoader resourceLoader;
 
     @Autowired
+    UserService userService;
+
+    @Autowired
     ReportService reportService;
+
+    @Autowired
+    CutiRepository cutiRepository;
 
     @BeforeAll
     void generatedTable(){
@@ -47,7 +58,9 @@ class ReportTests {
 
     @Test
     void printCUti() throws JsonProcessingException {
-        reportService.printCuti(null, null, null);
+        User user = userService.findByNip("196406241987032001").getResult();
+        List<Cuti> cuti = cutiRepository.findAllByUser(user);
+        reportService.printCuti(user, cuti.get(0), null);
     }
 
 
