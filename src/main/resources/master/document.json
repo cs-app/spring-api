@@ -1,0 +1,22 @@
+[
+  {
+    "value": 1,
+    "label": "KTP"
+  },
+  {
+    "value": 2,
+    "label": "KK"
+  },
+  {
+    "value": 3,
+    "label": "NPWP"
+  },
+  {
+    "value": 4,
+    "label": "SK CPNS"
+  },
+  {
+    "value": 5,
+    "label": "SK PNS"
+  }
+]

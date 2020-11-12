@@ -59,7 +59,7 @@ public class RoleServiceImpl extends SimpegServiceImpl {
                 BeanUtils.copyProperties(role, roleDB, "id");
                 roleRepository.save(signature(roleDB));
             }
-            log.info("\n{}", values);
+//            log.info("\n{}", values);
         } catch (JsonProcessingException e) {
             log.error("error read json role", e);
         }
@@ -87,7 +87,7 @@ public class RoleServiceImpl extends SimpegServiceImpl {
                 BeanUtils.copyProperties(o, golongan, "id");
                 pangkatGolonganRepository.save(signature(golongan));
             }
-            log.info("\n{}", values);
+//            log.info("\n{}", values);
         } catch (JsonProcessingException e) {
             log.error("error read json role", e);
         }

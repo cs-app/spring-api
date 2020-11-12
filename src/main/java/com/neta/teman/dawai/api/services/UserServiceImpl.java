@@ -2,19 +2,18 @@ package com.neta.teman.dawai.api.services;
 
 import com.neta.teman.dawai.api.applications.base.ServiceResolver;
 import com.neta.teman.dawai.api.models.converter.SimpegConverter;
-import com.neta.teman.dawai.api.models.dao.Employee;
-import com.neta.teman.dawai.api.models.dao.Role;
-import com.neta.teman.dawai.api.models.dao.User;
+import com.neta.teman.dawai.api.models.dao.*;
 import com.neta.teman.dawai.api.models.repository.RoleRepository;
 import com.neta.teman.dawai.api.models.repository.UserRepository;
 import com.neta.teman.dawai.api.models.spech.UserSpecs;
 import com.neta.teman.dawai.api.plugins.simpeg.models.SimpegAuth;
 import com.neta.teman.dawai.api.plugins.simpeg.models.SimpegEmployeeRiwayat;
 import com.neta.teman.dawai.api.plugins.simpeg.models.SimpegResponse;
-import com.neta.teman.dawai.api.plugins.simpeg.services.SimpegServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -31,6 +30,9 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
 
     @Autowired
     CutiService cutiService;
+
+    @Autowired
+    FileService fileService;
 
     @Override
     public ServiceResolver<User> findByNip(String nip) {
@@ -75,6 +77,47 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
             buildEmployee(userExist.getEmployee(), data, username);
             return success(userRepository.save(signature(userExist)));
         }
+    }
+
+    @Override
+    public ServiceResolver<List<EmployeeDocument>> findByDocument(String nip) {
+        User userExist = userRepository.findOne(UserSpecs.nip(nip)).orElse(null);
+        if (Objects.isNull(userExist)) return error(404, "User not found");
+        if (Objects.isNull(userExist.getEmployee())) return error(404, "User not found");
+        return success(userExist.getEmployee().getDocuments());
+    }
+
+    @Override
+    public ServiceResolver<List<EmployeeDocument>> documentUpload(String nip, Long type, String fileName, Document document) {
+        User userExist = userRepository.findOne(UserSpecs.nip(nip)).orElse(null);
+        if (Objects.isNull(userExist)) return error(404, "User not found");
+        if (Objects.isNull(userExist.getEmployee())) return error(404, "User not found");
+        Employee employee = userExist.getEmployee();
+        if (Objects.isNull(employee.getDocuments())) employee.setDocuments(new ArrayList<>());
+        EmployeeDocument employeeDocument = new EmployeeDocument();
+        employeeDocument.setDocument(document);
+        employeeDocument.setPath(fileName);
+        employee.getDocuments().add(employeeDocument);
+        userRepository.save(userExist);
+        return success(employee.getDocuments());
+    }
+
+    @Override
+    public ServiceResolver<List<EmployeeDocument>> documentRemove(String nip, Long documentId) {
+        User userExist = userRepository.findOne(UserSpecs.nip(nip)).orElse(null);
+        if (Objects.isNull(userExist)) return error(404, "User not found");
+        if (Objects.isNull(userExist.getEmployee())) return error(404, "User not found");
+        Employee employee = userExist.getEmployee();
+        if (Objects.isNull(employee.getDocuments())) employee.setDocuments(new ArrayList<>());
+        for (EmployeeDocument document : employee.getDocuments()) {
+            if (0 == document.getId().compareTo(documentId)) {
+                employee.getDocuments().remove(document);
+                fileService.deleteFile(nip, document.getPath());
+                break;
+            }
+        }
+        userRepository.save(userExist);
+        return success(employee.getDocuments());
     }
 
     private void buildEmployee(Employee employee, SimpegAuth simpegAuth, String username) {

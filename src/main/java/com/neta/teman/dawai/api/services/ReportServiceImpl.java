@@ -18,6 +18,7 @@ import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 import net.sf.jasperreports.export.SimplePdfReportConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,9 @@ import java.util.Objects;
 @Service
 public class ReportServiceImpl implements ReportService {
 
+    @Value("${application-report-dir}")
+    String basePathReport;
+
     @Autowired
     ResourceLoader resourceLoader;
 
@@ -39,42 +43,40 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public void initTemplate() {
-        File folders = new File(AppConstants.reportTemplate);
-        if (!folders.exists()) {
-            if (folders.mkdirs()) {
-                log.info("report generate folder template");
-            } else {
-                log.info("report generate folder template already exist");
-            }
-        }
-        File foldersExport = new File(AppConstants.reportExport);
-        if (!foldersExport.exists()) {
-            if (foldersExport.mkdirs()) {
-                log.info("report generate folder export");
-            } else {
-                log.info("report generate folder export already exist");
-            }
-        }
-        String[] fileName = {
-                "form_cuti",
-                "pegawai_cv",
-                "pegawai_cv_container",
-                "pegawai_cv_keluarga",
-                "pegawai_cv_mutasi",
-                "pegawai_cv_pendukung",
-                "pegawai_cv_pendidikan"
-        };
-//        String baseProject = "C:\\Users\\demOn\\JaspersoftWorkspace\\Teman Dawai\\report\\";
-        for (String s : fileName) {
-            try {
-                InputStream employeeReportStream = resourceLoader.getResource("classpath:reports/" + s + ".jrxml").getInputStream();
-//                InputStream employeeReportStream = new FileInputStream(new File(baseProject + s + ".jrxml")); // test only
-                JasperReport jasperReport = JasperCompileManager.compileReport(employeeReportStream);
-                JRSaver.saveObject(jasperReport, AppConstants.reportTemplate + s + ".jasper");
-            } catch (JRException | IOException e) {
-                e.printStackTrace();
-            }
-        }
+//        File folders = new File(AppConstants.reportTemplate);
+//        if (!folders.exists()) {
+//            if (folders.mkdirs()) {
+//                log.info("report generate folder template");
+//            } else {
+//                log.info("report generate folder template already exist");
+//            }
+//        }
+//        File foldersExport = new File(AppConstants.reportExport);
+//        if (!foldersExport.exists()) {
+//            if (foldersExport.mkdirs()) {
+//                log.info("report generate folder export");
+//            } else {
+//                log.info("report generate folder export already exist");
+//            }
+//        }
+//        String[] fileName = {
+//                "form_cuti",
+//                "pegawai_cv_container",
+//                "pegawai_cv_keluarga",
+//                "pegawai_cv_mutasi",
+//                "pegawai_cv_pendukung",
+//                "pegawai_cv_pendidikan",
+//                "pegawai_cv"
+//        };
+//        for (String s : fileName) {
+//            try {
+//                InputStream employeeReportStream = resourceLoader.getResource("classpath:reports/" + s + ".jrxml").getInputStream();
+//                JasperReport jasperReport = JasperCompileManager.compileReport(employeeReportStream);
+//                JRSaver.saveObject(jasperReport, basePathReport + File.separator + "template" + File.separator + s + ".jasper");
+//            } catch (JRException | IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
 
     }
 
@@ -103,7 +105,7 @@ public class ReportServiceImpl implements ReportService {
             userMapOrigin.put("PENDUKUNG_DATASOURCE", pendukungDataSource);
              */
             Map<String, Object> userMapOrigin = new HashMap<>();
-            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(new File(AppConstants.reportTemplate + "form_cuti.jasper"));
+            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(new File(basePathReport + File.separator + "template" + File.separator + "form_cuti.jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasperReport, userMapOrigin);
             JRPdfExporter exporter = new JRPdfExporter();
             exporter.setExporterInput(new SimpleExporterInput(print));
@@ -153,26 +155,26 @@ public class ReportServiceImpl implements ReportService {
             JRBeanCollectionDataSource pendukungDataSource = new JRBeanCollectionDataSource(ReportConverter.pendukung(user));
 
 //            userMapOrigin.put("SUB_DIR", "C:\\Users\\demOn\\Documents\\Workspace\\Zuliadin\\teman-dawai-api\\reports\\template\\");
-            userMapOrigin.put("SUB_DIR", AppConstants.reportTemplate);
+            userMapOrigin.put("SUB_DIR", basePathReport + File.separator + "template" + File.separator);
             userMapOrigin.put("CONTAINER_DATASOURCE", container);
             userMapOrigin.put("FAMILY_DATASOURCE", familyDataSource);
             userMapOrigin.put("EDUCATION_DATASOURCE", educationDataSource);
             userMapOrigin.put("MUTASI_DATASOURCE", mutasiDataSource);
             userMapOrigin.put("PENDUKUNG_DATASOURCE", pendukungDataSource);
 
-            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(new File(AppConstants.reportTemplate + "pegawai_cv.jasper"));
+            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(new File(basePathReport + File.separator + "template" + File.separator + "pegawai_cv.jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasperReport, userMapOrigin, profileDataSource);
             JRPdfExporter exporter = new JRPdfExporter();
             exporter.setExporterInput(new SimpleExporterInput(print));
-            exporter.setExporterOutput(new SimpleOutputStreamExporterOutput("reports/export/cv.pdf"));
-            if (Desktop.isDesktopSupported()) {
-                try {
-                    File myFile = new File("reports/export/cv.pdf");
-                    Desktop.getDesktop().open(myFile);
-                } catch (IOException ex) {
-                    // no application registered for PDFs
-                }
-            }
+//            exporter.setExporterOutput(new SimpleOutputStreamExporterOutput("reports/export/cv.pdf"));
+//            if (Desktop.isDesktopSupported()) {
+//                try {
+//                    File myFile = new File("reports/export/cv.pdf");
+//                    Desktop.getDesktop().open(myFile);
+//                } catch (IOException ex) {
+//                    // no application registered for PDFs
+//                }
+//            }
 
             SimplePdfReportConfiguration reportConfig = new SimplePdfReportConfiguration();
             reportConfig.setSizePageToContent(true);

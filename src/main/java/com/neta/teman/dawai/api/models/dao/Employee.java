@@ -168,4 +168,8 @@ public class Employee extends BaseEntity {
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private List<EmployeeUnit> units;
 
+    @NotFound(action = NotFoundAction.IGNORE)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    private List<EmployeeDocument> documents;
+
 }

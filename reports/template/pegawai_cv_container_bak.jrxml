@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pegawai_cv_keluarga" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="20" bottomMargin="20" uuid="7cd6ae74-8787-4bd0-86d4-3cc2c0c82b6d">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="NO_DATA_ADAPTER"/>
+	<parameter name="SUB_DIR" class="java.lang.String"/>
+	<parameter name="FAMILY_DATASOURCE" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<parameter name="EDUCATION_DATASOURCE" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="familyStatus" class="java.lang.String">
+		<fieldDescription><![CDATA[familyStatus]]></fieldDescription>
+	</field>
+	<field name="name" class="java.lang.String">
+		<fieldDescription><![CDATA[name]]></fieldDescription>
+	</field>
+	<field name="pob" class="java.lang.String">
+		<fieldDescription><![CDATA[pob]]></fieldDescription>
+	</field>
+	<field name="dob" class="java.util.Date">
+		<fieldDescription><![CDATA[dob]]></fieldDescription>
+	</field>
+	<field name="occupation" class="java.lang.String">
+		<fieldDescription><![CDATA[occupation]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="77" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="595" height="77" uuid="75943835-e3e5-47c6-aa15-8fc0378868c1"/>
+				<dataSourceExpression><![CDATA[$P{FAMILY_DATASOURCE}]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUB_DIR} + "pegawai_cv_keluarga.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="50">
+			<subreport>
+				<reportElement x="0" y="0" width="595" height="50" uuid="75943835-e3e5-47c6-aa15-8fc0378868c1"/>
+				<dataSourceExpression><![CDATA[$P{EDUCATION_DATASOURCE}]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUB_DIR} + "pegawai_cv_pendidikan.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="50"/>
+		<band height="50"/>
+	</detail>
+	<summary>
+		<band height="50"/>
+	</summary>
+</jasperReport>

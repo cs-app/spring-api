@@ -71,6 +71,7 @@ public class SimpegConverter {
             golongan = new EmployeeGolongan();
             employee.setGolonganDetail(golongan);
         }
+        BeanUtils.copyProperties(golonganPangkat, employee, "id");
         BeanUtils.copyProperties(golonganPangkat.getGolData(), golongan, "id");
         EmployeePangkat pangkat = employee.getPangkatDetail();
         if (Objects.isNull(pangkat)) {
@@ -78,8 +79,6 @@ public class SimpegConverter {
             employee.setPangkatDetail(pangkat);
         }
         BeanUtils.copyProperties(golonganPangkat.getPangkatData(), pangkat, "id");
-        // BeanUtils.copyProperties(golonganPangkat.getGolData(), employee);
-
     }
 
     private static void mergeJabatanEselon(Employee employee, SimpegAuth source) {

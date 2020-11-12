@@ -11,9 +11,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
@@ -154,6 +152,8 @@ public class LoginResponse {
 
     List<EmployeeUnit> units;
 
+    List<EmployeeDocument> documents;
+
     public LoginResponse(User user) {
         Role role = user.getRole();
         Employee employee = user.getEmployee();
@@ -169,6 +169,7 @@ public class LoginResponse {
         this.mutasis = BeanCopy.copyCollection(employee.getMutasis(), EmployeeMutasi.class);
         this.pangkats = BeanCopy.copyCollection(employee.getPangkats(), EmployeePangkatHis.class);
         this.units = BeanCopy.copyCollection(employee.getUnits(), EmployeeUnit.class);
+        this.documents = BeanCopy.copyCollection(employee.getDocuments(), EmployeeDocument.class);
 
         this.role = role.getName();
         this.nip = employee.getNip();
@@ -263,6 +264,7 @@ public class LoginResponse {
         String ukGroupId;
         String namaUnitKerja2;
     }
+
 
 
 

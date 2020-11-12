@@ -30,6 +30,8 @@ dependencies {
     implementation 'com.lmax:disruptor:3.4.2'
     implementation 'org.projectreactor:reactor-spring:1.0.1.RELEASE'
     implementation 'org.apache.commons:commons-collections4:4.4'
+    implementation 'org.apache.commons:commons-lang3:3.11'
+    implementation 'commons-io:commons-io:2.8.0'
     implementation 'commons-codec:commons-codec:1.13'
     implementation 'commons-digester:commons-digester:2.1'
     implementation 'joda-time:joda-time:2.10.8'

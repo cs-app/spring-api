@@ -1,6 +1,7 @@
 package com.neta.teman.dawai.api;
 
 import com.neta.teman.dawai.api.services.CutiService;
+import com.neta.teman.dawai.api.services.DocumentService;
 import com.neta.teman.dawai.api.services.ReportService;
 import com.neta.teman.dawai.api.services.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,9 @@ public class TemanDawaiApiApplication implements ApplicationRunner {
     @Autowired
     ReportService reportService;
 
+    @Autowired
+    DocumentService documentService;
+
     public static void main(String[] args) {
         SpringApplication.run(TemanDawaiApiApplication.class, args);
     }
@@ -30,6 +34,7 @@ public class TemanDawaiApiApplication implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
         reportService.initTemplate();
+        documentService.initDocument();
         userService.initializeRole();
         userService.initializePangkatGolongan();
         cutiService.initCutiPegawai();

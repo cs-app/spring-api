@@ -39,5 +39,7 @@ out/
 
 ### App ###
 logs/
-reports/
-report/
+# reports/
+# report/
+uploads/
+upload/
