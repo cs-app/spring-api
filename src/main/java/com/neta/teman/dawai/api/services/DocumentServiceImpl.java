@@ -7,11 +7,17 @@ import com.neta.teman.dawai.api.applications.base.BaseService;
 import com.neta.teman.dawai.api.applications.base.ServiceResolver;
 import com.neta.teman.dawai.api.applications.commons.ResourceUtils;
 import com.neta.teman.dawai.api.models.dao.Document;
+import com.neta.teman.dawai.api.models.dao.EmployeeDocument;
+import com.neta.teman.dawai.api.models.payload.request.FilterRequest;
 import com.neta.teman.dawai.api.models.repository.DocumentRepository;
+import com.neta.teman.dawai.api.models.repository.EmployeeDocumentRepository;
+import com.neta.teman.dawai.api.models.spech.DocumentSpecs;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +37,11 @@ public class DocumentServiceImpl extends BaseService implements DocumentService 
 
     @Autowired
     DocumentRepository documentRepository;
+
+    @Autowired
+    EmployeeDocumentRepository employeeDocumentRepository;
+
+    @Autowired
 
     @Override
     public void initDocument() {
@@ -55,7 +66,7 @@ public class DocumentServiceImpl extends BaseService implements DocumentService 
                 BeanUtils.copyProperties(document, documentUpdate, "id");
                 documentRepository.save(signature(documentUpdate));
             }
-            log.info("\n{}", values);
+//            log.info("\n{}", values);
         } catch (JsonProcessingException e) {
             log.error("error read json role", e);
         }
@@ -71,4 +82,32 @@ public class DocumentServiceImpl extends BaseService implements DocumentService 
     public ServiceResolver<List<Document>> loadAll() {
         return success(documentRepository.findAll());
     }
+
+    @Override
+    public ServiceResolver<Page<Document>> loadPage(FilterRequest request) {
+        Page<Document> page = documentRepository.findAll(DocumentSpecs.name(request.getFilter()), request.pageRequest());
+        return success(page);
+    }
+
+    @Override
+    public ServiceResolver<Document> merge(Document copy) {
+        Document document = documentRepository.findByName(copy.getName().toUpperCase());
+        if (isNull(document)) {
+            copy.setName(copy.getName().trim().toUpperCase());
+            return success(documentRepository.save(copy));
+        } else return error(401, "already exist");
+    }
+
+    @Override
+    public ServiceResolver remove(Document copy) {
+        Document document = documentRepository.findById(copy.getId()).orElse(null);
+        if (isNull(document)) return success("already deleted");
+        Page<EmployeeDocument> employeeDocuments = employeeDocumentRepository.findAllByDocument(document, PageRequest.of(0, 1));
+        if (employeeDocuments.isEmpty()) {
+            documentRepository.deleteById(copy.getId());
+            return success();
+        } else return error(401, "cannot delete reference data");
+
+    }
+
 }

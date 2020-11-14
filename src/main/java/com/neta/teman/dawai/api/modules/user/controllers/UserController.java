@@ -27,7 +27,7 @@ import java.util.Objects;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/user")
 @SuppressWarnings({"unchecked"})
 public class UserController extends BaseRestController {
 

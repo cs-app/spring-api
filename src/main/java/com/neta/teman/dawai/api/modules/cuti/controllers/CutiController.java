@@ -22,15 +22,15 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/cuti")
 @SuppressWarnings({"unchecked", "rawtypes", "unused"})
 public class CutiController extends BaseRestController {
 
     @Autowired
     CutiService cutiService;
 
-    @PostMapping(value = "/cuti")
-    public ResponseEntity<Boolean> cuti(@RequestBody CutiRequest request) {
+    @PostMapping(value = "/request")
+    public ResponseEntity<Boolean> request(@RequestBody CutiRequest request) {
         if (isNull(request.getJenisCuti(), request.getNip(), request.getStartDate(), request.getFinishDate(), request.getDescription(),
                 request.getTlpAddress(), request.getCutiAddress())) {
             return responseError(401, ERROR_MANDATORY_FIELD);
@@ -39,7 +39,7 @@ public class CutiController extends BaseRestController {
         return response(resolver);
     }
 
-    @PostMapping(value = "/cuti/day")
+    @PostMapping(value = "/day")
     public ResponseEntity<Integer> cutiDays(@RequestBody CutiRequest request) {
         if (isNull(request.getStartDate(), request.getFinishDate())) {
             return response(0);
@@ -48,7 +48,7 @@ public class CutiController extends BaseRestController {
         return response(resolver);
     }
 
-    @PostMapping(value = "/cuti/cancel")
+    @PostMapping(value = "/cancel")
     public ResponseEntity<User> cutiCancel(@RequestBody CutiRequest request) {
         if (isNull(request.getId())) {
             return responseError(401, ERROR_MANDATORY_FIELD);
@@ -57,7 +57,7 @@ public class CutiController extends BaseRestController {
         return response(resolver);
     }
 
-    @PostMapping(value = "/cuti/approve/atasan")
+    @PostMapping(value = "/approve/atasan")
     public ResponseEntity<User> cutiApproveAtasan(@RequestBody CutiRequest request) {
         if (isNull(request.getId())) {
             return responseError(401, ERROR_MANDATORY_FIELD);
@@ -66,7 +66,7 @@ public class CutiController extends BaseRestController {
         return response(resolver);
     }
 
-    @PostMapping(value = "/cuti/approve/pejabat")
+    @PostMapping(value = "/approve/pejabat")
     public ResponseEntity<User> cutiApprovePejabat(@RequestBody CutiRequest request) {
         if (isNull(request.getId())) {
             return responseError(401, ERROR_MANDATORY_FIELD);
@@ -75,7 +75,7 @@ public class CutiController extends BaseRestController {
         return response(resolver);
     }
 
-    @PostMapping(value = "/cuti/user")
+    @PostMapping(value = "/user")
     public ResponseEntity<List<CutiResponse>> cutiUser(@RequestBody CutiRequest request) {
         if (isNull(request.getNip())) {
             return responseError(401, ERROR_MANDATORY_FIELD);
@@ -84,7 +84,7 @@ public class CutiController extends BaseRestController {
         return response(resolver, CutiConverter.class);
     }
 
-    @PostMapping(value = "/cuti/holiday/create")
+    @PostMapping(value = "/holiday/create")
     public ResponseEntity<Response> addHolidayDate(@RequestBody HolidayRequest request) {
         if (isNull(request.getDate(), request.getDescription())) {
             return responseError(401, ERROR_MANDATORY_FIELD);
@@ -93,7 +93,7 @@ public class CutiController extends BaseRestController {
         return response(resolver);
     }
 
-    @PostMapping(value = "/cuti/holiday/remove")
+    @PostMapping(value = "/holiday/remove")
     public ResponseEntity<Response> removeHolidayDate(@RequestBody HolidayRequest request) {
         if (isNull(request.getId())) {
             return responseError(401, ERROR_MANDATORY_FIELD);
@@ -102,13 +102,13 @@ public class CutiController extends BaseRestController {
         return response(resolver);
     }
 
-    @GetMapping(value = "/cuti/holiday/list")
+    @GetMapping(value = "/holiday/list")
     public ResponseEntity<List<HolidayResponse>> existHolidayDate() {
         ServiceResolver<List<Holiday>> resolver = cutiService.existHolidayDate();
         return response(resolver, HolidayConverter.class);
     }
 
-    @GetMapping(value = "/cuti/holiday/future")
+    @GetMapping(value = "/holiday/future")
     public ResponseEntity<List<HolidayResponse>> existHolidayDateFuture() {
         ServiceResolver<List<Holiday>> resolver = cutiService.existHolidayDateFuture();
         return response(resolver, HolidayConverter.class);

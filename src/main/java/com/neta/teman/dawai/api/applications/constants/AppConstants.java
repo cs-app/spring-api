@@ -15,6 +15,11 @@ public class AppConstants {
         public static final int CREATED = 3;
     }
 
+    public class Page {
+        public static final int SHOW_IN_PAGE = 20;
+    }
+
     public static String reportTemplate = "reports" + File.separator + "template" + File.separator;
     public static String reportExport = "reports" + File.separator + "export" + File.separator;
+
 }
