@@ -1,5 +1,7 @@
 package com.neta.teman.dawai.api.applications.base;
 
+import com.fasterxml.jackson.databind.SerializationFeature;
+
 public class Response<T> {
 
     private int code;

@@ -5,6 +5,7 @@ import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @SuppressWarnings({"unchecked"})
@@ -33,6 +34,7 @@ public class BeanCopy {
 
     // collection
     public static <E, T> List<T> copyCollection(List<E> sources, List<T> destination, Class<T> tClass) {
+        if(Objects.isNull(sources)) return new ArrayList<>();
         for (Object source : sources) {
             T o = BeanUtils.instantiateClass(tClass);
             BeanUtils.copyProperties(source, o);

@@ -1,5 +1,6 @@
 package com.neta.teman.dawai.api.models.dao;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -14,6 +15,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "app_document")
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+@JsonIgnoreProperties({"check"})
 public class Document extends BaseEntity {
 
     @Id

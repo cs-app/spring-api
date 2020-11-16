@@ -159,7 +159,7 @@ public class Employee extends BaseEntity {
     @NotFound(action = NotFoundAction.IGNORE)
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private List<EmployeeMutasi> mutasis;
-//
+
     @NotFound(action = NotFoundAction.IGNORE)
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private List<EmployeePangkatHis> pangkats;

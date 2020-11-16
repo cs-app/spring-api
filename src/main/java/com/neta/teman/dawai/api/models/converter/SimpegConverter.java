@@ -1,19 +1,26 @@
 package com.neta.teman.dawai.api.models.converter;
 
 import com.neta.teman.dawai.api.applications.commons.BeanCopy;
+import com.neta.teman.dawai.api.applications.commons.DTFomat;
 import com.neta.teman.dawai.api.applications.commons.ValueValidation;
 import com.neta.teman.dawai.api.applications.constants.AppConstants;
 import com.neta.teman.dawai.api.models.dao.*;
+import com.neta.teman.dawai.api.models.repository.PangkatGolonganRepository;
 import com.neta.teman.dawai.api.plugins.simpeg.models.*;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
+@Component
 public class SimpegConverter {
 
-    public static void merge(Employee employee, SimpegAuth source) {
+    @Autowired
+    PangkatGolonganRepository pangkatGolonganRepository;
+
+    public void merge(Employee employee, SimpegAuth source) {
         SimpegAuth.Personal personal = source.getPersonal();
         BeanCopy.copy(employee, personal);
         BeanCopy.copy(employee, source.getEmployee());
@@ -28,16 +35,10 @@ public class SimpegConverter {
         mergeUnitKerja(employee, source);
     }
 
-    private static void mergeUnitKerja(Employee employee, SimpegAuth source) {
+    private void mergeUnitKerja(Employee employee, SimpegAuth source) {
         SimpegAuth.EmployeeUnitKerja unitKerja = source.getUnitKerja();
         if (Objects.isNull(unitKerja)) return;
-        List<EmployeeUnit> units = employee.getUnits();
-        if (Objects.isNull(units)) {
-            units = new ArrayList<>();
-            employee.setUnits(units);
-        } else {
-            units.clear();
-        }
+        List<EmployeeUnit> units = new ArrayList<>();
         // unit 1
         if (Objects.nonNull(unitKerja.getUnitUtama())) {
             EmployeeUnit unit = BeanCopy.copy(unitKerja.getUnitUtama(), EmployeeUnit.class);
@@ -62,9 +63,22 @@ public class SimpegConverter {
             unit.setUnit(4);
             units.add(unit);
         }
+
+        List<EmployeeUnit> newUnits = units.stream().filter(o -> {
+            if (Objects.isNull(employee.getUnits())) return true;
+            for (EmployeeUnit u : employee.getUnits()) {
+                if (u.getUnit().equals(o.getUnit())) {
+                    return false;
+                }
+            }
+            return true;
+        }).collect(Collectors.toList());
+        if (Objects.isNull(employee.getUnits())) {
+            employee.setUnits(newUnits);
+        } else employee.getUnits().addAll(newUnits);
     }
 
-    private static void mergeJabatanGolonganPangkat(Employee employee, SimpegAuth source) {
+    private void mergeJabatanGolonganPangkat(Employee employee, SimpegAuth source) {
         SimpegAuth.Employee.EmployeeGolonganPangkat golonganPangkat = source.getEmployee().getGolonganPangkat();
         EmployeeGolongan golongan = employee.getGolonganDetail();
         if (Objects.isNull(golongan)) {
@@ -81,7 +95,7 @@ public class SimpegConverter {
         BeanUtils.copyProperties(golonganPangkat.getPangkatData(), pangkat, "id");
     }
 
-    private static void mergeJabatanEselon(Employee employee, SimpegAuth source) {
+    private void mergeJabatanEselon(Employee employee, SimpegAuth source) {
         SimpegAuth.Employee.EmployeeJabatanEselon jabatanEselon = source.getEmployee().getJabatanEselon();
         EmployeeJabatan jabatan = employee.getJabatanDetail();
         if (Objects.isNull(jabatan)) {
@@ -113,10 +127,10 @@ public class SimpegConverter {
      * 4 = mertua = bapakmertua, ibumertua
      * 5 = saudara = saudarakandung
      */
-    private static void mergeFamily(Employee employee, SimpegAuth.Keluarga keluarga) {
-        List<EmployeeFamily> families = employee.getFamilies();
-        if (Objects.isNull(families)) families = new ArrayList<>();
-        families.clear();
+    private void mergeFamily(Employee employee, SimpegAuth.Keluarga keluarga) {
+        List<EmployeeFamily> families = new ArrayList<>();
+        // if (Objects.isNull(families)) families = new ArrayList<>();
+        // families.clear();
         // pasangan
         for (SimpegAuth.Keluarga.KeluargaDetail o : keluarga.getPasangan()) {
             String hubungan = o.getHubungan().replaceAll("\\d", "");
@@ -162,10 +176,26 @@ public class SimpegConverter {
             copyFamily(family, o);
             families.add(family);
         }
-        employee.setFamilies(families);
+        List<EmployeeFamily> newFamilies = families.stream().filter(o -> {
+            if (Objects.isNull(employee.getFamilies())) return true;
+            for (EmployeeFamily f : employee.getFamilies()) {
+                if (f.getType().equals(o.getType()) &&
+                        f.getFamilyStatus().equalsIgnoreCase(o.getFamilyStatus()) &&
+                        f.getName().equalsIgnoreCase(o.getName()) &&
+                        DTFomat.format(f.getDob()).equalsIgnoreCase(DTFomat.format(o.getDob())) &&
+                        f.getPob().equalsIgnoreCase(o.getPob())
+                ) {
+                    return false;
+                }
+            }
+            return true;
+        }).collect(Collectors.toList());
+        if (Objects.isNull(employee.getFamilies())) {
+            employee.setFamilies(newFamilies);
+        } else employee.getFamilies().addAll(newFamilies);
     }
 
-    private static void copyFamily(EmployeeFamily family, SimpegAuth.Keluarga.KeluargaDetail o) {
+    private void copyFamily(EmployeeFamily family, SimpegAuth.Keluarga.KeluargaDetail o) {
         family.setName(o.getNama());
         family.setOccupation(o.getPekerjaan());
         family.setDob(o.getTanggalLahir());
@@ -173,10 +203,8 @@ public class SimpegConverter {
         family.setMob(o.getTanggalNikah());
     }
 
-    private static void mergeContact(Employee employee, SimpegAuth.Personal.PersonalLainya source) {
-        List<EmployeeContact> contacts = employee.getContacts();
-        if (Objects.isNull(contacts)) contacts = new ArrayList<>();
-        contacts.clear();
+    private void mergeContact(Employee employee, SimpegAuth.Personal.PersonalLainya source) {
+        List<EmployeeContact> contacts = new ArrayList<>();
         if (!ValueValidation.isNull(source.getHpNumber())) {
             EmployeeContact phone = new EmployeeContact();
             phone.setType(AppConstants.Contact.PHONE);
@@ -189,20 +217,41 @@ public class SimpegConverter {
             email.setValue(source.getEmailAddress());
             contacts.add(email);
         }
-        employee.setContacts(contacts);
+        List<EmployeeContact> newUnits = contacts.stream().filter(o -> {
+            if (Objects.isNull(employee.getContacts())) return true;
+            for (EmployeeContact c : employee.getContacts()) {
+                if (Objects.isNull(o.getValue())) continue;
+                if (c.getType() == o.getType() && c.getValue().equalsIgnoreCase(o.getValue())) {
+                    return false;
+                }
+            }
+            return true;
+        }).collect(Collectors.toList());
+        if (Objects.isNull(employee.getUnits())) {
+            employee.setContacts(contacts);
+        } else employee.getContacts().addAll(newUnits);
+
     }
 
-    public static void mergeRiwayat(Employee employee, SimpegEmployeeRiwayat source) {
+    public void mergeRiwayat(Employee employee, SimpegEmployeeRiwayat source) {
         initializeEducation(source, employee);
         initializeMutasi(source, employee);
         initializePangkat(source, employee);
     }
 
-    private static void initializeEducation(SimpegEmployeeRiwayat source, Employee employee) {
+    private void initializeEducation(SimpegEmployeeRiwayat source, Employee employee) {
         List<EmployeeEducation> educations = employee.getEducations();
         if (Objects.isNull(educations)) educations = new ArrayList<>();
-        educations.clear();
-        for (SimpegPendidikan o : source.getPendidikan()) {
+        List<SimpegPendidikan> newPendidikan = source.getPendidikan().stream().filter(o -> {
+            if (Objects.isNull(employee.getPangkats())) return true;
+            for (EmployeeEducation ph : employee.getEducations()) {
+                if (ph.getGraduated().equals(o.getTahunLulus()) && ph.getType().equalsIgnoreCase(o.getJenjang())) {
+                    return false;
+                }
+            }
+            return true;
+        }).collect(Collectors.toList());
+        for (SimpegPendidikan o : newPendidikan) {
             EmployeeEducation education = new EmployeeEducation();
             education.setType(o.getJenjang());
             education.setMajors(o.getJurusan());
@@ -213,22 +262,67 @@ public class SimpegConverter {
         employee.setEducations(educations);
     }
 
-    private static void initializePangkat(SimpegEmployeeRiwayat source, Employee employee) {
+    private void initializePangkat(SimpegEmployeeRiwayat source, final Employee employee) {
         List<EmployeePangkatHis> pangkats = employee.getPangkats();
         if (Objects.isNull(pangkats)) pangkats = new ArrayList<>();
-        pangkats.clear();
+        List<PangkatGolongan> pangkatGolongans = pangkatGolonganRepository.findAll();
+        // exclude exist pangkat
+        Map<String, SimpegPangkat> indexes = new HashMap<>();
         for (SimpegPangkat o : source.getPangkat()) {
+            int found = 0;
+            for (SimpegPangkat ph : source.getPangkat()) {
+                if (ph.getGol().equalsIgnoreCase(o.getGol()) && ph.getPangkat().equalsIgnoreCase(o.getPangkat())) {
+                    ++found;
+                }
+            }
+            if (found > 1) {
+                indexes.put(o.getGol(), o);
+            }
+        }
+        source.getPangkat().removeAll(indexes.values());
+        List<SimpegPangkat> newPangkat = source.getPangkat().stream().filter(o -> {
+            if (Objects.isNull(employee.getPangkats())) return true;
+            for (EmployeePangkatHis ph : employee.getPangkats()) {
+                if (ph.getPangkatGolongan().getGolongan().equalsIgnoreCase(o.getGol())) {
+                    return false;
+                }
+            }
+            return true;
+        }).collect(Collectors.toList());
+        for (SimpegPangkat o : newPangkat) {
             EmployeePangkatHis pangkat = BeanCopy.copy(o, EmployeePangkatHis.class);
+            PangkatGolongan pg = pangkatGolongan(pangkatGolongans, o.getGol());
+            if (Objects.nonNull(pg)) pangkat.setPangkatGolongan(pg);
             pangkats.add(pangkat);
         }
         employee.setPangkats(pangkats);
     }
 
-    private static void initializeMutasi(SimpegEmployeeRiwayat source, Employee employee) {
+    // find pangkat golongan, by gol from api
+    private PangkatGolongan pangkatGolongan(List<PangkatGolongan> pangkatGolongans, String gol) {
+        for (PangkatGolongan pg : pangkatGolongans) {
+            if (Objects.isNull(pg.getGolongan())) continue;
+            if (pg.getGolongan().trim().isEmpty()) continue;
+            if (pg.getGolongan().equalsIgnoreCase(gol)) {
+                return pg;
+            }
+        }
+        return null;
+    }
+
+    private void initializeMutasi(SimpegEmployeeRiwayat source, Employee employee) {
         List<EmployeeMutasi> mutasis = employee.getMutasis();
         if (Objects.isNull(mutasis)) mutasis = new ArrayList<>();
-        mutasis.clear();
-        for (SimpegMutasi o : source.getMutasi()) {
+        List<SimpegMutasi> newMutasi = source.getMutasi().stream().filter(o -> {
+            if (Objects.isNull(employee.getPangkats())) return true;
+            for (EmployeeMutasi em : employee.getMutasis()) {
+                if (em.getPangkat().equalsIgnoreCase(o.getPangkat()) && em.getTahun().equals(o.getTahun())) {
+                    return false;
+                }
+            }
+            return true;
+        }).collect(Collectors.toList());
+        for (SimpegMutasi o : newMutasi) {
             mutasis.add(BeanCopy.copy(o, EmployeeMutasi.class));
         }
         employee.setMutasis(mutasis);

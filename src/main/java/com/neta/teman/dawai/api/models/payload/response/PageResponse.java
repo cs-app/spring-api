@@ -24,6 +24,16 @@ public class PageResponse<T> {
         this.isLast = page.isLast();
     }
 
+    public PageResponse(Page<T> page) {
+        if (Objects.isNull(page)) return;
+        this.values = page.getContent();
+        this.pageTotal = page.getTotalPages();
+        this.elementTotal = page.getTotalElements();
+        this.isFirst = page.isFirst();
+        this.isEmpty = page.isEmpty();
+        this.isLast = page.isLast();
+    }
+
     List<T> values;
 
     long elementTotal;

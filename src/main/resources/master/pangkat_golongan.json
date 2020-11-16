@@ -3,102 +3,102 @@
     "id": 1,
     "pangkat": 1,
     "nama": "Juru Muda",
-    "golongan": "Ia"
+    "golongan": "I/a"
   },
   {
     "id": 2,
     "pangkat": 1,
     "nama": "Juru Muda Tingkat I",
-    "golongan": "Ib"
+    "golongan": "I/b"
   },
   {
     "id": 3,
     "pangkat": 1,
     "nama": "Juru",
-    "golongan": "Ic"
+    "golongan": "I/c"
   },
   {
     "id": 4,
     "pangkat": 1,
     "nama": "Juru Tingkat I",
-    "golongan": "Id"
+    "golongan": "I/d"
   },
   {
     "id": 5,
     "pangkat": 2,
     "nama": "Pengatur Muda",
-    "golongan": "IIa"
+    "golongan": "II/a"
   },
   {
     "id": 6,
     "pangkat": 2,
     "nama": "Pengatur Muda Tingkat I",
-    "golongan": "IIb"
+    "golongan": "II/b"
   },
   {
     "id": 7,
     "pangkat": 2,
     "nama": "Pengatur",
-    "golongan": "IIc"
+    "golongan": "II/c"
   },
   {
     "id": 8,
     "pangkat": 2,
     "nama": "Pengatur Tingkat I",
-    "golongan": "IId"
+    "golongan": "II/d"
   },
   {
     "id": 9,
     "pangkat": 3,
     "nama": "Penata Muda",
-    "golongan": "IIIa"
+    "golongan": "III/a"
   },
   {
     "id": 10,
     "pangkat": 3,
     "nama": "Penata Muda Tingkat I",
-    "golongan": "IIIb"
+    "golongan": "III/b"
   },
   {
     "id": 11,
     "pangkat": 3,
     "nama": "Penata",
-    "golongan": "IIIc"
+    "golongan": "III/c"
   },
   {
     "id": 12,
     "pangkat": 3,
     "nama": "Penata Tingkat I",
-    "golongan": "IIId"
+    "golongan": "III/d"
   },
   {
     "id": 13,
     "pangkat": 4,
     "nama": "Pembina",
-    "golongan": "IVa"
+    "golongan": "IV/a"
   },
   {
     "id": 14,
     "pangkat": 4,
     "nama": "Pembina Tingkat I",
-    "golongan": "IVb"
+    "golongan": "IV/b"
   },
   {
     "id": 15,
     "pangkat": 4,
     "nama": "Pembina Utama Muda",
-    "golongan": "IVc"
+    "golongan": "IV/c"
   },
   {
     "id": 16,
     "pangkat": 4,
     "nama": "Pembina UtamaMady",
-    "golongan": "IVd"
+    "golongan": "IV/d"
   },
   {
     "id": 17,
     "pangkat": 4,
     "nama": "Pembina Utama",
-    "golongan": "IVe"
+    "golongan": "IV/e"
   }
 ]

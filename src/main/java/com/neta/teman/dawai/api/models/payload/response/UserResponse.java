@@ -17,7 +17,7 @@ import java.util.List;
 
 @Data
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class LoginResponse {
+public class UserResponse {
 
     String role;
 
@@ -154,7 +154,7 @@ public class LoginResponse {
 
     List<EmployeeDocument> documents;
 
-    public LoginResponse(User user) {
+    public UserResponse(User user) {
         Role role = user.getRole();
         Employee employee = user.getEmployee();
         BeanCopy.copy(this, user, employee);

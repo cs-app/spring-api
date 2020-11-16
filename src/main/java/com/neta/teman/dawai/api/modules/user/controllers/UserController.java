@@ -1,17 +1,22 @@
 package com.neta.teman.dawai.api.modules.user.controllers;
 
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.neta.teman.dawai.api.applications.base.BaseRestController;
 import com.neta.teman.dawai.api.applications.base.ServiceResolver;
 import com.neta.teman.dawai.api.applications.commons.DTFomat;
 import com.neta.teman.dawai.api.models.dao.*;
+import com.neta.teman.dawai.api.models.payload.request.FilterRequest;
 import com.neta.teman.dawai.api.models.payload.request.LoginRequest;
 import com.neta.teman.dawai.api.models.payload.request.UploadRequest;
-import com.neta.teman.dawai.api.models.payload.response.LoginResponse;
+import com.neta.teman.dawai.api.models.payload.response.UserResponse;
+import com.neta.teman.dawai.api.models.payload.response.PageResponse;
 import com.neta.teman.dawai.api.services.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,6 +27,7 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -53,7 +59,42 @@ public class UserController extends BaseRestController {
         }
         ServiceResolver<User> resolver = userService.findByUsernameAndPasswordSimpeg(request.getUsername().trim(), request.getPassword().trim());
         if (resolver.isError()) return responseError(resolver);
-        return response(new LoginResponse(resolver.getResult()));
+        return response(new UserResponse(resolver.getResult()));
+    }
+
+    @PostMapping(value = "/page")
+    public ResponseEntity<PageResponse> page(@RequestBody FilterRequest request) {
+        ServiceResolver<Page<User>> resolver = userService.loadPage(request);
+        // map to page
+        List<UserResponse> userResponses = new ArrayList<>();
+        Page page = resolver.getResult();
+        List<User> users = page.getContent();
+        for (User user : users) {
+            userResponses.add(new UserResponse(user));
+        }
+        Page<UserResponse> responsePage = new PageImpl<>(userResponses);
+        return response(new PageResponse(responsePage));
+    }
+
+    @PostMapping(value = "/list/golongan")
+    public ResponseEntity<PageResponse> listByGolongan(@RequestBody FilterRequest request) {
+        ServiceResolver<List<User>> resolver = userService.findAllByGolongan(request);
+        // map to page
+        List<UserResponse> userResponses = new ArrayList<>();
+        for (User user : resolver.getResult()) {
+            userResponses.add(new UserResponse(user));
+        }
+        return response(userResponses);
+    }
+
+    @GetMapping(value = "/history/pangkat/{nip}")
+    public ResponseEntity<PageResponse> HistoryPangkat(@PathVariable String nip) {
+        if (isNull(nip)) {
+            return responseError(401, "empty nip");
+        }
+        ServiceResolver<User> resolver = userService.findByNip(nip);
+        if (resolver.isError()) return responseError(resolver);
+        return response(resolver.getResult().getEmployee().getPangkats());
     }
 
     @PostMapping(value = "/document")
@@ -140,7 +181,7 @@ public class UserController extends BaseRestController {
         if (Objects.isNull(cuti)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        String fileName = employee.getNip() + "_cuti_"+ DTFomat.format(cuti.getStartDate()) +"_" + employee.getNama() + ".pdf";
+        String fileName = employee.getNip() + "_cuti_" + DTFomat.format(cuti.getStartDate()) + "_" + employee.getNama() + ".pdf";
         StreamingResponseBody stream = out -> reportService.printCuti(user, cutiResolver.getResult(), out);
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)

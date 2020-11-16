@@ -21,6 +21,7 @@ public class EmployeePangkat extends BaseEntity {
     private Long id;
 
     Integer pangkatId;
+
     String gol;
 
     String pangkat;

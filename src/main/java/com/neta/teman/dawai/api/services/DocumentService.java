@@ -20,5 +20,4 @@ public interface DocumentService {
     ServiceResolver<Document> merge(Document copy);
 
     ServiceResolver remove(Document copy);
-
 }

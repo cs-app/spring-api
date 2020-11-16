@@ -3,6 +3,7 @@ package com.neta.teman.dawai.api.services;
 import com.neta.teman.dawai.api.applications.base.ServiceResolver;
 import com.neta.teman.dawai.api.models.converter.SimpegConverter;
 import com.neta.teman.dawai.api.models.dao.*;
+import com.neta.teman.dawai.api.models.payload.request.FilterRequest;
 import com.neta.teman.dawai.api.models.repository.RoleRepository;
 import com.neta.teman.dawai.api.models.repository.UserRepository;
 import com.neta.teman.dawai.api.models.spech.UserSpecs;
@@ -10,6 +11,7 @@ import com.neta.teman.dawai.api.plugins.simpeg.models.SimpegAuth;
 import com.neta.teman.dawai.api.plugins.simpeg.models.SimpegEmployeeRiwayat;
 import com.neta.teman.dawai.api.plugins.simpeg.models.SimpegResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -33,6 +35,9 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
 
     @Autowired
     FileService fileService;
+
+    @Autowired
+    SimpegConverter simpegConverter;
 
     @Override
     public ServiceResolver<User> findByNip(String nip) {
@@ -120,10 +125,20 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
         return success(employee.getDocuments());
     }
 
+    @Override
+    public ServiceResolver<Page<User>> loadPage(FilterRequest request) {
+        return success(userRepository.findAll(UserSpecs.page(request.getFilter()), request.pageRequest()));
+    }
+
+    @Override
+    public ServiceResolver<List<User>> findAllByGolongan(FilterRequest request) {
+        return success(userRepository.findAll(UserSpecs.golongan(request.getFilter())));
+    }
+
     private void buildEmployee(Employee employee, SimpegAuth simpegAuth, String username) {
-        SimpegConverter.merge(employee, simpegAuth);
+        simpegConverter.merge(employee, simpegAuth);
         SimpegResponse<SimpegEmployeeRiwayat> dataRiwayat = dataRiwayat(simpegAuth.getToken(), username);
-        SimpegConverter.mergeRiwayat(employee, dataRiwayat.getData());
+        simpegConverter.mergeRiwayat(employee, dataRiwayat.getData());
     }
 
 }

@@ -2,10 +2,9 @@ package com.neta.teman.dawai.api.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.neta.teman.dawai.api.applications.commons.DTFomat;
-import com.neta.teman.dawai.api.applications.constants.AppConstants;
 import com.neta.teman.dawai.api.models.converter.ReportConverter;
 import com.neta.teman.dawai.api.models.dao.*;
-import com.neta.teman.dawai.api.models.payload.response.LoginResponse;
+import com.neta.teman.dawai.api.models.payload.response.UserResponse;
 import com.neta.teman.dawai.api.models.repository.CutiSummaryRepository;
 import com.neta.teman.dawai.api.models.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +12,6 @@ import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
-import net.sf.jasperreports.engine.util.JRSaver;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
@@ -23,7 +21,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -186,7 +183,7 @@ public class ReportServiceImpl implements ReportService {
         try {
             User user = userRepository.findByUsername(nip);
             if (Objects.isNull(user)) return;
-            LoginResponse response = new LoginResponse(user);
+            UserResponse response = new UserResponse(user);
             Map<String, Object> userMapOrigin = new ObjectMapper().convertValue(response, Map.class);
             JRBeanCollectionDataSource profileDataSource = new JRBeanCollectionDataSource(ReportConverter.profile(userMapOrigin, user));
             // sub report datasource
