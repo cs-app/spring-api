@@ -5,6 +5,7 @@ import com.neta.teman.dawai.api.models.dao.Document;
 import com.neta.teman.dawai.api.models.dao.EmployeeDocument;
 import com.neta.teman.dawai.api.models.dao.User;
 import com.neta.teman.dawai.api.models.payload.request.FilterRequest;
+import com.neta.teman.dawai.api.models.payload.request.UserPangkatRequest;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -24,4 +25,8 @@ public interface UserService extends RoleService {
     ServiceResolver<Page<User>> loadPage(FilterRequest request);
 
     ServiceResolver<List<User>> findAllByGolongan(FilterRequest request);
+
+    ServiceResolver pangkatAdd(UserPangkatRequest request);
+
+    ServiceResolver pangkatRemove(UserPangkatRequest request);
 }

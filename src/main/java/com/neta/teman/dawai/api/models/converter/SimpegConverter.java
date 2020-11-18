@@ -293,7 +293,7 @@ public class SimpegConverter {
             EmployeePangkatHis pangkat = BeanCopy.copy(o, EmployeePangkatHis.class);
             PangkatGolongan pg = pangkatGolongan(pangkatGolongans, o.getGol());
             if (Objects.nonNull(pg)) pangkat.setPangkatGolongan(pg);
-            pangkat.setSumberData(AppConstants.Source.TEMAN_DAWAI);
+            pangkat.setSumberData(AppConstants.Source.SIMPEG);
             pangkats.add(pangkat);
         }
         employee.setPangkats(pangkats);

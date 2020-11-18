@@ -2,12 +2,14 @@ package com.neta.teman.dawai.api.modules.user.controllers;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.neta.teman.dawai.api.applications.base.BaseRestController;
+import com.neta.teman.dawai.api.applications.base.Response;
 import com.neta.teman.dawai.api.applications.base.ServiceResolver;
 import com.neta.teman.dawai.api.applications.commons.DTFomat;
 import com.neta.teman.dawai.api.models.dao.*;
 import com.neta.teman.dawai.api.models.payload.request.FilterRequest;
 import com.neta.teman.dawai.api.models.payload.request.LoginRequest;
 import com.neta.teman.dawai.api.models.payload.request.UploadRequest;
+import com.neta.teman.dawai.api.models.payload.request.UserPangkatRequest;
 import com.neta.teman.dawai.api.models.payload.response.UserResponse;
 import com.neta.teman.dawai.api.models.payload.response.PageResponse;
 import com.neta.teman.dawai.api.services.*;
@@ -94,6 +96,7 @@ public class UserController extends BaseRestController {
         }
         ServiceResolver<User> resolver = userService.findByNip(nip);
         if (resolver.isError()) return responseError(resolver);
+        if (resolver.isError()) return responseError(resolver);
         return response(resolver.getResult().getEmployee().getPangkats());
     }
 
@@ -132,6 +135,21 @@ public class UserController extends BaseRestController {
             return responseError(401, "Nip is empty!");
         }
         ServiceResolver<List<EmployeeDocument>> resolver = userService.documentRemove(request.getNip().trim(), request.getDocumentId());
+        return response(resolver);
+    }
+
+    @PostMapping(value = "/pangkat/add")
+    public ResponseEntity<Response> pangkatAdd(@RequestBody UserPangkatRequest request) {
+        if (isNull(request.getPangkat())||isNull(request.getPangkat().getTmt())) {
+            return responseError(401, "Mandatory field");
+        }
+        ServiceResolver resolver = userService.pangkatAdd(request);
+        return response(resolver);
+    }
+
+    @PostMapping(value = "/pangkat/remove")
+    public ResponseEntity<Response> pangkatRemove(@RequestBody UserPangkatRequest request) {
+        ServiceResolver resolver = userService.pangkatRemove(request);
         return response(resolver);
     }
 
