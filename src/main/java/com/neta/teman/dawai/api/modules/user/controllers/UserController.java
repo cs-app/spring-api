@@ -189,7 +189,7 @@ public class UserController extends BaseRestController {
                 .body(stream);
     }
 
-    @GetMapping(value = "/download/user/{nip}/{documentId}")
+    @GetMapping(value = "/download/digital/{nip}/{documentId}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String nip, @PathVariable Long documentId, HttpServletRequest request) {
         ServiceResolver<User> resolver = userService.findByNip(nip);
         if (resolver.isError()) {

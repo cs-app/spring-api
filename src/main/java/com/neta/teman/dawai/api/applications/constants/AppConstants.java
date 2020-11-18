@@ -22,4 +22,8 @@ public class AppConstants {
     public static String reportTemplate = "reports" + File.separator + "template" + File.separator;
     public static String reportExport = "reports" + File.separator + "export" + File.separator;
 
+    public class Source {
+        public final static String TEMAN_DAWAI = "TEMAN_DAWAI";
+        public final static String SIMPEG = "SIMPEG";
+    }
 }

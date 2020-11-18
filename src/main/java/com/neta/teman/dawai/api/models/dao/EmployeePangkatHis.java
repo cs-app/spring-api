@@ -22,6 +22,8 @@ public class EmployeePangkatHis extends BaseEntity {
 
     private Date tmt;
 
+    private String sumberData;
+
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private PangkatGolongan pangkatGolongan;
 
