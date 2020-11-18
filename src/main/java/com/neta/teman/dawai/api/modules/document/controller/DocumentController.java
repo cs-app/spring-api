@@ -1,4 +1,4 @@
-package com.neta.teman.dawai.api.modules.document.controllers;
+package com.neta.teman.dawai.api.modules.document.controller;
 
 import com.neta.teman.dawai.api.applications.base.BaseRestController;
 import com.neta.teman.dawai.api.applications.base.ServiceResolver;

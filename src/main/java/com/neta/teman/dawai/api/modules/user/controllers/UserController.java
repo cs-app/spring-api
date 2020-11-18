@@ -140,7 +140,7 @@ public class UserController extends BaseRestController {
 
     @PostMapping(value = "/pangkat/add")
     public ResponseEntity<Response> pangkatAdd(@RequestBody UserPangkatRequest request) {
-        if (isNull(request.getPangkat())||isNull(request.getPangkat().getTmt())) {
+        if (isNull(request.getPangkat())) {
             return responseError(401, "Mandatory field");
         }
         ServiceResolver resolver = userService.pangkatAdd(request);

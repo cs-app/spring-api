@@ -4,8 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.neta.teman.dawai.api.applications.commons.ResourceUtils;
+import com.neta.teman.dawai.api.models.dao.Jabatan;
 import com.neta.teman.dawai.api.models.dao.PangkatGolongan;
 import com.neta.teman.dawai.api.models.dao.Role;
+import com.neta.teman.dawai.api.models.repository.JabatanRepository;
 import com.neta.teman.dawai.api.models.repository.PangkatGolonganRepository;
 import com.neta.teman.dawai.api.models.repository.RoleRepository;
 import com.neta.teman.dawai.api.plugins.simpeg.services.SimpegServiceImpl;
@@ -35,12 +37,15 @@ public class RoleServiceImpl extends SimpegServiceImpl {
     RoleRepository roleRepository;
 
     @Autowired
+    JabatanRepository jabatanRepository;
+
+    @Autowired
     PangkatGolonganRepository pangkatGolonganRepository;
 
     public void initializeRole() {
         try {
             int[] types = new int[]{Types.INTEGER};
-            String values = ResourceUtils.asString(resourceLoader.getResource("classpath:master/role.json"));
+            String values = ResourceUtils.asString(resourceLoader.getResource("classpath:master/master_role.json"));
             List<Role> roleList = new ObjectMapper().readValue(values, new TypeReference<List<Role>>() {
             });
             for (Role role : roleList) {
@@ -65,10 +70,11 @@ public class RoleServiceImpl extends SimpegServiceImpl {
         }
     }
 
+
     public void initializePangkatGolongan() {
         try {
             int[] types = new int[]{Types.INTEGER};
-            String values = ResourceUtils.asString(resourceLoader.getResource("classpath:master/pangkat_golongan.json"));
+            String values = ResourceUtils.asString(resourceLoader.getResource("classpath:master/master_pangkat_golongan.json"));
             List<PangkatGolongan> pangkatGolongans = new ObjectMapper().readValue(values, new TypeReference<List<PangkatGolongan>>() {
             });
             for (PangkatGolongan o : pangkatGolongans) {
@@ -79,13 +85,42 @@ public class RoleServiceImpl extends SimpegServiceImpl {
                 if (0 == foundInDB) {
                     String sql = "insert into APP_PANGKAT_GOLONGAN(id) values (?)";
                     int row = jdbcTemplate.update(sql, params, types);
-                    log.info("create new role {}", row);
+                    log.info("create new pangkat golongan {}", row);
                 }
                 // update
                 PangkatGolongan golongan = pangkatGolonganRepository.findById(o.getId()).orElse(null);
                 if (Objects.isNull(golongan)) continue;
                 BeanUtils.copyProperties(o, golongan, "id");
                 pangkatGolonganRepository.save(signature(golongan));
+            }
+//            log.info("\n{}", values);
+        } catch (JsonProcessingException e) {
+            log.error("error read json role", e);
+        }
+    }
+
+
+    public void initializeJabatan() {
+        try {
+            int[] types = new int[]{Types.INTEGER};
+            String values = ResourceUtils.asString(resourceLoader.getResource("classpath:master/master_jabatan.json"));
+            List<Jabatan> jabatans = new ObjectMapper().readValue(values, new TypeReference<List<Jabatan>>() {
+            });
+            for (Jabatan o : jabatans) {
+//                log.info("Pangkat Golongan data {} - {}", o.getGroup(), o.getGolongan());
+                Object[] params = new Object[]{o.getId()};
+                String query = "SELECT COUNT(1) FROM APP_JABATAN WHERE ID = ?";
+                int foundInDB = jdbcTemplate.queryForObject(query, params, Integer.class);
+                if (0 == foundInDB) {
+                    String sql = "insert into APP_JABATAN(id) values (?)";
+                    int row = jdbcTemplate.update(sql, params, types);
+                    log.info("create new jabatan {}", row);
+                }
+                // update
+                Jabatan jabatan = jabatanRepository.findById(o.getId()).orElse(null);
+                if (Objects.isNull(jabatan)) continue;
+                BeanUtils.copyProperties(o, jabatan, "id");
+                jabatanRepository.save(signature(jabatan));
             }
 //            log.info("\n{}", values);
         } catch (JsonProcessingException e) {

@@ -37,6 +37,7 @@ public class TemanDawaiApiApplication implements ApplicationRunner {
         documentService.initDocument();
         userService.initializeRole();
         userService.initializePangkatGolongan();
+        userService.initializeJabatan();
         cutiService.initCutiPegawai();
     }
 }

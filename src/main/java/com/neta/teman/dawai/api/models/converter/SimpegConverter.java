@@ -5,6 +5,7 @@ import com.neta.teman.dawai.api.applications.commons.DTFomat;
 import com.neta.teman.dawai.api.applications.commons.ValueValidation;
 import com.neta.teman.dawai.api.applications.constants.AppConstants;
 import com.neta.teman.dawai.api.models.dao.*;
+import com.neta.teman.dawai.api.models.repository.JabatanRepository;
 import com.neta.teman.dawai.api.models.repository.PangkatGolonganRepository;
 import com.neta.teman.dawai.api.plugins.simpeg.models.*;
 import org.springframework.beans.BeanUtils;
@@ -19,6 +20,9 @@ public class SimpegConverter {
 
     @Autowired
     PangkatGolonganRepository pangkatGolonganRepository;
+
+    @Autowired
+    JabatanRepository jabatanRepository;
 
     public void merge(Employee employee, SimpegAuth source) {
         SimpegAuth.Personal personal = source.getPersonal();
@@ -102,6 +106,20 @@ public class SimpegConverter {
             jabatan = new EmployeeJabatan();
             employee.setJabatanDetail(jabatan);
         }
+        SimpegAuth.Employee.EmployeeJabatanEselon.EmployeeJabatanData jabatanData = jabatanEselon.getJabatanData();
+        Jabatan masterJabatan = jabatanRepository.findByName(jabatan.getNamaJabatan());
+        if (Objects.isNull(masterJabatan)) {
+            masterJabatan = new Jabatan();
+            masterJabatan.setSimpegId(jabatanData.getJabatanId());
+            masterJabatan.setName(jabatanData.getNamaJabatan().toUpperCase());
+            masterJabatan.setKelasJabatan(jabatanData.getKelasJabatan());
+            jabatanRepository.save(masterJabatan);
+            masterJabatan = jabatanRepository.findByName(jabatan.getNamaJabatan());
+        } else {
+            masterJabatan.setSimpegId(jabatanData.getJabatanId());
+            jabatanRepository.save(masterJabatan);
+        }
+        jabatan.setJabatan(masterJabatan);
         BeanUtils.copyProperties(jabatanEselon.getJabatanData(), jabatan, "id");
 
         EmployeeEselon eselon = employee.getEselonDetail();

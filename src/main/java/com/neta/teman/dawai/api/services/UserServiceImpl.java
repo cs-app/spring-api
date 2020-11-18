@@ -176,7 +176,7 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
             if (!exist) {
                 EmployeePangkatHis his = new EmployeePangkatHis();
                 his.setSumberData(AppConstants.Source.TEMAN_DAWAI);
-                his.setTmt(pangkat.getTmt());
+//                his.setTmt(pangkat.getTmt());
                 his.setPangkatGolongan(pangkatGolongan);
                 employee.getPangkats().add(his);
                 updateUser.add(dbUser);

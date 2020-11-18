@@ -100,5 +100,11 @@
     "pangkat": 4,
     "nama": "Pembina Utama",
     "golongan": "IV/e"
-  }
+  },
+  {
+      "id": 18,
+      "pangkat": 5,
+      "nama": "Pensiun",
+      "golongan": "Pensiun"
+    }
 ]

@@ -18,7 +18,6 @@ public class EmployeeJabatan extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    Integer jabatanId;
     String namaJabatan;
     String singkatan;
     String kategori;
@@ -32,4 +31,7 @@ public class EmployeeJabatan extends BaseEntity {
     Integer kelJabatanId;
     String refId;
     String pensiun;
+
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    Jabatan jabatan;
 }

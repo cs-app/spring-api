@@ -23,7 +23,7 @@ public class UserPangkatRequest {
 
         Long id;
 
-        Date tmt;
+//        Date tmt;
 
     }
 

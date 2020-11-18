@@ -234,7 +234,7 @@ public class SimpegAuth {
             @Data
             @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
             public static class EmployeeJabatanData {
-                Integer jabatanId;
+                Long jabatanId;
                 String namaJabatan;
                 String singkatan;
                 String kategori;
@@ -242,7 +242,7 @@ public class SimpegAuth {
                 Integer tingkatan;
                 String eselonIdAwal;
                 String eselonIdAkhir;
-                Integer kelasJabatan;
+                Long kelasJabatan;
                 Integer nilaiJabatan;
                 Integer unitUtamaId;
                 Integer kelJabatanId;

@@ -29,4 +29,5 @@ public interface UserService extends RoleService {
     ServiceResolver pangkatAdd(UserPangkatRequest request);
 
     ServiceResolver pangkatRemove(UserPangkatRequest request);
+
 }

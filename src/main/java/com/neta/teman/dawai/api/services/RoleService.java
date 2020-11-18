@@ -5,4 +5,6 @@ public interface RoleService {
     void initializeRole();
 
     void initializePangkatGolongan();
+
+    void initializeJabatan();
 }

@@ -26,4 +26,13 @@ public class AppConstants {
         public final static String TEMAN_DAWAI = "TEMAN_DAWAI";
         public final static String SIMPEG = "SIMPEG";
     }
+
+    // masih belum tau valuenya apa
+    public class JenisJabatan {
+        public final static String JPT_PRATAMA = "JPT PRATAMA";
+        public final static String JABATAN_FUNGSIONAL = "JABATAN FUNGSIONAL";
+        public final static String PENGAWAS = "PENGAWAS";
+        public final static String PELAKSANA = "PELAKSANA";
+    }
+
 }

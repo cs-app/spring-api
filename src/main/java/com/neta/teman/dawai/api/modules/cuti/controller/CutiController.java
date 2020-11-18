@@ -1,4 +1,4 @@
-package com.neta.teman.dawai.api.modules.cuti.controllers;
+package com.neta.teman.dawai.api.modules.cuti.controller;
 
 import com.neta.teman.dawai.api.applications.base.BaseRestController;
 import com.neta.teman.dawai.api.applications.base.Response;

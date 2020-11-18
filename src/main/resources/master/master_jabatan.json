@@ -1,0 +1,344 @@
+[
+  {
+    "id": "1",
+    "name": "ARSIPARIS AHLI PERTAMA",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "8"
+  },
+  {
+    "id": "2",
+    "name": "ARSIPARIS PENYELIA",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "8"
+  },
+  {
+    "id": "3",
+    "name": "ANALIS PENGELOLAAN KEUANGAN APBN AHLI PERTAMA",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "8"
+  },
+  {
+    "id": "4",
+    "name": "ANALIS ANGGARAN AHLI PERTAMA",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "8"
+  },
+  {
+    "id": "5",
+    "name": "PRANATA KEUANGAN APBN MAHIR",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "8"
+  },
+  {
+    "id": "6",
+    "name": "PENYUSUN RENCANA KEGIATAN DAN ANGGARAN",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "7"
+  },
+  {
+    "id": "7",
+    "name": "PENYUSUN LAPORAN KEUANGAN",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "7"
+  },
+  {
+    "id": "8",
+    "name": "BENDAHARA",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "7"
+  },
+  {
+    "id": "9",
+    "name": "ANALIS SARANA PENDIDIKAN",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "7"
+  },
+  {
+    "id": "10",
+    "name": "ANALIS PRASARANA PENDIDIKAN",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "7"
+  },
+  {
+    "id": "11",
+    "name": "ANALIS PERENCANAAN, EVALUASI DAN PELAPORAN",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "7"
+  },
+  {
+    "id": "12",
+    "name": "ANALIS PENGEMBANGAN PESERTA DIDIK",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "7"
+  },
+  {
+    "id": "13",
+    "name": "ANALIS PELAKSANAAN KURIKULUM PENDIDIKAN",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "7"
+  },
+  {
+    "id": "14",
+    "name": "ANALIS KELEMBAGAAN PEMBINAAN PENDIDIKAN",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "7"
+  },
+  {
+    "id": "15",
+    "name": "ARSIPARIS MAHIR",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "7"
+  },
+  {
+    "id": "16",
+    "name": "PENGOLAH DATA",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "6"
+  },
+  {
+    "id": "17",
+    "name": "PENGELOLA PESERTA DIDIK",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "6"
+  },
+  {
+    "id": "18",
+    "name": "PENGELOLA SITUS ATAU WEB",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "6"
+  },
+  {
+    "id": "19",
+    "name": "VERIFIKATOR KEUANGAN",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "6"
+  },
+  {
+    "id": "20",
+    "name": "PENATA LAKSANA BARANG TERAMPIL",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "6"
+  },
+  {
+    "id": "21",
+    "name": "PENGELOLA KURIKULUM",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "6"
+  },
+  {
+    "id": "22",
+    "name": "PENGELOLA KEPEGAWAIAN",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "6"
+  },
+  {
+    "id": "23",
+    "name": "PENGELOLA KEUANGAN",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "6"
+  },
+  {
+    "id": "24",
+    "name": "PENGOLAH DATA PENGANGGARAN",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "6"
+  },
+  {
+    "id": "25",
+    "name": "PENGELOLA BARANG MILIK NEGARA",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "6"
+  },
+  {
+    "id": "26",
+    "name": "PENGOLAH BAHAN INFORMASI DAN PUBLIKASI",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "6"
+  },
+  {
+    "id": "27",
+    "name": "PENGELOLA DATA PELAKSANAAN PROGRAM DAN ANGGARAN",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "6"
+  },
+  {
+    "id": "28",
+    "name": "PENGELOLA DATA SARANA DAN PRASARANA PENDIDIKAN",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "6"
+  },
+  {
+    "id": "29",
+    "name": "PENGELOLA DATA TATA ORGANISASI DAN TATA LAKSANA",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "6"
+  },
+  {
+    "id": "30",
+    "name": "PENGELOLA KELEMBAGAAN PENDIDIKAN",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "6"
+  },
+  {
+    "id": "31",
+    "name": "PENGADMINISTRASI KURIKULUM",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "5"
+  },
+  {
+    "id": "32",
+    "name": "PENGADMINISTRASI UMUM",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "5"
+  },
+  {
+    "id": "33",
+    "name": "PENGADMINISTRASI SARANA DAN PRASARANA",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "5"
+  },
+  {
+    "id": "34",
+    "name": "PENGADMINISTRASI PERSURATAN",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "5"
+  },
+  {
+    "id": "35",
+    "name": "PENGADMINISTRASI KEUANGAN",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "5"
+  },
+  {
+    "id": "36",
+    "name": "PENGADMINISTRASI KEPEGAWAIAN",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "5"
+  },
+  {
+    "id": "37",
+    "name": "PENGADMINISTRASI BARANG MILIK NEGARA",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "5"
+  },
+  {
+    "id": "38",
+    "name": "PENGADMINISTRASI ANGGARAN",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "5"
+  },
+  {
+    "id": "39",
+    "name": "PENGADMINISTRASI KESISWAAN",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "5"
+  },
+  {
+    "id": "40",
+    "name": "PRAMU BAKTI",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "3"
+  },
+  {
+    "id": "41",
+    "name": "PETUGAS KEAMANAN",
+    "jenis_jabatan": "P",
+    "kelas_jabatan": "3"
+  },
+  {
+    "id": "42",
+    "name": "ANALIS KEBIJAKAN AHLI UTAMA",
+    "jenis_jabatan": "JF",
+    "kelas_jabatan": "14"
+  },
+  {
+    "id": "43",
+    "name": "WIDYAPRADA AHLI UTAMA",
+    "jenis_jabatan": "JF",
+    "kelas_jabatan": "13"
+  },
+  {
+    "id": "44",
+    "name": "PENGEMBANG TEKNOLOGI PEMBELAJARAN AHLI MADYA",
+    "jenis_jabatan": "JF",
+    "kelas_jabatan": "12"
+  },
+  {
+    "id": "45",
+    "name": "ANALIS KEBIJAKAN AHLI MADYA",
+    "jenis_jabatan": "JF",
+    "kelas_jabatan": "12"
+  },
+  {
+    "id": "46",
+    "name": "WIDYAPRADA AHLI MADYA",
+    "jenis_jabatan": "JF",
+    "kelas_jabatan": "11"
+  },
+  {
+    "id": "47",
+    "name": "ANALIS KEBIJAKAN AHLI MUDA",
+    "jenis_jabatan": "JF",
+    "kelas_jabatan": "10"
+  },
+  {
+    "id": "48",
+    "name": "PENGEMBANG TEKNOLOGI PEMBELAJARAN AHLI MUDA",
+    "jenis_jabatan": "JF",
+    "kelas_jabatan": "10"
+  },
+  {
+    "id": "49",
+    "name": "ANALIS KEBIJAKAN AHLI MUDA**",
+    "jenis_jabatan": "JF",
+    "kelas_jabatan": "9"
+  },
+  {
+    "id": "50",
+    "name": "PENGELOLA PENGADAAN BARANG/JASA AHLI MUDA",
+    "jenis_jabatan": "JF",
+    "kelas_jabatan": "9"
+  },
+  {
+    "id": "51",
+    "name": "PENGEMBANG TEKNOLOGI PEMBELAJARAN AHLI MUDA**",
+    "jenis_jabatan": "JF",
+    "kelas_jabatan": "9"
+  },
+  {
+    "id": "52",
+    "name": "WIDYAPRADA AHLI MUDA",
+    "jenis_jabatan": "JF",
+    "kelas_jabatan": "9"
+  },
+  {
+    "id": "53",
+    "name": "PRANATA HUMAS AHLI MUDA",
+    "jenis_jabatan": "JF",
+    "kelas_jabatan": "9"
+  },
+  {
+    "id": "54",
+    "name": "PERENCANA AHLI MUDA",
+    "jenis_jabatan": "JF",
+    "kelas_jabatan": "9"
+  },
+  {
+    "id": "55",
+    "name": "WIDYAPRADA AHLI PERTAMA",
+    "jenis_jabatan": "JF",
+    "kelas_jabatan": "8"
+  },
+  {
+    "id": "56",
+    "name": "PENGEMBANG TEKNOLOGI PEMBELAJARAN AHLI PERTAMA",
+    "jenis_jabatan": "JF",
+    "kelas_jabatan": "8"
+  },
+  {
+    "id": "57",
+    "name": "ANALIS KEBIJAKAN AHLI PERTAMA",
+    "jenis_jabatan": "JF",
+    "kelas_jabatan": "8"
+  }
+]

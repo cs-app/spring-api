@@ -16,10 +16,10 @@ public class JsonDateConverter extends StdConverter<String, Date> {
 
     @Override
     public Date convert(final String value) {
-        if (value == null || value.equals("NULL")) {
+        if (value == null || value.equals("NULL") || value.trim().isEmpty()) {
             return null;
         }
-        if("01 February 2019".equals(value)) {
+        if ("01 February 2019".equals(value)) {
 
         }
         for (SimpleDateFormat s : formats) {

@@ -1,0 +1,110 @@
+[
+  {
+    "label": "SK terakhir",
+    "value": "1"
+  },
+  {
+    "label": "Karpeg",
+    "value": "2"
+  },
+  {
+    "label": "Ijazah Terakhir",
+    "value": "3"
+  },
+  {
+    "label": "Transkrip Nilai",
+    "value": "4"
+  },
+  {
+    "label": "SKP Terakhir",
+    "value": "5"
+  },
+  {
+    "label": "SKP 2 (dua) tahun terakhir",
+    "value": "6"
+  },
+  {
+    "label": "Surat Tugas (Penempatan)",
+    "value": "7"
+  },
+  {
+    "label": "SK Tukin",
+    "value": "8"
+  },
+  {
+    "label": "Ijazah Terakhir (S2)",
+    "value": "9"
+  },
+  {
+    "label": "Surat Ijin Belajar",
+    "value": "10"
+  },
+  {
+    "label": "SK Jabatan (Kasi/Kasubdit)",
+    "value": "11"
+  },
+  {
+    "label": "Surat Pernyataan Pelantikan",
+    "value": "12"
+  },
+  {
+    "label": "Surat Pernyataan Menduduki Jabatan",
+    "value": "13"
+  },
+  {
+    "label": "Surat Pernyataan Melaksanakan Tugas",
+    "value": "14"
+  },
+  {
+    "label": "Berita Acara Pengangkatan Sumpah",
+    "value": "15"
+  },
+  {
+    "label": "Sertifikat Pengadaan Nasional",
+    "value": "16"
+  },
+  {
+    "label": "Rincian Tugas Golongan",
+    "value": "17"
+  },
+  {
+    "label": "Surat Keterangan Lulus Ujian Dinas",
+    "value": "18"
+  },
+  {
+    "label": "Daftar Riwayat Hidup",
+    "value": "19"
+  },
+  {
+    "label": "Diklat PIM",
+    "value": "20"
+  },
+  {
+    "label": "Surat Pengantar dari Instansi",
+    "value": "21"
+  },
+  {
+    "label": "Daftar Uraian Pekerjaan",
+    "value": "22"
+  },
+  {
+    "label": "Pas Foto 3x4",
+    "value": "23"
+  },
+  {
+    "label": "Pas Foto 2x3",
+    "value": "24"
+  },
+  {
+    "label": "Biodata",
+    "value": "25"
+  },
+  {
+    "label": "Surat Sehat Jasmani dan Rohani",
+    "value": "26"
+  },
+  {
+    "label": "Surat Tanda Lulus Kenaikan Pangkat Penyesuaian Ijazah (STL KPPI)",
+    "value": "27"
+  }
+]

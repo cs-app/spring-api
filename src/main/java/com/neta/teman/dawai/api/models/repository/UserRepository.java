@@ -1,6 +1,7 @@
 package com.neta.teman.dawai.api.models.repository;
 
 import com.neta.teman.dawai.api.models.dao.Cuti;
+import com.neta.teman.dawai.api.models.dao.Jabatan;
 import com.neta.teman.dawai.api.models.dao.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -13,4 +14,5 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 
     User findByUsername(String username);
 
+    Long countByEmployee_JabatanDetail_Jabatan(Jabatan o);
 }

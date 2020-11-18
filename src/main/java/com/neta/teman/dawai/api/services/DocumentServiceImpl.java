@@ -47,7 +47,7 @@ public class DocumentServiceImpl extends BaseService implements DocumentService 
     public void initDocument() {
         try {
             int[] types = new int[]{Types.INTEGER};
-            String values = ResourceUtils.asString(resourceLoader.getResource("classpath:master/document.json"));
+            String values = ResourceUtils.asString(resourceLoader.getResource("classpath:master/master_document.json"));
             List<Document> documents = new ObjectMapper().readValue(values, new TypeReference<List<Document>>() {
             });
             for (Document document : documents) {
