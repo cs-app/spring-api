@@ -1,11 +1,16 @@
 package com.neta.teman.dawai.api.models.converter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.neta.teman.dawai.api.applications.commons.BeanCopy;
 import com.neta.teman.dawai.api.applications.commons.DTFomat;
 import com.neta.teman.dawai.api.models.dao.*;
+import com.neta.teman.dawai.api.models.reports.Duk;
 import com.neta.teman.dawai.api.models.reports.Profile;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 
+@Slf4j
 public class ReportConverter {
 
     public static List<Profile> profile(Map map, User user) {
@@ -56,19 +61,19 @@ public class ReportConverter {
         List<EmployeeFamily> employeeFamilies = user.getEmployee().getFamilies();
         if (Objects.isNull(employeeFamilies)) return new ArrayList<>();
         for (EmployeeFamily o : employeeFamilies) {
-            if("SAUDARAKANDUNG".equalsIgnoreCase(o.getFamilyStatus())) {
+            if ("SAUDARAKANDUNG".equalsIgnoreCase(o.getFamilyStatus())) {
                 o.setFamilyStatus("SAUDARA KANDUNG");
             }
-            if("IBUMERTUA".equalsIgnoreCase(o.getFamilyStatus())) {
+            if ("IBUMERTUA".equalsIgnoreCase(o.getFamilyStatus())) {
                 o.setFamilyStatus("IBU MERTUA");
             }
-            if("BAPAKMERTUA".equalsIgnoreCase(o.getFamilyStatus())) {
+            if ("BAPAKMERTUA".equalsIgnoreCase(o.getFamilyStatus())) {
                 o.setFamilyStatus("BAPAK MERTUA");
             }
-            if("IBUKANDUNG".equalsIgnoreCase(o.getFamilyStatus())) {
+            if ("IBUKANDUNG".equalsIgnoreCase(o.getFamilyStatus())) {
                 o.setFamilyStatus("IBU KANDUNG");
             }
-            if("BAPAKKANDUNG".equalsIgnoreCase(o.getFamilyStatus())) {
+            if ("BAPAKKANDUNG".equalsIgnoreCase(o.getFamilyStatus())) {
                 o.setFamilyStatus("BAPAK KANDUNG");
             }
         }
@@ -79,20 +84,20 @@ public class ReportConverter {
 
     public static Collection<?> container() {
         ArrayList<Profile> detail = new ArrayList<>();
-        detail.add(new Profile("P","Q"));
+        detail.add(new Profile("P", "Q"));
         return detail;
 
     }
 
     public static Collection<?> education(User user) {
         List<EmployeeEducation> education = user.getEmployee().getEducations();
-        if(Objects.isNull(education)) return new ArrayList<>();
+        if (Objects.isNull(education)) return new ArrayList<>();
         return education;
     }
 
     public static Collection<?> mutasi(User user) {
         List<EmployeeMutasi> education = user.getEmployee().getMutasis();
-        if(Objects.isNull(education)) return new ArrayList<>();
+        if (Objects.isNull(education)) return new ArrayList<>();
         return education;
     }
 
@@ -105,4 +110,25 @@ public class ReportConverter {
         newProfile(profiles, "ID Karis", employee.getNoKarisSu());
         return profiles;
     }
+
+    public static Collection<?> duk(List<Employee> employees) {
+        List<Duk> profiles = new ArrayList<>();
+        for (Employee o : employees) {
+            Duk duk = BeanCopy.copy(o, Duk.class);
+            duk.setGolongan(o.getPangkatDetail().getGol());
+            duk.setTmtGol(DTFomat.format(o.getTmtGol()));
+            duk.setTmtJabatan(DTFomat.format(o.getTmtJabatan()));
+            duk.setTmtCpns(DTFomat.format(o.getTglMulaiCPNS()));
+            // pendidikan
+            EmployeeEducation education = o.getEducations().get(o.getEducations().size() - 1);
+            duk.setPendidikan(education.getType());
+            duk.setPendidikanInstansi(education.getValue());
+            duk.setPendidikanJurusan(education.getMajors());
+            // tanggal lahir
+            duk.setTanggalLahir(DTFomat.format(o.getTanggalLahir()));
+            profiles.add(duk);
+        }
+        return profiles;
+    }
+
 }

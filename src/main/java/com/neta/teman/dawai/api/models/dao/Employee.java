@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.neta.teman.dawai.api.applications.base.BaseEntity;
-import com.neta.teman.dawai.api.plugins.simpeg.models.SimpegAuth;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.NotFound;
@@ -22,7 +21,7 @@ import java.util.List;
 public class Employee extends BaseEntity {
 
     @Id
-    private String nip;
+    String nip;
 
     String ktp;
 
@@ -83,14 +82,22 @@ public class Employee extends BaseEntity {
 
     // data kepegawaian
     String statusPeg;
+
     String jenisPeg;
+
     String mks;
+
     String mkg;
+
     String noKarpeg;
+
     String noKarisSu;
+
     @JsonProperty("PMK")
     String pmk;
+
     String statusAktif;
+
     String perkiraanPensiun;
 
     @JsonProperty("tgl_mulai_cpns")
@@ -125,24 +132,23 @@ public class Employee extends BaseEntity {
 
     Date tglSkGol;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    EmployeeJabatan jabatanDetail;
+    String pangkat;
 
     String eselon;
-
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    EmployeeEselon eselonDetail;
 
     String gol;
 
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    EmployeeGolongan golonganDetail;
+    EmployeeJabatan jabatanDetail;
 
-    String pangkat;
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    EmployeeEselon eselonDetail;
+
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    EmployeeGolongan golonganDetail;
 
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     EmployeePangkat pangkatDetail;
-
 
     @NotFound(action = NotFoundAction.IGNORE)
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)

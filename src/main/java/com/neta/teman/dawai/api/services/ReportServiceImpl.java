@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -44,40 +45,6 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public void initTemplate() {
-//        File folders = new File(AppConstants.reportTemplate);
-//        if (!folders.exists()) {
-//            if (folders.mkdirs()) {
-//                log.info("report generate folder template");
-//            } else {
-//                log.info("report generate folder template already exist");
-//            }
-//        }
-//        File foldersExport = new File(AppConstants.reportExport);
-//        if (!foldersExport.exists()) {
-//            if (foldersExport.mkdirs()) {
-//                log.info("report generate folder export");
-//            } else {
-//                log.info("report generate folder export already exist");
-//            }
-//        }
-//        String[] fileName = {
-//                "form_cuti",
-//                "pegawai_cv_container",
-//                "pegawai_cv_keluarga",
-//                "pegawai_cv_mutasi",
-//                "pegawai_cv_pendukung",
-//                "pegawai_cv_pendidikan",
-//                "pegawai_cv"
-//        };
-//        for (String s : fileName) {
-//            try {
-//                InputStream employeeReportStream = resourceLoader.getResource("classpath:reports/" + s + ".jrxml").getInputStream();
-//                JasperReport jasperReport = JasperCompileManager.compileReport(employeeReportStream);
-//                JRSaver.saveObject(jasperReport, basePathReport + File.separator + "template" + File.separator + s + ".jasper");
-//            } catch (JRException | IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
 
     }
 
@@ -233,5 +200,36 @@ public class ReportServiceImpl implements ReportService {
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public void printDUK(List<Employee> employees, OutputStream outputStream) {
+        try {
+            Map<String, Object> userMapOrigin = new HashMap<>();//new ObjectMapper().convertValue(employees, Map.class);
+            JRBeanCollectionDataSource employeeDataSource = new JRBeanCollectionDataSource(ReportConverter.duk(employees));
+//            String path = "C:\\Users\\Lenovo\\JaspersoftWorkspace\\MyReports\\duk.jasper";
+            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(new File(basePathReport + File.separator + "template" + File.separator + "duk.jasper"));
+//            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(new File(path));
+            JasperPrint print = JasperFillManager.fillReport(jasperReport, userMapOrigin, employeeDataSource);
+            JRPdfExporter exporter = new JRPdfExporter();
+            exporter.setExporterInput(new SimpleExporterInput(print));
+            exporter.setExporterOutput(new SimpleOutputStreamExporterOutput("reports/export/duk.pdf"));
+            SimplePdfReportConfiguration reportConfig = new SimplePdfReportConfiguration();
+            reportConfig.setSizePageToContent(true);
+            reportConfig.setForceLineBreakPolicy(false);
+
+            SimplePdfExporterConfiguration exportConfig = new SimplePdfExporterConfiguration();
+            exportConfig.setMetadataAuthor("Teman Dawai");
+            exportConfig.setEncrypted(true);
+            exportConfig.setAllowedPermissionsHint("PRINTING");
+            exporter.setConfiguration(reportConfig);
+            exporter.setConfiguration(exportConfig);
+            if (Objects.nonNull(outputStream)) {
+                exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(outputStream));
+            }
+            exporter.exportReport();
+        } catch (JRException e) {
+            e.printStackTrace();
+        }
     }
 }

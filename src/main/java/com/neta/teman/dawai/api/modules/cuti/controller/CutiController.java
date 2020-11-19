@@ -4,17 +4,22 @@ import com.neta.teman.dawai.api.applications.base.BaseRestController;
 import com.neta.teman.dawai.api.applications.base.Response;
 import com.neta.teman.dawai.api.applications.base.ServiceResolver;
 import com.neta.teman.dawai.api.models.dao.Cuti;
+import com.neta.teman.dawai.api.models.dao.Document;
 import com.neta.teman.dawai.api.models.dao.Holiday;
 import com.neta.teman.dawai.api.models.dao.User;
 import com.neta.teman.dawai.api.models.payload.converter.CutiConverter;
 import com.neta.teman.dawai.api.models.payload.converter.HolidayConverter;
 import com.neta.teman.dawai.api.models.payload.request.CutiRequest;
+import com.neta.teman.dawai.api.models.payload.request.FilterRequest;
 import com.neta.teman.dawai.api.models.payload.request.HolidayRequest;
 import com.neta.teman.dawai.api.models.payload.response.CutiResponse;
 import com.neta.teman.dawai.api.models.payload.response.HolidayResponse;
+import com.neta.teman.dawai.api.models.payload.response.PageResponse;
+import com.neta.teman.dawai.api.models.payload.response.UserCutiSummary;
 import com.neta.teman.dawai.api.services.CutiService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -112,5 +117,11 @@ public class CutiController extends BaseRestController {
     public ResponseEntity<List<HolidayResponse>> existHolidayDateFuture() {
         ServiceResolver<List<Holiday>> resolver = cutiService.existHolidayDateFuture();
         return response(resolver, HolidayConverter.class);
+    }
+
+    @PostMapping(value = "/page")
+    public ResponseEntity<PageResponse> typePage(@RequestBody FilterRequest request) {
+        ServiceResolver<Page<UserCutiSummary>> page = cutiService.userCutiSummary(request);
+        return response(new PageResponse(page));
     }
 }

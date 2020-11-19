@@ -2,9 +2,12 @@ package com.neta.teman.dawai.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.neta.teman.dawai.api.applications.constants.AppConstants;
+import com.neta.teman.dawai.api.models.converter.ReportConverter;
 import com.neta.teman.dawai.api.models.dao.Cuti;
+import com.neta.teman.dawai.api.models.dao.Employee;
 import com.neta.teman.dawai.api.models.dao.User;
 import com.neta.teman.dawai.api.models.repository.CutiRepository;
+import com.neta.teman.dawai.api.models.repository.EmployeeRepository;
 import com.neta.teman.dawai.api.services.ReportService;
 import com.neta.teman.dawai.api.services.UserService;
 import net.sf.jasperreports.engine.JRException;
@@ -46,8 +49,11 @@ class ReportTests {
     @Autowired
     CutiRepository cutiRepository;
 
+    @Autowired
+    EmployeeRepository employeeRepository;
+
     @BeforeAll
-    void generatedTable(){
+    void generatedTable() {
         reportService.initTemplate();
     }
 
@@ -61,6 +67,13 @@ class ReportTests {
         User user = userService.findByNip("196406241987032001").getResult();
         List<Cuti> cuti = cutiRepository.findAllByUser(user);
         reportService.printCuti(user, cuti.get(0), null);
+    }
+
+    @Test
+    void printDUK() throws JsonProcessingException {
+        List<Employee> employees = employeeRepository.findAll();
+//        ReportConverter.duk(employees);
+        reportService.printDUK(employees, null);
     }
 
 

@@ -5,7 +5,10 @@ import com.neta.teman.dawai.api.models.dao.Cuti;
 import com.neta.teman.dawai.api.models.dao.Holiday;
 import com.neta.teman.dawai.api.models.dao.User;
 import com.neta.teman.dawai.api.models.payload.request.CutiRequest;
+import com.neta.teman.dawai.api.models.payload.request.FilterRequest;
 import com.neta.teman.dawai.api.models.payload.request.HolidayRequest;
+import com.neta.teman.dawai.api.models.payload.response.UserCutiSummary;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -41,4 +44,6 @@ public interface CutiService {
     void addCutiUser(User user, Integer countCuti);
 
     ServiceResolver<Cuti> findByCutiUserAndId(User user, Long cutiId);
+
+    ServiceResolver<Page<UserCutiSummary>> userCutiSummary(FilterRequest request);
 }

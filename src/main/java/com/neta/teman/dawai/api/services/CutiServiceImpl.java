@@ -2,16 +2,21 @@ package com.neta.teman.dawai.api.services;
 
 import com.neta.teman.dawai.api.applications.base.ServiceResolver;
 import com.neta.teman.dawai.api.applications.commons.BeanCopy;
+import com.neta.teman.dawai.api.applications.commons.DTFomat;
 import com.neta.teman.dawai.api.applications.commons.DateTimeUtils;
 import com.neta.teman.dawai.api.applications.constants.AppConstants;
 import com.neta.teman.dawai.api.models.dao.*;
 import com.neta.teman.dawai.api.models.payload.request.CutiRequest;
+import com.neta.teman.dawai.api.models.payload.request.FilterRequest;
 import com.neta.teman.dawai.api.models.payload.request.HolidayRequest;
+import com.neta.teman.dawai.api.models.payload.response.UserCutiSummary;
 import com.neta.teman.dawai.api.models.repository.*;
 import com.neta.teman.dawai.api.models.spech.UserSpecs;
 import com.neta.teman.dawai.api.plugins.simpeg.services.SimpegServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -288,7 +293,49 @@ public class CutiServiceImpl extends SimpegServiceImpl implements CutiService {
     @Override
     public ServiceResolver<Cuti> findByCutiUserAndId(User user, Long cutiId) {
         Cuti cuti = cutiRepository.findByUserAndId(user, cutiId);
-        if(Objects.isNull(cuti)) return error(404, "cuti not found");
+        if (Objects.isNull(cuti)) return error(404, "cuti not found");
         return success(cuti);
+    }
+
+    @Override
+    public ServiceResolver<Page<UserCutiSummary>> userCutiSummary(FilterRequest request) {
+        List<UserCutiSummary> summaries = new ArrayList<>();
+        Page<User> users = userRepository.findAll(request.pageRequest());
+        for (User user : users) {
+            CutiSummary cm = cutiSummaryRepository.findByUser(user);
+            UserCutiSummary userCutiSummary = new UserCutiSummary();
+            userCutiSummary.setUser(user);
+            userCutiSummary.setCutiSummary(cm);
+            // counter cuti by month
+            List<UserCutiSummary.HisCount> hisCounts = new ArrayList<>();
+            Calendar start = Calendar.getInstance();
+            Calendar finish = Calendar.getInstance();
+            finish.clear(Calendar.MILLISECOND);
+            start.clear(Calendar.MILLISECOND);
+            start.set(Calendar.DAY_OF_MONTH, 1);
+            for (int i = 0; i < 12; i++) {
+                if(i==0) {
+                    start.set(Calendar.MONTH, 0);
+                    finish.set(Calendar.MONTH, 0);
+                } else {
+                    start.add(Calendar.MONTH, 1);
+                    finish.add(Calendar.MONTH, 1);
+                }
+                finish.set(Calendar.DAY_OF_MONTH, start.getActualMaximum(Calendar.DAY_OF_MONTH));
+                log.info("finish {}", DTFomat.format(finish.getTime()));
+                UserCutiSummary.HisCount count = new UserCutiSummary.HisCount();
+                count.setMonth(i);
+                int countUserCuti = 0;
+                List<Cuti> cutis = cutiRepository.findAllByUserAndStartDateBetween(user, start.getTime(), finish.getTime());
+                for (Cuti cuti : cutis) {
+                    countUserCuti += cuti.getTotalDays();
+                }
+                count.setCount(countUserCuti);
+                hisCounts.add(count);
+            }
+            userCutiSummary.setHisCount(hisCounts);
+            summaries.add(userCutiSummary);
+        }
+        return success(new PageImpl<>(summaries, users.getPageable(), users.getTotalElements()));
     }
 }

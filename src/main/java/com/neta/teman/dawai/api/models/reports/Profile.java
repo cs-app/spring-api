@@ -10,5 +10,7 @@ import lombok.NoArgsConstructor;
 public class Profile {
 
     String title;
+
     String value;
+
 }

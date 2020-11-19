@@ -25,5 +25,7 @@ public interface CutiRepository extends JpaRepository<Cuti, Long>, JpaSpecificat
 
     long countByUserAndFinishDateBetweenAndCutiStatusGreaterThan(User user, Date startDate, Date finishDate, Integer status);
 
+    List<Cuti> findAllByUserAndStartDateBetween(User user, Date time, Date time1);
 
+    int countByUserAndStartDateBetween(User user, Date time, Date time1);
 }
