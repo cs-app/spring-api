@@ -107,7 +107,7 @@ public class SimpegConverter {
             employee.setJabatanDetail(jabatan);
         }
         SimpegAuth.Employee.EmployeeJabatanEselon.EmployeeJabatanData jabatanData = jabatanEselon.getJabatanData();
-        Jabatan masterJabatan = jabatanRepository.findByName(jabatan.getNamaJabatan());
+        Jabatan masterJabatan = jabatanRepository.findByName(jabatanEselon.getJabatan().toUpperCase().trim());
         if (Objects.isNull(masterJabatan)) {
             masterJabatan = new Jabatan();
             masterJabatan.setSimpegId(jabatanData.getJabatanId());
@@ -199,9 +199,9 @@ public class SimpegConverter {
             for (EmployeeFamily f : employee.getFamilies()) {
                 if (f.getType().equals(o.getType()) &&
                         f.getFamilyStatus().equalsIgnoreCase(o.getFamilyStatus()) &&
-                        f.getName().equalsIgnoreCase(o.getName()) &&
-                        DTFomat.format(f.getDob()).equalsIgnoreCase(DTFomat.format(o.getDob())) &&
-                        f.getPob().equalsIgnoreCase(o.getPob())
+                        f.getName().equalsIgnoreCase(o.getName())
+//                        DTFomat.format(f.getDob()).equalsIgnoreCase(DTFomat.format(o.getDob())) &&
+//                        f.getPob().equalsIgnoreCase(o.getPob())
                 ) {
                     return false;
                 }

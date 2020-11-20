@@ -314,7 +314,7 @@ public class CutiServiceImpl extends SimpegServiceImpl implements CutiService {
             start.clear(Calendar.MILLISECOND);
             start.set(Calendar.DAY_OF_MONTH, 1);
             for (int i = 0; i < 12; i++) {
-                if(i==0) {
+                if (i == 0) {
                     start.set(Calendar.MONTH, 0);
                     finish.set(Calendar.MONTH, 0);
                 } else {
@@ -328,7 +328,9 @@ public class CutiServiceImpl extends SimpegServiceImpl implements CutiService {
                 int countUserCuti = 0;
                 List<Cuti> cutis = cutiRepository.findAllByUserAndStartDateBetween(user, start.getTime(), finish.getTime());
                 for (Cuti cuti : cutis) {
-                    countUserCuti += cuti.getTotalDays();
+                    if (cuti.getCutiStatus() >= 3) {
+                        countUserCuti += cuti.getTotalDays();
+                    }
                 }
                 count.setCount(countUserCuti);
                 hisCounts.add(count);
@@ -337,5 +339,16 @@ public class CutiServiceImpl extends SimpegServiceImpl implements CutiService {
             summaries.add(userCutiSummary);
         }
         return success(new PageImpl<>(summaries, users.getPageable(), users.getTotalElements()));
+    }
+
+    @Override
+    public ServiceResolver<CutiSummary> quota(CutiRequest request) {
+        User user = userRepository.findOne(UserSpecs.nip(request.getNip())).orElse(null);
+        if (Objects.isNull(user)) {
+            return error(401, "user not exist");
+        }
+        Calendar calendar = Calendar.getInstance();
+        CutiSummary cutiSummary = cutiSummaryRepository.findByUserAndTahun(user, calendar.get(Calendar.YEAR));
+        return success(cutiSummary);
     }
 }

@@ -1,6 +1,8 @@
 package com.neta.teman.dawai.api.models.repository;
 
+import com.neta.teman.dawai.api.applications.base.ServiceResolver;
 import com.neta.teman.dawai.api.models.dao.Cuti;
+import com.neta.teman.dawai.api.models.dao.CutiSummary;
 import com.neta.teman.dawai.api.models.dao.Role;
 import com.neta.teman.dawai.api.models.dao.User;
 import org.springframework.data.jpa.repository.JpaRepository;

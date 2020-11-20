@@ -3,10 +3,7 @@ package com.neta.teman.dawai.api.modules.cuti.controller;
 import com.neta.teman.dawai.api.applications.base.BaseRestController;
 import com.neta.teman.dawai.api.applications.base.Response;
 import com.neta.teman.dawai.api.applications.base.ServiceResolver;
-import com.neta.teman.dawai.api.models.dao.Cuti;
-import com.neta.teman.dawai.api.models.dao.Document;
-import com.neta.teman.dawai.api.models.dao.Holiday;
-import com.neta.teman.dawai.api.models.dao.User;
+import com.neta.teman.dawai.api.models.dao.*;
 import com.neta.teman.dawai.api.models.payload.converter.CutiConverter;
 import com.neta.teman.dawai.api.models.payload.converter.HolidayConverter;
 import com.neta.teman.dawai.api.models.payload.request.CutiRequest;
@@ -41,6 +38,15 @@ public class CutiController extends BaseRestController {
             return responseError(401, ERROR_MANDATORY_FIELD);
         }
         ServiceResolver<Boolean> resolver = cutiService.submitCuti(request);
+        return response(resolver);
+    }
+
+    @PostMapping(value = "/quota")
+    public ResponseEntity<CutiSummary> quota(@RequestBody CutiRequest request) {
+        if (isNull(request.getNip())) {
+            return responseError(401, ERROR_MANDATORY_FIELD);
+        }
+        ServiceResolver<CutiSummary> resolver = cutiService.quota(request);
         return response(resolver);
     }
 

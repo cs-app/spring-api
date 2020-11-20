@@ -2,6 +2,7 @@ package com.neta.teman.dawai.api.services;
 
 import com.neta.teman.dawai.api.applications.base.ServiceResolver;
 import com.neta.teman.dawai.api.models.dao.Cuti;
+import com.neta.teman.dawai.api.models.dao.CutiSummary;
 import com.neta.teman.dawai.api.models.dao.Holiday;
 import com.neta.teman.dawai.api.models.dao.User;
 import com.neta.teman.dawai.api.models.payload.request.CutiRequest;
@@ -46,4 +47,6 @@ public interface CutiService {
     ServiceResolver<Cuti> findByCutiUserAndId(User user, Long cutiId);
 
     ServiceResolver<Page<UserCutiSummary>> userCutiSummary(FilterRequest request);
+
+    ServiceResolver<CutiSummary> quota(CutiRequest request);
 }

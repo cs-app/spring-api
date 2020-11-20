@@ -21,6 +21,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
@@ -52,15 +53,20 @@ public class JabatanServiceImpl extends BaseService implements JabatanService {
     }
 
     @Override
-    public ServiceResolver<List<JabatanMapResponse>> loadAllMap() {
+    public ServiceResolver<List<JabatanMapResponse>> loadAllMap(Integer tahun) {
         List<JabatanMapResponse> responses = new ArrayList<>();
         // load all jabatan
         List<Jabatan> jabatans = jabatanRepository.findAll();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DATE, 1);
+        calendar.set(Calendar.MONTH, 0);
+        calendar.set(Calendar.YEAR, tahun - 58);
+        calendar.clear(Calendar.MILLISECOND);
         for (Jabatan o : jabatans) {
             JabatanMapResponse tmp = BeanCopy.copy(o, JabatanMapResponse.class);
             if (Objects.isNull(tmp.getKebutuhan())) tmp.setKebutuhan(0L);
             Long kebutuhan = tmp.getKebutuhan();
-            Long countResource = userRepository.countByEmployee_JabatanDetail_Jabatan(o);
+            Long countResource = userRepository.countByEmployee_JabatanDetail_JabatanAndEmployeeTanggalLahirGreaterThanEqual(o, calendar.getTime());
             tmp.setKetersediaan(countResource);
             tmp.setTotal(countResource - kebutuhan);
             responses.add(tmp);

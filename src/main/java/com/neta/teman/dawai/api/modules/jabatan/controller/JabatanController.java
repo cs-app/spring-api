@@ -7,6 +7,7 @@ import com.neta.teman.dawai.api.models.dao.Document;
 import com.neta.teman.dawai.api.models.dao.Jabatan;
 import com.neta.teman.dawai.api.models.payload.request.DocumentRequest;
 import com.neta.teman.dawai.api.models.payload.request.FilterRequest;
+import com.neta.teman.dawai.api.models.payload.request.JabatanMapRequest;
 import com.neta.teman.dawai.api.models.payload.request.JabatanRequest;
 import com.neta.teman.dawai.api.models.payload.response.JabatanMapResponse;
 import com.neta.teman.dawai.api.models.payload.response.PageResponse;
@@ -17,7 +18,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @RestController
@@ -34,9 +37,16 @@ public class JabatanController extends BaseRestController {
         return response(page);
     }
 
-    @GetMapping(value = "/all/map")
-    public ResponseEntity<List<Jabatan>> allMap() {
-        ServiceResolver<List<JabatanMapResponse>> page = jabatanService.loadAllMap();
+    @PostMapping(value = "/all/map")
+    public ResponseEntity<List<Jabatan>> allMap(@RequestBody JabatanMapRequest request) {
+        Calendar calendar = Calendar.getInstance();
+        if (Objects.isNull(request.getYear())) {
+            request.setYear(calendar.get(Calendar.YEAR));
+        }
+        if (request.getYear() < calendar.get(Calendar.YEAR)) {
+            request.setYear(calendar.get(Calendar.YEAR));
+        }
+        ServiceResolver<List<JabatanMapResponse>> page = jabatanService.loadAllMap(request.getYear());
         return response(page);
     }
 

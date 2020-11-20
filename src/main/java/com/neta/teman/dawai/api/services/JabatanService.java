@@ -19,5 +19,5 @@ public interface JabatanService {
 
     ServiceResolver remove(Jabatan copy);
 
-    ServiceResolver<List<JabatanMapResponse>> loadAllMap();
+    ServiceResolver<List<JabatanMapResponse>> loadAllMap(Integer tahun);
 }

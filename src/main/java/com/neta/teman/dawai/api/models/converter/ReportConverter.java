@@ -8,6 +8,9 @@ import com.neta.teman.dawai.api.models.reports.Duk;
 import com.neta.teman.dawai.api.models.reports.Profile;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.*;
 
 @Slf4j
@@ -117,8 +120,11 @@ public class ReportConverter {
             Duk duk = BeanCopy.copy(o, Duk.class);
             duk.setGolongan(o.getPangkatDetail().getGol());
             duk.setTmtGol(DTFomat.format(o.getTmtGol()));
+            duk.setMasaWaktuDiPangkat(toReadable(o.getTmtGol()));
             duk.setTmtJabatan(DTFomat.format(o.getTmtJabatan()));
+            duk.setMasaKerja(toReadable(o.getTmtJabatan()));
             duk.setTmtCpns(DTFomat.format(o.getTglMulaiCPNS()));
+            duk.setMasaKerjaTahunDanBulan(toReadable(o.getTglMulaiCPNS()));
             // pendidikan
             EmployeeEducation education = o.getEducations().get(o.getEducations().size() - 1);
             duk.setPendidikan(education.getType());
@@ -126,9 +132,38 @@ public class ReportConverter {
             duk.setPendidikanJurusan(education.getMajors());
             // tanggal lahir
             duk.setTanggalLahir(DTFomat.format(o.getTanggalLahir()));
+            duk.setPensiunTMT(toPensiunDate(o.getTanggalLahir()));
+            duk.setPensiunTahun(toPensiun(o.getTanggalLahir()));
             profiles.add(duk);
         }
         return profiles;
+    }
+
+    private static String toPensiun(Date date) {
+        LocalDate userday = date.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate().plusYears(58);
+        return "" + userday.getYear();
+    }
+
+    private static String toPensiunDate(Date date) {
+        LocalDate userday = date.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate().plusYears(58);
+        Date datePensiun = Date.from(userday.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        return DTFomat.format(datePensiun);
+    }
+
+    private static String toReadable(Date date) {
+        LocalDate today = LocalDate.now();
+        LocalDate userday = date.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();//LocalDate.of(2015, Month.MAY, 15);
+        Period diff = Period.between(userday, today);
+        StringBuilder sb = new StringBuilder();
+        sb.append(diff.getYears()).append(" Tahun ");
+        sb.append(diff.getMonths()).append(" Bulan ");
+        return sb.toString();
     }
 
 }
