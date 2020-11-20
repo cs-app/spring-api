@@ -4,8 +4,11 @@ import com.neta.teman.dawai.api.applications.base.BaseRestController;
 import com.neta.teman.dawai.api.applications.base.ServiceResolver;
 import com.neta.teman.dawai.api.models.dao.Employee;
 import com.neta.teman.dawai.api.models.dao.User;
+import com.neta.teman.dawai.api.models.payload.request.FilterDukRequest;
 import com.neta.teman.dawai.api.models.payload.request.FilterRequest;
+import com.neta.teman.dawai.api.models.payload.response.DUKFIlterResponse;
 import com.neta.teman.dawai.api.models.payload.response.PageResponse;
+import com.neta.teman.dawai.api.services.DUKService;
 import com.neta.teman.dawai.api.services.EmployeeService;
 import com.neta.teman.dawai.api.services.ReportService;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +36,9 @@ public class DUKController extends BaseRestController {
     @Autowired
     ReportService reportService;
 
+    @Autowired
+    DUKService dukService;
+
     @GetMapping(value = "/all")
     public ResponseEntity<List<Employee>> all() {
         ServiceResolver<List<Employee>> page = employeeService.loadAll();
@@ -40,9 +46,15 @@ public class DUKController extends BaseRestController {
     }
 
     @PostMapping(value = "/page")
-    public ResponseEntity<PageResponse> typePage(@RequestBody FilterRequest request) {
+    public ResponseEntity<PageResponse> typePage(@RequestBody FilterDukRequest request) {
         ServiceResolver<Page<Employee>> page = employeeService.loadPage(request);
         return response(new PageResponse(page));
+    }
+
+    @GetMapping(value = "/filter/param")
+    public ResponseEntity<DUKFIlterResponse> filterParam() {
+        ServiceResolver<DUKFIlterResponse> page = dukService.filterParams();
+        return response(page);
     }
 
     @GetMapping(value = "/download")

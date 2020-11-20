@@ -138,6 +138,16 @@ public class Employee extends BaseEntity {
 
     String gol;
 
+    String lastEducation;
+
+    Integer ageYear;
+
+    Integer ageMonth;
+
+    Integer ageWorkYear;
+
+    Integer ageWorkMonth;
+
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     EmployeeJabatan jabatanDetail;
 

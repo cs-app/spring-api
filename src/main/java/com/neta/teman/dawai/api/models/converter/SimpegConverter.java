@@ -2,11 +2,13 @@ package com.neta.teman.dawai.api.models.converter;
 
 import com.neta.teman.dawai.api.applications.commons.BeanCopy;
 import com.neta.teman.dawai.api.applications.commons.DTFomat;
+import com.neta.teman.dawai.api.applications.commons.UserCommons;
 import com.neta.teman.dawai.api.applications.commons.ValueValidation;
 import com.neta.teman.dawai.api.applications.constants.AppConstants;
 import com.neta.teman.dawai.api.models.dao.*;
 import com.neta.teman.dawai.api.models.repository.JabatanRepository;
 import com.neta.teman.dawai.api.models.repository.PangkatGolonganRepository;
+import com.neta.teman.dawai.api.models.repository.PendidikanRepository;
 import com.neta.teman.dawai.api.plugins.simpeg.models.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +21,16 @@ import java.util.stream.Collectors;
 public class SimpegConverter {
 
     @Autowired
+    UserCommons userCommons;
+
+    @Autowired
     PangkatGolonganRepository pangkatGolonganRepository;
 
     @Autowired
     JabatanRepository jabatanRepository;
+
+    @Autowired
+    PendidikanRepository pendidikanRepository;
 
     public void merge(Employee employee, SimpegAuth source) {
         SimpegAuth.Personal personal = source.getPersonal();
@@ -270,12 +278,20 @@ public class SimpegConverter {
             return true;
         }).collect(Collectors.toList());
         for (SimpegPendidikan o : newPendidikan) {
+            if (Objects.isNull(o.getJenjang())) continue;
             EmployeeEducation education = new EmployeeEducation();
             education.setType(o.getJenjang());
             education.setMajors(o.getJurusan());
             education.setValue(o.getNamaSekolah());
             education.setGraduated(o.getTahunLulus());
             educations.add(education);
+            // check pendidikan
+            Pendidikan pendidikan = pendidikanRepository.findByType(o.getJenjang());
+            if (Objects.isNull(pendidikan)) continue;
+            pendidikan = new Pendidikan();
+            pendidikan.setType(o.getJenjang());
+            pendidikan.setTingkat(userCommons.tingkatPendidikan(o.getJenjang()));
+            pendidikanRepository.save(pendidikan);
         }
         employee.setEducations(educations);
     }

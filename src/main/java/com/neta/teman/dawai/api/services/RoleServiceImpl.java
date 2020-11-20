@@ -4,9 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.neta.teman.dawai.api.applications.commons.ResourceUtils;
+import com.neta.teman.dawai.api.applications.commons.UserCommons;
+import com.neta.teman.dawai.api.models.dao.Employee;
 import com.neta.teman.dawai.api.models.dao.Jabatan;
 import com.neta.teman.dawai.api.models.dao.PangkatGolongan;
 import com.neta.teman.dawai.api.models.dao.Role;
+import com.neta.teman.dawai.api.models.repository.EmployeeRepository;
 import com.neta.teman.dawai.api.models.repository.JabatanRepository;
 import com.neta.teman.dawai.api.models.repository.PangkatGolonganRepository;
 import com.neta.teman.dawai.api.models.repository.RoleRepository;
@@ -28,6 +31,9 @@ import java.util.Objects;
 public class RoleServiceImpl extends SimpegServiceImpl {
 
     @Autowired
+    UserCommons userCommons;
+
+    @Autowired
     ResourceLoader resourceLoader;
 
     @Autowired
@@ -35,6 +41,9 @@ public class RoleServiceImpl extends SimpegServiceImpl {
 
     @Autowired
     RoleRepository roleRepository;
+
+    @Autowired
+    EmployeeRepository employeeRepository;
 
     @Autowired
     JabatanRepository jabatanRepository;

@@ -16,7 +16,7 @@ public class AppConstants {
     }
 
     public class Page {
-        public static final int SHOW_IN_PAGE = 20;
+        public static final int SHOW_IN_PAGE = 30;
     }
 
     public static String reportTemplate = "reports" + File.separator + "template" + File.separator;

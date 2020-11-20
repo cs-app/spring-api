@@ -8,8 +8,15 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class FilterRequest extends PageRequestRest {
+public class FilterDukRequest extends PageRequestRest {
 
-    String filter;
+    Long golongan;
+    Long jabatan;
+    String name;
+    Long pangkat;
+    Long pendidikan;
+    Integer status;
+    Integer usia;
+    Integer masaKerja;
 
 }

@@ -12,6 +12,8 @@ import java.util.List;
 
 public interface UserService extends RoleService {
 
+    void updateAllUserData();
+
     ServiceResolver<User> findByNip(String nip);
 
     ServiceResolver<User> findByUsernameAndPasswordSimpeg(String username, String password);

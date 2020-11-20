@@ -3,8 +3,9 @@ package com.neta.teman.dawai.api.services;
 import com.neta.teman.dawai.api.applications.base.BaseService;
 import com.neta.teman.dawai.api.applications.base.ServiceResolver;
 import com.neta.teman.dawai.api.models.dao.Employee;
-import com.neta.teman.dawai.api.models.payload.request.FilterRequest;
+import com.neta.teman.dawai.api.models.payload.request.FilterDukRequest;
 import com.neta.teman.dawai.api.models.repository.EmployeeRepository;
+import com.neta.teman.dawai.api.models.spech.EmployeeSpecs;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,9 @@ import java.util.List;
 public class EmployeeServiceImpl extends BaseService implements EmployeeService {
 
     @Autowired
+    EmployeeSpecs employeeSpecs;
+
+    @Autowired
     EmployeeRepository employeeRepository;
 
     @Override
@@ -25,8 +29,8 @@ public class EmployeeServiceImpl extends BaseService implements EmployeeService 
     }
 
     @Override
-    public ServiceResolver<Page<Employee>> loadPage(FilterRequest request) {
-        return success(employeeRepository.findAll(request.pageRequest()));
+    public ServiceResolver<Page<Employee>> loadPage(FilterDukRequest request) {
+        return success(employeeRepository.findAll(employeeSpecs.filter(request), request.pageRequest()));
     }
 
 }

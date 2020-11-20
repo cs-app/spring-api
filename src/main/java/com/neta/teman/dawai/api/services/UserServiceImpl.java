@@ -6,9 +6,7 @@ import com.neta.teman.dawai.api.models.converter.SimpegConverter;
 import com.neta.teman.dawai.api.models.dao.*;
 import com.neta.teman.dawai.api.models.payload.request.FilterRequest;
 import com.neta.teman.dawai.api.models.payload.request.UserPangkatRequest;
-import com.neta.teman.dawai.api.models.repository.PangkatGolonganRepository;
-import com.neta.teman.dawai.api.models.repository.RoleRepository;
-import com.neta.teman.dawai.api.models.repository.UserRepository;
+import com.neta.teman.dawai.api.models.repository.*;
 import com.neta.teman.dawai.api.models.spech.UserSpecs;
 import com.neta.teman.dawai.api.plugins.simpeg.models.SimpegAuth;
 import com.neta.teman.dawai.api.plugins.simpeg.models.SimpegEmployeeRiwayat;
@@ -16,6 +14,7 @@ import com.neta.teman.dawai.api.plugins.simpeg.models.SimpegResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -34,10 +33,19 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
     UserRepository userRepository;
 
     @Autowired
+    EmployeeRepository employeeRepository;
+
+    @Autowired
+    EmployeeEducationRepository employeeEducationRepository;
+
+    @Autowired
     RoleRepository roleRepository;
 
     @Autowired
     RoleService roleService;
+
+    @Autowired
+    PendidikanRepository pendidikanRepository;
 
     @Autowired
     CutiService cutiService;
@@ -47,6 +55,46 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
 
     @Autowired
     SimpegConverter simpegConverter;
+
+    @Override
+    public void updateAllUserData() {
+        List<User> users = userRepository.findAll();
+        List<Employee> employees = new ArrayList<>();
+        for (User user : users) {
+            Employee employee = user.getEmployee();
+            if (Objects.isNull(employee)) continue;
+            employee.setLastEducation(userCommons.lastEducation(user));
+            employee.setAgeYear(userCommons.getAgeYear(employee.getTanggalLahir()));
+            employee.setAgeMonth(userCommons.getAgeMonth(employee.getTanggalLahir()));
+            employee.setAgeWorkYear(userCommons.getAgeYear(employee.getTglMulaiCPNS()));
+            employee.setAgeWorkMonth(userCommons.getAgeMonth(employee.getTglMulaiCPNS()));
+            employees.add(employee);
+            if (employees.size() == 30) {
+                employeeRepository.saveAll(employees);
+                employees.clear();
+            }
+        }
+        if (employees.size() > 0) employeeRepository.saveAll(employees);
+
+        // update data pendidikan
+        int startPage = 0;
+        while (true) {
+            Page<EmployeeEducation> educationPage = employeeEducationRepository.findAll(PageRequest.of(startPage, AppConstants.Page.SHOW_IN_PAGE));
+            if (educationPage.getContent().isEmpty()) break;
+            for (EmployeeEducation e : educationPage.getContent()) {
+                if (Objects.isNull(e.getType())) continue;
+                Pendidikan pendidikan = pendidikanRepository.findByType(e.getType());
+                if (Objects.isNull(pendidikan)) {
+                    pendidikan = new Pendidikan();
+                    pendidikan.setType(e.getType());
+                    pendidikan.setTingkat(userCommons.tingkatPendidikan(e.getType()));
+                    pendidikanRepository.save(pendidikan);
+                }
+            }
+            startPage++;
+        }
+        log.info("finish update user data last information");
+    }
 
     @Override
     public ServiceResolver<User> findByNip(String nip) {
@@ -84,13 +132,26 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
             user.setRole(role);
             userRepository.save(signature(user));
             cutiService.initCutiPegawai();
+            updateUserInfo(user);
             return success(user);
         } else {
             // update
             userExist.setTokenSimpeg(data.getToken());
             buildEmployee(userExist.getEmployee(), data, username);
-            return success(userRepository.save(signature(userExist)));
+            User updateUser = userRepository.save(signature(userExist));
+            updateUserInfo(updateUser);
+            return success(updateUser);
         }
+    }
+
+    /**
+     * update last info user
+     */
+    private void updateUserInfo(User user) {
+        Employee employee = user.getEmployee();
+        if (Objects.isNull(employee)) return;
+        employee.setLastEducation(userCommons.lastEducation(user));
+        employeeRepository.save(employee);
     }
 
     @Override
