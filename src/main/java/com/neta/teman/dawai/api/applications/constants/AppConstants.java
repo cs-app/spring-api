@@ -35,4 +35,9 @@ public class AppConstants {
         public final static String PELAKSANA = "PELAKSANA";
     }
 
+    public class Uploads {
+        public final static long pending = 0;
+        public final static long rejected = 1;
+        public final static long approved = 2;
+    }
 }

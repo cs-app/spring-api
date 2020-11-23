@@ -4,6 +4,7 @@ import com.neta.teman.dawai.api.applications.base.ServiceResolver;
 import com.neta.teman.dawai.api.applications.constants.AppConstants;
 import com.neta.teman.dawai.api.models.converter.SimpegConverter;
 import com.neta.teman.dawai.api.models.dao.*;
+import com.neta.teman.dawai.api.models.payload.request.FilterJabatanRequest;
 import com.neta.teman.dawai.api.models.payload.request.FilterRequest;
 import com.neta.teman.dawai.api.models.payload.request.UserPangkatRequest;
 import com.neta.teman.dawai.api.models.repository.*;
@@ -33,6 +34,12 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
     UserRepository userRepository;
 
     @Autowired
+    DocumentRepository documentRepository;
+
+    @Autowired
+    EmployeeDocumentRepository employeeDocumentRepository;
+
+    @Autowired
     EmployeeRepository employeeRepository;
 
     @Autowired
@@ -55,6 +62,9 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
 
     @Autowired
     SimpegConverter simpegConverter;
+
+    @Autowired
+    UserSpecs userSpecs;
 
     @Override
     public void updateAllUserData() {
@@ -98,7 +108,7 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
 
     @Override
     public ServiceResolver<User> findByNip(String nip) {
-        User userExist = userRepository.findOne(UserSpecs.nip(nip)).orElse(null);
+        User userExist = userRepository.findOne(userSpecs.nip(nip)).orElse(null);
         if (Objects.isNull(userExist)) return error(404, "User not found");
         return success(userExist);
     }
@@ -144,6 +154,11 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public ServiceResolver<List<User>> findAll() {
+        return success(userRepository.findAll());
+    }
+
     /**
      * update last info user
      */
@@ -156,7 +171,7 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
 
     @Override
     public ServiceResolver<List<EmployeeDocument>> findByDocument(String nip) {
-        User userExist = userRepository.findOne(UserSpecs.nip(nip)).orElse(null);
+        User userExist = userRepository.findOne(userSpecs.nip(nip)).orElse(null);
         if (Objects.isNull(userExist)) return error(404, "User not found");
         if (Objects.isNull(userExist.getEmployee())) return error(404, "User not found");
         return success(userExist.getEmployee().getDocuments());
@@ -164,7 +179,7 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
 
     @Override
     public ServiceResolver<List<EmployeeDocument>> documentUpload(String nip, Long type, String fileName, Document document) {
-        User userExist = userRepository.findOne(UserSpecs.nip(nip)).orElse(null);
+        User userExist = userRepository.findOne(userSpecs.nip(nip)).orElse(null);
         if (Objects.isNull(userExist)) return error(404, "User not found");
         if (Objects.isNull(userExist.getEmployee())) return error(404, "User not found");
         Employee employee = userExist.getEmployee();
@@ -172,6 +187,7 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
         EmployeeDocument employeeDocument = new EmployeeDocument();
         employeeDocument.setDocument(document);
         employeeDocument.setPath(fileName);
+        employeeDocument.setApproval(AppConstants.Uploads.pending);
         employee.getDocuments().add(employeeDocument);
         userRepository.save(userExist);
         return success(employee.getDocuments());
@@ -179,7 +195,7 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
 
     @Override
     public ServiceResolver<List<EmployeeDocument>> documentRemove(String nip, Long documentId) {
-        User userExist = userRepository.findOne(UserSpecs.nip(nip)).orElse(null);
+        User userExist = userRepository.findOne(userSpecs.nip(nip)).orElse(null);
         if (Objects.isNull(userExist)) return error(404, "User not found");
         if (Objects.isNull(userExist.getEmployee())) return error(404, "User not found");
         Employee employee = userExist.getEmployee();
@@ -197,12 +213,17 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
 
     @Override
     public ServiceResolver<Page<User>> loadPage(FilterRequest request) {
-        return success(userRepository.findAll(UserSpecs.page(request.getFilter()), request.pageRequest()));
+        return success(userRepository.findAll(userSpecs.page(request.getFilter()), request.pageRequest()));
+    }
+
+    @Override
+    public ServiceResolver<Page<User>> loadPageJabatan(FilterJabatanRequest request) {
+        return success(userRepository.findAll(userSpecs.pageJenisJabatan(request.getFilter(), request.getId(), request.getJenisJabatan()), request.pageRequest()));
     }
 
     @Override
     public ServiceResolver<List<User>> findAllByGolongan(FilterRequest request) {
-        return success(userRepository.findAll(UserSpecs.golongan(request.getFilter())));
+        return success(userRepository.findAll(userSpecs.golongan(request.getFilter())));
     }
 
     @Override
@@ -218,7 +239,7 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
         }
         List<User> updateUser = new ArrayList<>();
         for (UserPangkatRequest.User o : params) {
-            User dbUser = userRepository.findOne(UserSpecs.nip(o.getNip())).orElse(null);
+            User dbUser = userRepository.findOne(userSpecs.nip(o.getNip())).orElse(null);
             if (Objects.isNull(dbUser)) continue;
             if (Objects.isNull(dbUser.getEmployee())) continue;
             Employee employee = dbUser.getEmployee();
@@ -256,7 +277,7 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
         if (Objects.isNull(pangkatGolongan)) {
             return error(401, "pangkat not exist");
         }
-        User user = userRepository.findOne(UserSpecs.nip(request.getNip())).orElse(null);
+        User user = userRepository.findOne(userSpecs.nip(request.getNip())).orElse(null);
         if (Objects.isNull(user)) return error(404, "user not found");
         Employee employee = user.getEmployee();
         if (Objects.isNull(employee)) return error(404, "user invalid");
@@ -272,6 +293,17 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
         employee.setPangkats(pangkatHis);
         userRepository.save(user);
         return success();
+    }
+
+    @Override
+    public ServiceResolver<User> updateRole(String nip, String roleValue) {
+        User user = userRepository.findOne(userSpecs.nip(nip)).orElse(null);
+        if (Objects.isNull(user)) return error(404, "user not found");
+        Role role = roleRepository.findByName(roleValue);
+        if (Objects.isNull(role)) return error(404, "role not found");
+        user.setRole(role);
+        userRepository.save(user);
+        return success(user);
     }
 
     private void buildEmployee(Employee employee, SimpegAuth simpegAuth, String username) {

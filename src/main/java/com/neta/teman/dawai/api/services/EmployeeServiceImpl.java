@@ -33,4 +33,9 @@ public class EmployeeServiceImpl extends BaseService implements EmployeeService 
         return success(employeeRepository.findAll(employeeSpecs.filter(request), request.pageRequest()));
     }
 
+    @Override
+    public ServiceResolver<List<Employee>> loadList(FilterDukRequest request) {
+        return success(employeeRepository.findAll(employeeSpecs.filter(request)));
+    }
+
 }

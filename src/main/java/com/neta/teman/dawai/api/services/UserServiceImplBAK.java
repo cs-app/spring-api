@@ -25,10 +25,13 @@ public class UserServiceImplBAK extends SimpegServiceImpl {
     @Autowired
     RoleRepository roleRepository;
 
+    @Autowired
+    UserSpecs userSpecs;
+
 
     //@Override
     public User findByUsernameAndPassword(String nip, String password) {
-        return userRepository.findOne(UserSpecs.login(nip, password)).orElse(null);
+        return userRepository.findOne(userSpecs.login(nip, password)).orElse(null);
     }
 
     /**

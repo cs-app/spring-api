@@ -29,12 +29,12 @@ public class BaseSpecs {
     }
 
     protected static boolean isGTZero(Integer value) {
-        if(Objects.isNull(value)) return false;
+        if (Objects.isNull(value)) return false;
         return value > 0;
     }
 
     protected static boolean isGTEqZero(Integer value) {
-        if(Objects.isNull(value)) return false;
+        if (Objects.isNull(value)) return false;
         return value >= 0;
     }
 

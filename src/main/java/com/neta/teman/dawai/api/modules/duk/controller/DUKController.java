@@ -71,4 +71,18 @@ public class DUKController extends BaseRestController {
                 .body(stream);
     }
 
+    @PostMapping(value = "/download/filter")
+    public ResponseEntity<StreamingResponseBody> downloadFilterDUK(@RequestBody FilterDukRequest request) {
+        ServiceResolver<List<Employee>> resolver = employeeService.loadList(request);
+        if (resolver.isError()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        String fileName = "duk.pdf";
+        StreamingResponseBody stream = out -> reportService.printDUK(resolver.getResult(), out);
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\"" + fileName + "\"")
+                .body(stream);
+    }
+
 }

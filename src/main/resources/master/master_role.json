@@ -1,42 +1,32 @@
 [
   {
     "id": 1,
-    "name": "USER",
+    "name": "STAFF ADMIN",
     "description": "Pegawai"
   },
   {
     "id": 2,
-    "name": "ADMIN",
+    "name": "STAFF",
     "description": "Super Admin"
   },
   {
     "id": 3,
-    "name": "ADMIN_SATKER_SIMPEG",
+    "name": "KEPALA SUB UNIT",
     "description": "Admin Satker Simpeg"
   },
   {
     "id": 4,
-    "name": "ADMIN_SATKER_PRESENSI",
+    "name": "KEPALA UNIT",
     "description": "Admin Satker Presensi"
   },
   {
     "id": 5,
-    "name": "PEJABAT_SATKER",
+    "name": "SEKRETARIS SUB UNIT",
     "description": "Pejabat Satker"
   },
   {
     "id": 6,
-    "name": "ADMIN_PUSAT_SIMPEG",
+    "name": "SEKRETARIS KEPALA UNIT",
     "description": "Admin Pusat Simpeg"
-  },
-  {
-    "id": 7,
-    "name": "ADMIN_PUSAT_PRESENSI",
-    "description": "Admin Pusat Presensi"
-  },
-  {
-    "id": 8,
-    "name": "PEJABAT_PUSAT",
-    "description": "Pejabat Pusat"
   }
 ]

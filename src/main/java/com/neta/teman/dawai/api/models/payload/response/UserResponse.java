@@ -12,8 +12,10 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
@@ -63,13 +65,13 @@ public class UserResponse {
     String rtRW;
 
     String kodePos;
-    
+
     String noAkses;
 
     String npwp;
 
     String noTaspen;
-    
+
     String docKTP;
 
     String docBirth;
@@ -90,7 +92,7 @@ public class UserResponse {
     String noKarpeg;
 
     String noKarisSu;
-    
+
     @JsonProperty("PMK")
     String pmk;
 
@@ -158,11 +160,15 @@ public class UserResponse {
         Role role = user.getRole();
         Employee employee = user.getEmployee();
         BeanCopy.copy(this, user, employee);
+        List<EmployeeJabatan> jabatans = new ArrayList<>();
         this.jabatanDetail = BeanCopy.copy(employee.getJabatanDetail(), EmployeeJabatan.class);
+        if (Objects.nonNull(employee.getJabatanDetail().getJabatan())) {
+            EmployeeJabatan.Jabatan jabatan = BeanCopy.copy(employee.getJabatanDetail().getJabatan(), EmployeeJabatan.Jabatan.class);
+            this.jabatanDetail.setJabatan(jabatan);
+        }
         this.eselonDetail = BeanCopy.copy(employee.getEselonDetail(), EmployeeEselon.class);
         this.pangkatDetail = BeanCopy.copy(employee.getPangkatDetail(), EmployeePangkat.class);
         this.golonganDetail = BeanCopy.copy(employee.getGolonganDetail(), EmployeeGolongan.class);
-
         this.contacts = BeanCopy.copyCollection(employee.getContacts(), EmployeeContact.class);
         this.educations = BeanCopy.copyCollection(employee.getEducations(), EmployeeEducation.class);
         this.families = BeanCopy.copyCollection(employee.getFamilies(), EmployeeFamily.class);
@@ -195,6 +201,25 @@ public class UserResponse {
         Integer kelJabatanId;
         String refId;
         String pensiun;
+
+        Jabatan jabatan;
+
+        @Data
+        @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+        public static class Jabatan {
+
+            private Long id;
+
+            private Long simpegId;
+
+            private String name;
+
+            private String jenisJabatan;
+
+            private Long kelasJabatan;
+
+            private Long kebutuhan;
+        }
     }
 
     @Data
@@ -264,8 +289,6 @@ public class UserResponse {
         String ukGroupId;
         String namaUnitKerja2;
     }
-
-
 
 
 }

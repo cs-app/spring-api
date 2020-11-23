@@ -41,9 +41,12 @@ public class CutiServiceImpl extends SimpegServiceImpl implements CutiService {
     @Autowired
     HolidayRepository holidayRepository;
 
+    @Autowired
+    UserSpecs userSpecs;
+
     @Override
     public ServiceResolver<Boolean> submitCuti(CutiRequest request) {
-        User user = userRepository.findOne(UserSpecs.nip(request.getNip())).orElse(null);
+        User user = userRepository.findOne(userSpecs.nip(request.getNip())).orElse(null);
         if (Objects.isNull(user)) {
             return error(403, USER_NOT_EXIST);
         }
@@ -81,7 +84,7 @@ public class CutiServiceImpl extends SimpegServiceImpl implements CutiService {
 
     @Override
     public ServiceResolver<Boolean> cancelCuti(CutiRequest request) {
-        User user = userRepository.findOne(UserSpecs.nip(request.getNip())).orElse(null);
+        User user = userRepository.findOne(userSpecs.nip(request.getNip())).orElse(null);
         if (Objects.isNull(user)) {
             return error(403, USER_NOT_EXIST);
         }
@@ -97,7 +100,7 @@ public class CutiServiceImpl extends SimpegServiceImpl implements CutiService {
 
     @Override
     public ServiceResolver<Boolean> approveAtasan(CutiRequest request) {
-        User user = userRepository.findOne(UserSpecs.nip(request.getNip())).orElse(null);
+        User user = userRepository.findOne(userSpecs.nip(request.getNip())).orElse(null);
         if (Objects.isNull(user)) {
             return error(403, USER_NOT_EXIST);
         }
@@ -118,7 +121,7 @@ public class CutiServiceImpl extends SimpegServiceImpl implements CutiService {
 
     @Override
     public ServiceResolver<Boolean> approvePejabat(CutiRequest request) {
-        User user = userRepository.findOne(UserSpecs.nip(request.getNip())).orElse(null);
+        User user = userRepository.findOne(userSpecs.nip(request.getNip())).orElse(null);
         if (Objects.isNull(user)) {
             return error(403, USER_NOT_EXIST);
         }
@@ -139,7 +142,7 @@ public class CutiServiceImpl extends SimpegServiceImpl implements CutiService {
 
     @Override
     public ServiceResolver<List<Cuti>> userCuti(CutiRequest request) {
-        User user = userRepository.findOne(UserSpecs.nip(request.getNip())).orElse(null);
+        User user = userRepository.findOne(userSpecs.nip(request.getNip())).orElse(null);
         if (Objects.isNull(user)) {
             return error(403, USER_NOT_EXIST);
         }
@@ -188,7 +191,7 @@ public class CutiServiceImpl extends SimpegServiceImpl implements CutiService {
     public boolean availableCutiDate(CutiRequest request) {
         if (isNull(request.getStartDate(), request.getFinishDate())) return false;
         if (request.getFinishDate().before(request.getStartDate())) return false;
-        User user = userRepository.findOne(UserSpecs.nip(request.getNip())).orElse(null);
+        User user = userRepository.findOne(userSpecs.nip(request.getNip())).orElse(null);
         if (Objects.isNull(user)) return false;
         Cuti cuti = cutiRepository.findByUserAndStartDateAndFinishDateAndCutiStatusGreaterThan(user, request.getStartDate(), request.getFinishDate(), AppConstants.Cuti.REJECTED);
         if (Objects.nonNull(cuti)) return false;
@@ -343,7 +346,7 @@ public class CutiServiceImpl extends SimpegServiceImpl implements CutiService {
 
     @Override
     public ServiceResolver<CutiSummary> quota(CutiRequest request) {
-        User user = userRepository.findOne(UserSpecs.nip(request.getNip())).orElse(null);
+        User user = userRepository.findOne(userSpecs.nip(request.getNip())).orElse(null);
         if (Objects.isNull(user)) {
             return error(401, "user not exist");
         }

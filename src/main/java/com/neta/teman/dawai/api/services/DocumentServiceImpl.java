@@ -107,7 +107,26 @@ public class DocumentServiceImpl extends BaseService implements DocumentService 
             documentRepository.deleteById(copy.getId());
             return success();
         } else return error(401, "cannot delete reference data");
+    }
 
+    @Override
+    public ServiceResolver documentApprove(Long id, Long approval, String message) {
+        EmployeeDocument employeeDocument = employeeDocumentRepository.findById(id).orElse(null);
+        if (Objects.isNull(employeeDocument)) {
+            return error(403, "document not found");
+        }
+        employeeDocument.setMessage((approval == 2 ? null : message));
+        employeeDocument.setApproval(approval);
+        employeeDocumentRepository.save(employeeDocument);
+        if (approval == 2) {
+            return success();
+        }
+        return error(201);
+    }
+
+    @Override
+    public ServiceResolver<List<EmployeeDocument>> findByAllDocument(Long approval) {
+        return success(employeeDocumentRepository.findAllByApproval(approval));
     }
 
 }

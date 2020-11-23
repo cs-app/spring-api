@@ -5,11 +5,9 @@ import com.neta.teman.dawai.api.applications.base.BaseRestController;
 import com.neta.teman.dawai.api.applications.base.Response;
 import com.neta.teman.dawai.api.applications.base.ServiceResolver;
 import com.neta.teman.dawai.api.applications.commons.DTFomat;
+import com.neta.teman.dawai.api.applications.constants.AppConstants;
 import com.neta.teman.dawai.api.models.dao.*;
-import com.neta.teman.dawai.api.models.payload.request.FilterRequest;
-import com.neta.teman.dawai.api.models.payload.request.LoginRequest;
-import com.neta.teman.dawai.api.models.payload.request.UploadRequest;
-import com.neta.teman.dawai.api.models.payload.request.UserPangkatRequest;
+import com.neta.teman.dawai.api.models.payload.request.*;
 import com.neta.teman.dawai.api.models.payload.response.UserResponse;
 import com.neta.teman.dawai.api.models.payload.response.PageResponse;
 import com.neta.teman.dawai.api.services.*;
@@ -64,9 +62,33 @@ public class UserController extends BaseRestController {
         return response(new UserResponse(resolver.getResult()));
     }
 
+    @PostMapping(value = "/update/role")
+    public ResponseEntity<User> updateRole(@RequestBody LoginRequest request) {
+        if (isNull(request.getNip(), request.getRole())) {
+            return responseError(401, "Username or password is empty!");
+        }
+        ServiceResolver<User> resolver = userService.updateRole(request.getNip().trim(), request.getRole().trim());
+        if (resolver.isError()) return responseError(resolver);
+        return response(new UserResponse(resolver.getResult()));
+    }
+
     @PostMapping(value = "/page")
     public ResponseEntity<PageResponse> page(@RequestBody FilterRequest request) {
         ServiceResolver<Page<User>> resolver = userService.loadPage(request);
+        // map to page
+        List<UserResponse> userResponses = new ArrayList<>();
+        Page page = resolver.getResult();
+        List<User> users = page.getContent();
+        for (User user : users) {
+            userResponses.add(new UserResponse(user));
+        }
+        Page<UserResponse> responsePage = new PageImpl<>(userResponses);
+        return response(new PageResponse(responsePage));
+    }
+
+    @PostMapping(value = "/page/jabatan")
+    public ResponseEntity<PageResponse> pageJabatan(@RequestBody FilterJabatanRequest request) {
+        ServiceResolver<Page<User>> resolver = userService.loadPageJabatan(request);
         // map to page
         List<UserResponse> userResponses = new ArrayList<>();
         Page page = resolver.getResult();
@@ -137,6 +159,7 @@ public class UserController extends BaseRestController {
         ServiceResolver<List<EmployeeDocument>> resolver = userService.documentRemove(request.getNip().trim(), request.getDocumentId());
         return response(resolver);
     }
+
 
     @PostMapping(value = "/pangkat/add")
     public ResponseEntity<Response> pangkatAdd(@RequestBody UserPangkatRequest request) {
@@ -240,6 +263,42 @@ public class UserController extends BaseRestController {
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(contentType))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+                .body(resource);
+    }
+
+    @GetMapping(value = "/view/digital/{nip}/{documentId}")
+    public ResponseEntity<Resource> viewFile(@PathVariable String nip, @PathVariable Long documentId, HttpServletRequest request) {
+        ServiceResolver<User> resolver = userService.findByNip(nip);
+        if (resolver.isError()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        Employee employee = resolver.getResult().getEmployee();
+        if (Objects.isNull(employee)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        boolean found = false;
+        String fileName = null;
+        String filePath = null;
+        for (EmployeeDocument doc : employee.getDocuments()) {
+            if (0 == doc.getId().compareTo(documentId)) {
+                found = true;
+                filePath = doc.getPath();
+                fileName = nip + "_" + doc.getDocument().getName() + FilenameUtils.getExtension(filePath).replaceAll(" ", "_");
+                break;
+            }
+        }
+        if (!found) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        Resource resource = fileService.loadFileAsResource(nip, filePath);
+        if (Objects.isNull(resource)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        String contentType = "application/octet-stream";
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + fileName + "\"")
                 .body(resource);
     }
 }

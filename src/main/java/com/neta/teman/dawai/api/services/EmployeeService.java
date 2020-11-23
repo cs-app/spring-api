@@ -15,4 +15,5 @@ public interface EmployeeService {
 
     ServiceResolver<Page<Employee>> loadPage(FilterDukRequest request);
 
+    ServiceResolver<List<Employee>> loadList(FilterDukRequest request);
 }

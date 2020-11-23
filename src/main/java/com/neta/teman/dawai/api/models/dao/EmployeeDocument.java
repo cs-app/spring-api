@@ -19,8 +19,12 @@ public class EmployeeDocument extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String path;
+
+    private String message;
+
+    private Long approval;
+
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     private Document document;
-
-    private String path;
 }
