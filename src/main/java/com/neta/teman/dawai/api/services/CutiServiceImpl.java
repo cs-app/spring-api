@@ -152,6 +152,13 @@ public class CutiServiceImpl extends SimpegServiceImpl implements CutiService {
     }
 
     @Override
+    public ServiceResolver<List<Cuti>> cutiUserApproval(CutiRequest request) {
+        List<Cuti> cutis = cutiRepository.findAll();
+        cutis.sort(Comparator.comparing(Cuti::getStartDate));
+        return success(cutis);
+    }
+
+    @Override
     public ServiceResolver addHolidayDate(HolidayRequest request) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(request.getDate());

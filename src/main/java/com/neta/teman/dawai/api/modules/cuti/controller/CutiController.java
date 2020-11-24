@@ -95,6 +95,15 @@ public class CutiController extends BaseRestController {
         return response(resolver, CutiConverter.class);
     }
 
+    @PostMapping(value = "/user/approval")
+    public ResponseEntity<List<CutiResponse>> cutiUserApproval(@RequestBody CutiRequest request) {
+        if (isNull(request.getNip())) {
+            return responseError(401, ERROR_MANDATORY_FIELD);
+        }
+        ServiceResolver<List<Cuti>> resolver = cutiService.cutiUserApproval(request);
+        return response(resolver, CutiConverter.class);
+    }
+
     @PostMapping(value = "/holiday/create")
     public ResponseEntity<Response> addHolidayDate(@RequestBody HolidayRequest request) {
         if (isNull(request.getDate(), request.getDescription())) {

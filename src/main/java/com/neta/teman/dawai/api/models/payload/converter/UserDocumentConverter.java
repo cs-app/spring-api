@@ -23,7 +23,7 @@ public class UserDocumentConverter implements ResponseConverter<List<UserDocumen
             List<EmployeeDocument> employeeDocuments = employee.getDocuments();
             if (Objects.isNull(employeeDocuments)) continue;
             for (EmployeeDocument ed : employeeDocuments) {
-                if (ed.getApproval() == AppConstants.Uploads.pending) {
+                if (Objects.isNull(ed.getApproval()) || ed.getApproval() == AppConstants.Uploads.pending) {
                     result.add(new UserDocumentResponse(employee, ed));
                 }
             }

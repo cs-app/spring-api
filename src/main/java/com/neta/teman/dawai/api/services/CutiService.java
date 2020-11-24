@@ -28,6 +28,8 @@ public interface CutiService {
 
     ServiceResolver<List<Cuti>> userCuti(CutiRequest request);
 
+    ServiceResolver<List<Cuti>> cutiUserApproval(CutiRequest request);
+
     ServiceResolver addHolidayDate(HolidayRequest request);
 
     ServiceResolver removeHolidayDate(HolidayRequest request);
@@ -49,4 +51,5 @@ public interface CutiService {
     ServiceResolver<Page<UserCutiSummary>> userCutiSummary(FilterRequest request);
 
     ServiceResolver<CutiSummary> quota(CutiRequest request);
+
 }

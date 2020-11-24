@@ -1,12 +1,12 @@
 [
   {
     "id": 1,
-    "name": "STAFF ADMIN",
+    "name": "STAFF",
     "description": "Pegawai"
   },
   {
     "id": 2,
-    "name": "STAFF",
+    "name": "STAFF ADMIN",
     "description": "Super Admin"
   },
   {
@@ -28,5 +28,10 @@
     "id": 6,
     "name": "SEKRETARIS KEPALA UNIT",
     "description": "Admin Pusat Simpeg"
+  },
+  {
+    "id": 7,
+    "name": "PEJABAT",
+    "description": "Pejabat"
   }
 ]
