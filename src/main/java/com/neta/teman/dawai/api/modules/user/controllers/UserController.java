@@ -1,11 +1,9 @@
 package com.neta.teman.dawai.api.modules.user.controllers;
 
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.neta.teman.dawai.api.applications.base.BaseRestController;
 import com.neta.teman.dawai.api.applications.base.Response;
 import com.neta.teman.dawai.api.applications.base.ServiceResolver;
 import com.neta.teman.dawai.api.applications.commons.DTFomat;
-import com.neta.teman.dawai.api.applications.constants.AppConstants;
 import com.neta.teman.dawai.api.models.dao.*;
 import com.neta.teman.dawai.api.models.payload.request.*;
 import com.neta.teman.dawai.api.models.payload.response.UserResponse;
@@ -62,6 +60,130 @@ public class UserController extends BaseRestController {
         return response(new UserResponse(resolver.getResult()));
     }
 
+    @GetMapping(value = "/profile/{nip}")
+    public ResponseEntity<User> profileNip(@PathVariable String nip) {
+        if (isNull(nip)) {
+            return responseError(401, "invalid param!");
+        }
+        ServiceResolver<User> resolver = userService.findByNip(nip.trim());
+        if (resolver.isError()) return responseError(resolver);
+        return response(new UserResponse(resolver.getResult()));
+    }
+
+    @PostMapping(value = "/update/profile")
+    public ResponseEntity updateProfile(@RequestBody UserProfileRequest request) {
+        if (isNull(request.getNip())) {
+            return responseError(401, "invalid param!");
+        }
+        ServiceResolver resolver = userService.updateProfile(request);
+        return response(resolver);
+    }
+
+    @PostMapping(value = "/update/profile/skp")
+    public ResponseEntity updateProfileSKP(@RequestBody UserProfileUpdateRequest request) {
+        if (isNull(request.getNip(), request.getTahun(), request.getNilai())) {
+            return responseError(401, "invalid param!");
+        }
+        if (!isNull(request.getExt(), request.getFile())) {
+            request.setName(fileService.storeFile(request.getNip(), request.getFile(), request.getExt()));
+        }
+        ServiceResolver resolver = userService.updateProfileSKP(request);
+        return response(resolver);
+    }
+
+    @GetMapping(value = "/update/profile/skp/remove/{id}")
+    public ResponseEntity removeProfileSKP(@PathVariable Long id) {
+        if (isNull(id)) {
+            return responseError(401, "invalid param!");
+        }
+        ServiceResolver resolver = userService.removeSKP(id);
+        return response(resolver);
+    }
+
+    @PostMapping(value = "/update/profile/credit")
+    public ResponseEntity<User> updateProfileCredit(@RequestBody UserProfileUpdateRequest request) {
+        if (isNull(request.getNip())) {
+            return responseError(401, "invalid param!");
+        }
+        if (isNull(request.getExt(), request.getFile())) {
+            request.setName(fileService.storeFile(request.getNip(), request.getFile(), request.getExt()));
+        }
+        ServiceResolver<User> resolver = userService.updateProfileCredit(request);
+        return response(resolver);
+    }
+
+    @PostMapping(value = "/update/profile/credit/remove/{id}")
+    public ResponseEntity removeProfileCredit(@PathVariable Long id) {
+        if (isNull(id)) {
+            return responseError(401, "invalid param!");
+        }
+        ServiceResolver resolver = userService.removeCredit(id);
+        return response(resolver);
+    }
+
+    @PostMapping(value = "/update/profile/lencana")
+    public ResponseEntity<User> updateProfileLencana(@RequestBody UserProfileUpdateRequest request) {
+        if (isNull(request.getNip())) {
+            return responseError(401, "invalid param!");
+        }
+        if (!isNull(request.getExt(), request.getFile())) {
+            request.setName(fileService.storeFile(request.getNip(), request.getFile(), request.getExt()));
+        }
+        ServiceResolver<User> resolver = userService.updateProfileLencana(request);
+        return response(resolver);
+    }
+
+    @GetMapping(value = "/update/profile/lencana/remove/{id}")
+    public ResponseEntity removeProfileLencana(@PathVariable Long id) {
+        if (isNull(id)) {
+            return responseError(401, "invalid param!");
+        }
+        ServiceResolver resolver = userService.removeLencana(id);
+        return response(resolver);
+    }
+
+    @PostMapping(value = "/update/profile/disiplin")
+    public ResponseEntity<User> updateProfileDisiplin(@RequestBody UserProfileUpdateRequest request) {
+        if (isNull(request.getNip())) {
+            return responseError(401, "invalid param!");
+        }
+        if (!isNull(request.getExt(), request.getFile())) {
+            request.setName(fileService.storeFile(request.getNip(), request.getFile(), request.getExt()));
+        }
+        ServiceResolver resolver = userService.updateProfileDisiplin(request);
+        return response(resolver);
+    }
+
+    @GetMapping(value = "/update/profile/disiplin/remove/{id}")
+    public ResponseEntity removeProfileDisiplin(@PathVariable Long id) {
+        if (isNull(id)) {
+            return responseError(401, "invalid param!");
+        }
+        ServiceResolver resolver = userService.removeDisiplin(id);
+        return response(resolver);
+    }
+
+    @PostMapping(value = "/update/profile/pelatihan")
+    public ResponseEntity<User> updateProfilePelatihan(@RequestBody UserProfileUpdateRequest request) {
+        if (isNull(request.getNip())) {
+            return responseError(401, "invalid param!");
+        }
+        if (!isNull(request.getExt(), request.getFile())) {
+            request.setName(fileService.storeFile(request.getNip(), request.getFile(), request.getExt()));
+        }
+        ServiceResolver resolver = userService.updateProfilePelatihan(request);
+        return response(resolver);
+    }
+
+    @GetMapping(value = "/update/profile/pelatihan/remove/{id}")
+    public ResponseEntity removeProfilePelatihan(@PathVariable Long id) {
+        if (isNull(id)) {
+            return responseError(401, "invalid param!");
+        }
+        ServiceResolver resolver = userService.removePelatihan(id);
+        return response(resolver);
+    }
+
     @PostMapping(value = "/update/role")
     public ResponseEntity<User> updateRole(@RequestBody LoginRequest request) {
         if (isNull(request.getNip(), request.getRole())) {
@@ -71,6 +193,8 @@ public class UserController extends BaseRestController {
         if (resolver.isError()) return responseError(resolver);
         return response(new UserResponse(resolver.getResult()));
     }
+
+    // end of user update
 
     @PostMapping(value = "/page")
     public ResponseEntity<PageResponse> page(@RequestBody FilterRequest request) {
@@ -263,6 +387,20 @@ public class UserController extends BaseRestController {
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(contentType))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+                .body(resource);
+    }
+
+    @GetMapping(value = "/download/profile/{nip}/{path}")
+    public ResponseEntity<Resource> downloadProfileFile(@PathVariable String nip, @PathVariable String path) {
+        Resource resource = fileService.loadFileAsResource(nip, path);
+        if (Objects.isNull(resource)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        String contentType = "application/octet-stream";
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + path + "\"")
                 .body(resource);
     }
 

@@ -30,4 +30,7 @@ public class CutiRequest {
     String cutiAddress;
     Integer approveStatus;
     String descriptionApprove;
+    String file;
+    String fileName;
+    String ext;
 }

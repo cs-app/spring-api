@@ -286,12 +286,13 @@ public class SimpegConverter {
             education.setGraduated(o.getTahunLulus());
             educations.add(education);
             // check pendidikan
-            Pendidikan pendidikan = pendidikanRepository.findByType(o.getJenjang());
-            if (Objects.isNull(pendidikan)) continue;
-            pendidikan = new Pendidikan();
-            pendidikan.setType(o.getJenjang());
-            pendidikan.setTingkat(userCommons.tingkatPendidikan(o.getJenjang()));
-            pendidikanRepository.save(pendidikan);
+            List<Pendidikan> pendidikanTmp = pendidikanRepository.findByType(o.getJenjang());
+            if (pendidikanTmp.isEmpty()) {
+                Pendidikan pendidikan = new Pendidikan();
+                pendidikan.setType(o.getJenjang());
+                pendidikan.setTingkat(userCommons.tingkatPendidikan(o.getJenjang()));
+                pendidikanRepository.save(pendidikan);
+            }
         }
         employee.setEducations(educations);
     }

@@ -38,6 +38,7 @@ public class Cuti extends BaseEntity {
     private Date approvePejabatDate;
     private String descriptionAtasan;
     private String descriptionPejabat;
+    private String fileName;
 
     @ManyToOne(optional = false)
     private User user;

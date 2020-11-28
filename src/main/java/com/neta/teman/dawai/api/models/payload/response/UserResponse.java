@@ -25,6 +25,16 @@ public class UserResponse {
 
     String nip;
 
+    String nik;
+
+    String kk;
+
+    String noRekening;
+
+    String namaRekening;
+
+    String namaBank;
+
     String nama;
 
     String presensiId;
@@ -156,6 +166,16 @@ public class UserResponse {
 
     List<EmployeeDocument> documents;
 
+    List<EmployeeSKP> skps;
+
+    List<EmployeeCreditScore> creditScores;
+
+    List<EmployeeSatyaLencana> lencanas;
+
+    List<EmployeeHukumanDisiplin> disiplins;
+
+    List<EmployeePelatihan> pelatihans;
+
     public UserResponse(User user) {
         Role role = user.getRole();
         Employee employee = user.getEmployee();
@@ -176,7 +196,11 @@ public class UserResponse {
         this.pangkats = BeanCopy.copyCollection(employee.getPangkats(), EmployeePangkatHis.class);
         this.units = BeanCopy.copyCollection(employee.getUnits(), EmployeeUnit.class);
         this.documents = BeanCopy.copyCollection(employee.getDocuments(), EmployeeDocument.class);
-
+        this.skps = BeanCopy.copyCollection(employee.getSkps(), EmployeeSKP.class);
+        this.creditScores = BeanCopy.copyCollection(employee.getCreditScores(), EmployeeCreditScore.class);
+        this.lencanas = BeanCopy.copyCollection(employee.getSatyaLencanas(), EmployeeSatyaLencana.class);
+        this.disiplins = BeanCopy.copyCollection(employee.getHukumanDisiplins(), EmployeeHukumanDisiplin.class);
+        this.pelatihans = BeanCopy.copyCollection(employee.getPelatihans(), EmployeePelatihan.class);
         this.role = role.getName();
         this.nip = employee.getNip();
     }

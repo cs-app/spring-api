@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -72,7 +73,7 @@ public class CutiServiceImpl extends SimpegServiceImpl implements CutiService {
             return error(406, "Jumlah hari cuti kurang dari 1");
         }
         cutiRepository.save(signature(cuti, user));
-        updateCutiUser(user, cuti.getTotalDays());
+        if (request.getJenisCuti() <= 3) updateCutiUser(user, cuti.getTotalDays());
         return success(true);
     }
 
@@ -94,7 +95,7 @@ public class CutiServiceImpl extends SimpegServiceImpl implements CutiService {
         }
         cuti.setCutiStatus(AppConstants.Cuti.CANCEL);
         cutiRepository.save(signature(cuti, user));
-        addCutiUser(user, cuti.getTotalDays());
+        if (request.getJenisCuti() <= 3) addCutiUser(user, cuti.getTotalDays());
         return success(true);
     }
 
@@ -113,7 +114,7 @@ public class CutiServiceImpl extends SimpegServiceImpl implements CutiService {
         cuti.setApproveAtasanDate(new Date());
         cuti.setDescriptionAtasan(request.getDescriptionApprove());
         cutiRepository.save(signature(cuti, user));
-        if (request.getApproveStatus() <= 2) {
+        if (request.getApproveStatus() <= 2 && request.getJenisCuti() <= 3) {
             addCutiUser(user, cuti.getTotalDays());
         }
         return success(true);
@@ -134,7 +135,7 @@ public class CutiServiceImpl extends SimpegServiceImpl implements CutiService {
         cuti.setApprovePejabatDate(new Date());
         cuti.setDescriptionPejabat(request.getDescriptionApprove());
         cutiRepository.save(signature(cuti, user));
-        if (request.getApproveStatus() <= 2) {
+        if (request.getApproveStatus() <= 2 && request.getJenisCuti() <= 3) {
             addCutiUser(user, cuti.getTotalDays());
         }
         return success(true);
@@ -208,6 +209,7 @@ public class CutiServiceImpl extends SimpegServiceImpl implements CutiService {
         return 0 == countFinish;
     }
 
+    @Transactional
     @Override
     public void initCutiPegawai() {
         Calendar calendar = Calendar.getInstance();
@@ -216,27 +218,23 @@ public class CutiServiceImpl extends SimpegServiceImpl implements CutiService {
         List<User> users = userRepository.findAll();
         for (User o : users) {
             CutiSummary cutiSummaryExist = cutiSummaryRepository.findByUser(o);
+            // migrasi jika beda tahun
             if (Objects.nonNull(cutiSummaryExist)) {
-                if (month > 5 && cutiSummaryExist.getKuotaPastCuti() > 0) {
-                    cutiSummaryExist.setKuotaPastCuti(0);
+                // clone
+                if (cutiSummaryExist.getTahun() < year) {
+                    CutiSummary cloneCuti = BeanCopy.copy(cutiSummaryExist, CutiSummary.class);
+                    int lastYear = cloneCuti.getKuotaCuti();
+                    int last1Year = cloneCuti.getKuotaPastCuti();
+                    int last2Year = cloneCuti.getKuotaPastTwoCuti();
+                    cutiSummaryExist.setTahun(year);
+                    cutiSummaryExist.setKuotaCuti(12);
+                    cutiSummaryExist.setKuotaPastCuti(Math.min(lastYear, 6));
+                    cutiSummaryExist.setKuotaPastTwoCuti(Math.min(last1Year, 6));
                     cutiSummaryRepository.save(signature(cutiSummaryExist));
                     CutiSummaryHistory history = BeanCopy.copy(cutiSummaryExist, CutiSummaryHistory.class);
                     history.setId(null);
                     history.setUser(o);
                     cutiSummaryHistoryRepository.save(signature(history));
-                    log.debug("create cuti for user {}", o.getEmployee().getNip());
-                } else {
-                    // migrasi data cuti, jan ke mar
-                    if (cutiSummaryExist.getTahun() < year && cutiSummaryExist.getKuotaPastCuti() > 0) {
-                        cutiSummaryExist.setTahun(year);
-                        int maxSisa = cutiSummaryExist.getKuotaPastCuti() > 6 ? 6 : cutiSummaryExist.getKuotaPastCuti();
-                        cutiSummaryExist.setKuotaPastCuti(maxSisa);
-                        cutiSummaryRepository.save(signature(cutiSummaryExist));
-                        CutiSummaryHistory history = BeanCopy.copy(cutiSummaryExist, CutiSummaryHistory.class);
-                        history.setId(null);
-                        history.setUser(o);
-                        cutiSummaryHistoryRepository.save(signature(history));
-                    }
                 }
                 continue;
             }
@@ -245,6 +243,7 @@ public class CutiServiceImpl extends SimpegServiceImpl implements CutiService {
             cutiSummary.setUser(o);
             cutiSummary.setKuotaCuti(12);
             cutiSummary.setKuotaPastCuti(0);
+            cutiSummary.setKuotaPastTwoCuti(0);
             cutiSummaryRepository.save(signature(cutiSummary));
             CutiSummaryHistory history = BeanCopy.copy(cutiSummary, CutiSummaryHistory.class);
             history.setId(null);
@@ -252,52 +251,92 @@ public class CutiServiceImpl extends SimpegServiceImpl implements CutiService {
             cutiSummaryHistoryRepository.save(signature(history));
             log.debug("create cuti for user {}", o.getEmployee().getNip());
         }
+
     }
 
     @Override
     public void updateCutiUser(User user, Integer countCuti) {
         CutiSummary cutiSummary = cutiSummaryRepository.findByUser(user);
-        // ambil dari sisa terlebih dahulu
-        // int cuti yang diambil
-        if (cutiSummary.getKuotaPastCuti() >= countCuti) {
-            // ambil dari sisa
-            cutiSummary.setKuotaPastCuti(cutiSummary.getKuotaPastCuti() - countCuti);
-        } else {
-            // sisa cuti kurang, ambil dari main cuti
-            int newCutiCount = countCuti - cutiSummary.getKuotaPastCuti();
-            cutiSummary.setKuotaPastCuti(0);
-            cutiSummary.setKuotaCuti(cutiSummary.getKuotaCuti() - newCutiCount);
+        CutiSummary cutiSummaryClone = BeanCopy.copy(cutiSummary, CutiSummary.class);
+        // ambil quota 2 tahun
+        if (cutiSummary.getKuotaPastTwoCuti() - countCuti <= 0) {
+            cutiSummary.setKuotaPastTwoCuti(cutiSummaryClone.getKuotaPastTwoCuti() - countCuti);
+            cutiSummaryRepository.save(cutiSummary);
+            // create his
+            CutiSummaryHistory history = BeanCopy.copy(cutiSummary, CutiSummaryHistory.class);
+            history.setId(null);
+            history.setUser(user);
+            cutiSummaryHistoryRepository.save(signature(history));
+            return;
         }
-        cutiSummaryRepository.save(cutiSummary);
-        CutiSummaryHistory history = BeanCopy.copy(cutiSummary, CutiSummaryHistory.class);
-        history.setId(null);
-        history.setUser(user);
-        cutiSummaryHistoryRepository.save(signature(history));
+        // ambil kuota 2 tahun + quota 1 tahun terakhir
+        if ((cutiSummary.getKuotaPastTwoCuti() + cutiSummary.getKuotaPastCuti()) - countCuti <= 0) {
+            cutiSummary.setKuotaPastTwoCuti(0);
+            cutiSummary.setKuotaPastCuti(cutiSummaryClone.getKuotaPastCuti() - (countCuti - cutiSummaryClone.getKuotaPastTwoCuti()));
+            cutiSummaryRepository.save(cutiSummary);
+            // create his
+            CutiSummaryHistory history = BeanCopy.copy(cutiSummary, CutiSummaryHistory.class);
+            history.setId(null);
+            history.setUser(user);
+            cutiSummaryHistoryRepository.save(signature(history));
+            return;
+        }
+
+        // ambil kuota 2 tahun + quota 1 tahun terakhir + berjalan
+        if ((cutiSummary.getKuotaPastTwoCuti() + cutiSummary.getKuotaPastCuti() + cutiSummary.getKuotaCuti()) - countCuti <= 0) {
+            cutiSummary.setKuotaPastTwoCuti(0);
+            cutiSummary.setKuotaPastCuti(0);
+            cutiSummary.setKuotaCuti(cutiSummaryClone.getKuotaCuti() - (countCuti - (cutiSummaryClone.getKuotaPastTwoCuti() + cutiSummaryClone.getKuotaPastCuti())));
+            cutiSummaryRepository.save(cutiSummary);
+            // create his
+            CutiSummaryHistory history = BeanCopy.copy(cutiSummary, CutiSummaryHistory.class);
+            history.setId(null);
+            history.setUser(user);
+            cutiSummaryHistoryRepository.save(signature(history));
+        }
     }
 
     @Override
     public void addCutiUser(User user, Integer countCuti) {
-        Calendar calendar = Calendar.getInstance();
-
-        int month = calendar.get(Calendar.MONTH);
         CutiSummary cutiSummary = cutiSummaryRepository.findByUser(user);
-        if (month > 5) {
-            cutiSummary.setKuotaCuti(cutiSummary.getKuotaCuti() + countCuti);
-        } else {
-            if (cutiSummary.getKuotaCuti() + countCuti <= 12) {
-                cutiSummary.setKuotaCuti(cutiSummary.getKuotaCuti() + countCuti);
-            } else {
-                // penambahan du kuota cuti
-                int maxKuotaCUti = 12 - cutiSummary.getKuotaCuti();
-                cutiSummary.setKuotaCuti(12);
-                cutiSummary.setKuotaPastCuti(countCuti - maxKuotaCUti);
+        CutiSummary cutiSummaryClone = BeanCopy.copy(cutiSummary, CutiSummary.class);
+        // rollback to kuota
+        if (cutiSummary.getKuotaCuti() + countCuti <= 12) {
+            cutiSummary.setKuotaCuti(cutiSummaryClone.getKuotaCuti() + countCuti);
+            cutiSummaryRepository.save(cutiSummary);
+            CutiSummaryHistory history = BeanCopy.copy(cutiSummary, CutiSummaryHistory.class);
+            history.setId(null);
+            history.setUser(user);
+            cutiSummaryHistoryRepository.save(signature(history));
+        }
+        if (cutiSummary.getKuotaCuti() + countCuti > 12) {
+            int sisaQuotaBerjalan = 12 - cutiSummary.getKuotaCuti();
+            cutiSummary.setKuotaCuti(12);
+            // check tahun lalu
+            if (cutiSummary.getKuotaPastCuti() + sisaQuotaBerjalan <= 6) {
+                int sisaQuota1Berjalan = 6 - cutiSummary.getKuotaPastCuti();
+                cutiSummary.setKuotaPastCuti(cutiSummaryClone.getKuotaPastCuti() + sisaQuota1Berjalan);
+                cutiSummaryRepository.save(cutiSummary);
+                CutiSummaryHistory history = BeanCopy.copy(cutiSummary, CutiSummaryHistory.class);
+                history.setId(null);
+                history.setUser(user);
+                cutiSummaryHistoryRepository.save(signature(history));
+                return;
+            }
+            if (cutiSummary.getKuotaPastCuti() + sisaQuotaBerjalan > 6) {
+                // sisa maksimal
+                int sisaQuota1Berjalan = 6 - cutiSummary.getKuotaPastCuti();
+                int sisaQuota2Berjalan = sisaQuotaBerjalan - sisaQuota1Berjalan;
+                cutiSummary.setKuotaPastCuti(6);
+                cutiSummary.setKuotaPastTwoCuti(Math.min(sisaQuota2Berjalan, 6));
+                cutiSummaryRepository.save(cutiSummary);
+                CutiSummaryHistory history = BeanCopy.copy(cutiSummary, CutiSummaryHistory.class);
+                history.setId(null);
+                history.setUser(user);
+                cutiSummaryHistoryRepository.save(signature(history));
             }
         }
-        cutiSummaryRepository.save(cutiSummary);
-        CutiSummaryHistory history = BeanCopy.copy(cutiSummary, CutiSummaryHistory.class);
-        history.setId(null);
-        history.setUser(user);
-        cutiSummaryHistoryRepository.save(signature(history));
+
     }
 
     @Override

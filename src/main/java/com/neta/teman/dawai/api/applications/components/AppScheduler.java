@@ -20,6 +20,7 @@ public class AppScheduler {
     @Scheduled(cron = "0 0 0 * * ?")
     public void middleOfTheNight() {
         userService.updateAllUserData();
+        userService.initializeNaikPangkatAndPensiun();
         cutiService.initCutiPegawai();
         log.info("schedule task finish");
     }

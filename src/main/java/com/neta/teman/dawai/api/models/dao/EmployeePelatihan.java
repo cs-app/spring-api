@@ -1,6 +1,5 @@
 package com.neta.teman.dawai.api.models.dao;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.neta.teman.dawai.api.applications.base.BaseEntity;
@@ -13,25 +12,23 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "td_cuti_summary")
+@Table(name = "app_employee_pelatihan")
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class CutiSummary extends BaseEntity {
+public class EmployeePelatihan extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
-    private User user;
+    private String path;
 
-    private Integer tahun;
+    private String type;
 
-    private Integer kuotaCuti;
+    @Temporal(TemporalType.DATE)
+    private Date tahun;
 
-    private Integer kuotaPastCuti;
+    @Temporal(TemporalType.DATE)
+    private Date tmt;
 
-    private Integer kuotaPastTwoCuti;
-
-
+    private String diklat;
 }

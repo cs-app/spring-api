@@ -23,9 +23,17 @@ public class Employee extends BaseEntity {
     @Id
     String nip;
 
-    String ktp;
+    String nik;
 
     String kk;
+
+    String noRekening;
+
+    String namaRekening;
+
+    String namaBank;
+
+    String ktp;
 
     String presensiId;
 
@@ -185,7 +193,27 @@ public class Employee extends BaseEntity {
     private List<EmployeeUnit> units;
 
     @NotFound(action = NotFoundAction.IGNORE)
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private List<EmployeeDocument> documents;
+
+    @NotFound(action = NotFoundAction.IGNORE)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    private List<EmployeeSKP> skps;
+
+    @NotFound(action = NotFoundAction.IGNORE)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    private List<EmployeePelatihan> pelatihans;
+
+    @NotFound(action = NotFoundAction.IGNORE)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    private List<EmployeeSatyaLencana> satyaLencanas;
+
+    @NotFound(action = NotFoundAction.IGNORE)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    private List<EmployeeHukumanDisiplin> hukumanDisiplins;
+
+    @NotFound(action = NotFoundAction.IGNORE)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    private List<EmployeeCreditScore> creditScores;
 
 }

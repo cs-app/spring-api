@@ -4,23 +4,21 @@ import com.neta.teman.dawai.api.applications.base.ServiceResolver;
 import com.neta.teman.dawai.api.applications.constants.AppConstants;
 import com.neta.teman.dawai.api.models.converter.SimpegConverter;
 import com.neta.teman.dawai.api.models.dao.*;
-import com.neta.teman.dawai.api.models.payload.request.FilterJabatanRequest;
-import com.neta.teman.dawai.api.models.payload.request.FilterRequest;
-import com.neta.teman.dawai.api.models.payload.request.UserPangkatRequest;
+import com.neta.teman.dawai.api.models.payload.request.*;
 import com.neta.teman.dawai.api.models.repository.*;
 import com.neta.teman.dawai.api.models.spech.UserSpecs;
 import com.neta.teman.dawai.api.plugins.simpeg.models.SimpegAuth;
 import com.neta.teman.dawai.api.plugins.simpeg.models.SimpegEmployeeRiwayat;
 import com.neta.teman.dawai.api.plugins.simpeg.models.SimpegResponse;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -66,6 +64,21 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
     @Autowired
     UserSpecs userSpecs;
 
+    @Autowired
+    EmployeeSKPRepository skpRepository;
+
+    @Autowired
+    EmployeeCreditScoreRepository creditScoreRepository;
+
+    @Autowired
+    EmployeeSatyaLencanaRepository satyaLencanaRepository;
+
+    @Autowired
+    EmployeeHukumanDisiplinRepository hukumanDisiplinRepository;
+
+    @Autowired
+    EmployeePelatihanRepository pelatihanRepository;
+
     @Override
     public void updateAllUserData() {
         List<User> users = userRepository.findAll();
@@ -88,22 +101,53 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
 
         // update data pendidikan
         int startPage = 0;
+        Map<String, String> typePendidikan = new HashMap<>();
         while (true) {
             Page<EmployeeEducation> educationPage = employeeEducationRepository.findAll(PageRequest.of(startPage, AppConstants.Page.SHOW_IN_PAGE));
             if (educationPage.getContent().isEmpty()) break;
             for (EmployeeEducation e : educationPage.getContent()) {
                 if (Objects.isNull(e.getType())) continue;
-                Pendidikan pendidikan = pendidikanRepository.findByType(e.getType());
-                if (Objects.isNull(pendidikan)) {
-                    pendidikan = new Pendidikan();
-                    pendidikan.setType(e.getType());
-                    pendidikan.setTingkat(userCommons.tingkatPendidikan(e.getType()));
-                    pendidikanRepository.save(pendidikan);
-                }
+                typePendidikan.put(e.getType(), e.getType());
+
             }
             startPage++;
         }
+        // update data pendidikan
+        List<Pendidikan> pendidikans = new ArrayList<>();
+        for (Map.Entry<String, String> e : typePendidikan.entrySet()) {
+            log.info("type pendidikan {}", e.getKey());
+            List<Pendidikan> pendidikanTmp = pendidikanRepository.findByType(e.getKey().trim());
+            if (pendidikanTmp.isEmpty()) {
+                Pendidikan pendidikan = new Pendidikan();
+                pendidikan.setType(e.getKey().trim());
+                pendidikan.setTingkat(userCommons.tingkatPendidikan(e.getKey().trim()));
+                pendidikans.add(pendidikan);
+            } else {
+                AtomicInteger integer = new AtomicInteger(0);
+                for (Pendidikan p : pendidikanTmp) {
+                    if (integer.getAndIncrement() == 0) continue;
+                    pendidikanRepository.delete(p);
+                }
+            }
+        }
+        if (!pendidikans.isEmpty()) {
+            pendidikanRepository.saveAll(pendidikans);
+        }
         log.info("finish update user data last information");
+    }
+
+    @Override
+    public void initializeNaikPangkatAndPensiun() {
+        List<User> users = userRepository.findAll();
+        PangkatGolongan pangkatGolongan = pangkatGolonganRepository.findById(18L).orElse(null);
+        if (Objects.isNull(pangkatGolongan)) return;
+        for (User user : users) {
+            // user
+            EmployeePangkatHis pensiun = userCommons.pensiun(user, pangkatGolongan);
+            if (Objects.nonNull(pensiun)) user.getEmployee().getPangkats().add(pensiun);
+            EmployeePangkatHis naikPangkat = userCommons.naikPangkat(user);
+            if (Objects.nonNull(naikPangkat)) user.getEmployee().getPangkats().add(naikPangkat);
+        }
     }
 
     @Override
@@ -116,6 +160,7 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
     /**
      * create new role from server simpeg
      */
+    @Transactional
     @Override
     public ServiceResolver<User> findByUsernameAndPasswordSimpeg(String username, String password) {
         SimpegResponse<SimpegAuth> response = auth(username, password);
@@ -129,15 +174,16 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
         User userExist = userRepository.findByUsername(username);
         if (Objects.isNull(userExist)) {
             // create
-            Role role = roleRepository.findByName("USER");
+            Role role = roleRepository.findByName("STAFF");
             if (Objects.isNull(role)) {
                 initializeRole();
-                role = roleRepository.findByName("USER");
+                role = roleRepository.findByName("STAFF");
             }
             User user = new User();
             user.setUsername(username);
             user.setTokenSimpeg(data.getToken());
-            user.setEmployee(new Employee());
+            Employee employee = employeeRepository.findById(username).orElse(new Employee());
+            user.setEmployee(employee);
             buildEmployee(user.getEmployee(), data, username);
             user.setRole(role);
             userRepository.save(signature(user));
@@ -304,6 +350,127 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
         user.setRole(role);
         userRepository.save(user);
         return success(user);
+    }
+
+    @Override
+    public ServiceResolver<User> updateProfile(UserProfileRequest request) {
+        User user = userRepository.findOne(userSpecs.nip(request.getNip())).orElse(null);
+        if (Objects.isNull(user)) return error(404, "user not found");
+        Employee employee = user.getEmployee();
+        employee.setNik(request.getNik());
+        employee.setKk(request.getKk());
+        employee.setNoRekening(request.getNoRekening());
+        employee.setNamaBank(request.getNamaBank());
+        employee.setNamaRekening(request.getNamaRekening());
+        userRepository.save(user);
+        return success(user);
+    }
+
+    @Override
+    public ServiceResolver<User> updateProfileSKP(UserProfileUpdateRequest request) {
+        User user = userRepository.findOne(userSpecs.nip(request.getNip())).orElse(null);
+        if (Objects.isNull(user)) return error(404, "user not found");
+        Employee employee = user.getEmployee();
+        if (Objects.isNull(employee)) return error(404, "employee not found");
+        EmployeeSKP skp = new EmployeeSKP();
+        skp.setTahun(request.getTahun());
+        skp.setNilaiRata(request.getNilai());
+        skp.setPath(request.getName());
+        employee.getSkps().add(skp);
+        userRepository.save(user);
+        return success(user);
+    }
+
+    @Override
+    public ServiceResolver removeSKP(Long id) {
+        skpRepository.deleteById(id);
+        return success();
+    }
+
+    @Override
+    public ServiceResolver updateProfileCredit(UserProfileUpdateRequest request) {
+        User user = userRepository.findOne(userSpecs.nip(request.getNip())).orElse(null);
+        if (Objects.isNull(user)) return error(404, "user not found");
+        Employee employee = user.getEmployee();
+        if (Objects.isNull(employee)) return error(404, "employee not found");
+        EmployeeCreditScore creditScore = new EmployeeCreditScore();
+        creditScore.setTahun(request.getTahun());
+        creditScore.setNilai(request.getNilai());
+        creditScore.setPath(request.getName());
+        employee.getCreditScores().add(creditScore);
+        userRepository.save(user);
+        return success(user);
+    }
+
+    @Override
+    public ServiceResolver removeCredit(Long id) {
+        creditScoreRepository.deleteById(id);
+        return success();
+    }
+
+    @Override
+    public ServiceResolver updateProfileLencana(UserProfileUpdateRequest request) {
+        User user = userRepository.findOne(userSpecs.nip(request.getNip())).orElse(null);
+        if (Objects.isNull(user)) return error(404, "user not found");
+        Employee employee = user.getEmployee();
+        if (Objects.isNull(employee)) return error(404, "employee not found");
+        EmployeeSatyaLencana lencana = new EmployeeSatyaLencana();
+        lencana.setTahun(request.getTahun());
+        lencana.setSatyaLencana(request.getLencana());
+        lencana.setPath(request.getName());
+        employee.getSatyaLencanas().add(lencana);
+        userRepository.save(user);
+        return success(user);
+    }
+
+    @Override
+    public ServiceResolver removeLencana(Long id) {
+        satyaLencanaRepository.deleteById(id);
+        return success();
+    }
+
+    @Override
+    public ServiceResolver updateProfileDisiplin(UserProfileUpdateRequest request) {
+        User user = userRepository.findOne(userSpecs.nip(request.getNip())).orElse(null);
+        if (Objects.isNull(user)) return error(404, "user not found");
+        Employee employee = user.getEmployee();
+        if (Objects.isNull(employee)) return error(404, "employee not found");
+        EmployeeHukumanDisiplin lencana = new EmployeeHukumanDisiplin();
+        lencana.setTahun(request.getTahun());
+        lencana.setHukuman(request.getHukuman());
+        lencana.setPath(request.getName());
+        employee.getHukumanDisiplins().add(lencana);
+        userRepository.save(user);
+        return success(user);
+    }
+
+    @Override
+    public ServiceResolver removeDisiplin(Long id) {
+        hukumanDisiplinRepository.deleteById(id);
+        return success();
+    }
+
+    @Override
+    public ServiceResolver updateProfilePelatihan(UserProfileUpdateRequest request) {
+        User user = userRepository.findOne(userSpecs.nip(request.getNip())).orElse(null);
+        if (Objects.isNull(user)) return error(404, "user not found");
+        Employee employee = user.getEmployee();
+        if (Objects.isNull(employee)) return error(404, "employee not found");
+        EmployeePelatihan lencana = new EmployeePelatihan();
+        lencana.setTahun(request.getTahun());
+        lencana.setDiklat(request.getDiklat());
+        lencana.setTmt(request.getTmt());
+        lencana.setPath(request.getName());
+        lencana.setType(request.getDiklatType());
+        employee.getPelatihans().add(lencana);
+        userRepository.save(user);
+        return success(user);
+    }
+
+    @Override
+    public ServiceResolver removePelatihan(Long id) {
+        pelatihanRepository.deleteById(id);
+        return success();
     }
 
     private void buildEmployee(Employee employee, SimpegAuth simpegAuth, String username) {

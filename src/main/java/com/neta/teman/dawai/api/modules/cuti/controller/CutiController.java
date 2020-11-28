@@ -14,11 +14,16 @@ import com.neta.teman.dawai.api.models.payload.response.HolidayResponse;
 import com.neta.teman.dawai.api.models.payload.response.PageResponse;
 import com.neta.teman.dawai.api.models.payload.response.UserCutiSummary;
 import com.neta.teman.dawai.api.services.CutiService;
+import com.neta.teman.dawai.api.services.FileService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import java.util.List;
 
@@ -31,14 +36,33 @@ public class CutiController extends BaseRestController {
     @Autowired
     CutiService cutiService;
 
+    @Autowired
+    FileService fileService;
+
     @PostMapping(value = "/request")
     public ResponseEntity<Boolean> request(@RequestBody CutiRequest request) {
         if (isNull(request.getJenisCuti(), request.getNip(), request.getStartDate(), request.getFinishDate(), request.getDescription(),
                 request.getTlpAddress(), request.getCutiAddress())) {
             return responseError(401, ERROR_MANDATORY_FIELD);
         }
+        request.setFileName(fileService.storeFile(request.getNip(), request.getFile(), request.getExt()));
         ServiceResolver<Boolean> resolver = cutiService.submitCuti(request);
         return response(resolver);
+    }
+
+    @GetMapping(value = "/download/lampiran/{id}")
+    public ResponseEntity<StreamingResponseBody> downloadLampiran(@PathVariable Long id) {
+//        ServiceResolver<Cuti> resolver = cutiService.findByCutiUserAndId(id);
+//        if (resolver.isError()) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+//        }
+//        String fileName = "duk.pdf";
+//        StreamingResponseBody stream = out -> reportService.printDUK(resolver.getResult(), out);
+//        return ResponseEntity.ok()
+//                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\"" + fileName + "\"")
+//                .body(stream);
+        return null;
     }
 
     @PostMapping(value = "/quota")

@@ -40,5 +40,6 @@ public class TemanDawaiApiApplication implements ApplicationRunner {
         userService.initializeJabatan();
         cutiService.initCutiPegawai();
         userService.updateAllUserData();
+        userService.initializeNaikPangkatAndPensiun();
     }
 }
