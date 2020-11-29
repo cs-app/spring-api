@@ -24,5 +24,5 @@ public class EmployeeSKP extends BaseEntity {
 
     private Date tahun;
 
-    private Long nilaiRata;
+    private String nilaiRata;
 }

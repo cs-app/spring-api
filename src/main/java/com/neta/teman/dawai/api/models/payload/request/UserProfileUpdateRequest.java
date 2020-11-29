@@ -20,6 +20,8 @@ public class UserProfileUpdateRequest extends ProfileDokumenRequest{
 
     private Long nilai;
 
+    private String keterangan;
+
     private String lencana;
 
     private String hukuman;

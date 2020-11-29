@@ -10,7 +10,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CutiSummaryRepository extends JpaRepository<CutiSummary, Long>, JpaSpecificationExecutor<CutiSummary> {
 
-    CutiSummary findByUser(User user);
+    // CutiSummary findByUser(User user);
 
     CutiSummary findByUserAndTahun(User user, int year);
+
+    CutiSummary findByUser(User user);
 }

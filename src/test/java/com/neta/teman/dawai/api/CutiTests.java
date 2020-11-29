@@ -3,12 +3,10 @@ package com.neta.teman.dawai.api;
 import com.neta.teman.dawai.api.applications.commons.DateTimeUtils;
 import com.neta.teman.dawai.api.applications.constants.AppConstants;
 import com.neta.teman.dawai.api.models.dao.Cuti;
+import com.neta.teman.dawai.api.models.dao.CutiSummary;
 import com.neta.teman.dawai.api.models.dao.User;
 import com.neta.teman.dawai.api.models.payload.request.CutiRequest;
-import com.neta.teman.dawai.api.models.repository.CutiRepository;
-import com.neta.teman.dawai.api.models.repository.HolidayRepository;
-import com.neta.teman.dawai.api.models.repository.RoleRepository;
-import com.neta.teman.dawai.api.models.repository.UserRepository;
+import com.neta.teman.dawai.api.models.repository.*;
 import com.neta.teman.dawai.api.services.CutiService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -20,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -40,6 +39,12 @@ class CutiTests {
 
     @Autowired
     CutiRepository cutiRepository;
+
+    @Autowired
+    CutiSummaryRepository cutiSummaryRepository;
+
+    @Autowired
+    CutiSummaryHistoryRepository cutiSummaryHistoryRepository;
 
     @Autowired
     HolidayRepository holidayRepository;
@@ -101,7 +106,7 @@ class CutiTests {
         int count = holidayRepository.countByDateBetweenAndDayNotIn(calendar.getTime(), calendarF.getTime(), Arrays.asList(1, 2));
         Assertions.assertEquals(1, count);
 
-        Assertions.assertEquals(3, workingDays-count);
+        Assertions.assertEquals(3, workingDays - count);
     }
 
     @Test
@@ -174,5 +179,115 @@ class CutiTests {
         Assertions.assertFalse(isAvailable);
     }
 
+    @Test
+    void hitungCuti() {
+        int ambilCuti = 10;
+        User user = TestAdminConstant.roleAnduserIfNotExist(roleRepository, userRepository);
+        LocalDate localDate = LocalDate.now();
+        CutiSummary summary = cutiSummaryRepository.findByUserAndTahun(user, localDate.getYear());
+        if (Objects.isNull(summary)) {
+            summary = new CutiSummary();
+            summary.setTahun(localDate.getYear());
+            summary.setUser(user);
+            summary.setKuotaCuti(12);
+            summary.setKuotaPastCuti(6);
+            summary.setKuotaPastTwoCuti(6);
+        } else {
+            summary.setKuotaCuti(12);
+            summary.setKuotaPastCuti(6);
+            summary.setKuotaPastTwoCuti(6);
+        }
+        cutiSummaryRepository.save(summary);
+        cutiService.updateCutiUser(user, ambilCuti);
+        summary = cutiSummaryRepository.findByUserAndTahun(user, localDate.getYear());
+        Assertions.assertEquals(0, summary.getKuotaPastTwoCuti());
+        Assertions.assertEquals(2, summary.getKuotaPastCuti());
+        Assertions.assertEquals(12, summary.getKuotaCuti());
+        // reset cuti
+        summary.setKuotaCuti(12);
+        summary.setKuotaPastCuti(6);
+        summary.setKuotaPastTwoCuti(6);
+        cutiSummaryRepository.save(summary);
+
+        cutiService.updateCutiUser(user, 12);
+        summary = cutiSummaryRepository.findByUserAndTahun(user, localDate.getYear());
+        Assertions.assertEquals(0, summary.getKuotaPastTwoCuti());
+        Assertions.assertEquals(0, summary.getKuotaPastCuti());
+        Assertions.assertEquals(12, summary.getKuotaCuti());
+
+        summary.setKuotaCuti(12);
+        summary.setKuotaPastCuti(6);
+        summary.setKuotaPastTwoCuti(6);
+        cutiSummaryRepository.save(summary);
+
+        cutiService.updateCutiUser(user, 24);
+        summary = cutiSummaryRepository.findByUserAndTahun(user, localDate.getYear());
+        Assertions.assertEquals(0, summary.getKuotaPastTwoCuti());
+        Assertions.assertEquals(0, summary.getKuotaPastCuti());
+        Assertions.assertEquals(0, summary.getKuotaCuti());
+
+        summary.setKuotaCuti(12);
+        summary.setKuotaPastCuti(2);
+        summary.setKuotaPastTwoCuti(0);
+        cutiSummaryRepository.save(summary);
+
+        cutiService.updateCutiUser(user, 3);
+        summary = cutiSummaryRepository.findByUserAndTahun(user, localDate.getYear());
+        Assertions.assertEquals(0, summary.getKuotaPastTwoCuti());
+        Assertions.assertEquals(0, summary.getKuotaPastCuti());
+        Assertions.assertEquals(11, summary.getKuotaCuti());
+
+        summary.setKuotaCuti(12);
+        summary.setKuotaPastCuti(6);
+        summary.setKuotaPastTwoCuti(1);
+        cutiSummaryRepository.save(summary);
+
+        cutiService.updateCutiUser(user, 5);
+
+        summary = cutiSummaryRepository.findByUserAndTahun(user, localDate.getYear());
+        Assertions.assertEquals(0, summary.getKuotaPastTwoCuti());
+        Assertions.assertEquals(2, summary.getKuotaPastCuti());
+        Assertions.assertEquals(12, summary.getKuotaCuti());
+
+        // INCREMENT CUTI
+        cutiService.addCutiUser(user, 3);
+        summary = cutiSummaryRepository.findByUserAndTahun(user, localDate.getYear());
+        Assertions.assertEquals(0, summary.getKuotaPastTwoCuti());
+        Assertions.assertEquals(5, summary.getKuotaPastCuti());
+        Assertions.assertEquals(12, summary.getKuotaCuti());
+
+        summary.setKuotaCuti(12);
+        summary.setKuotaPastCuti(6);
+        summary.setKuotaPastTwoCuti(6);
+        cutiSummaryRepository.save(summary);
+
+        cutiService.addCutiUser(user, 3);
+        summary = cutiSummaryRepository.findByUserAndTahun(user, localDate.getYear());
+        Assertions.assertEquals(6, summary.getKuotaPastTwoCuti());
+        Assertions.assertEquals(6, summary.getKuotaPastCuti());
+        Assertions.assertEquals(12, summary.getKuotaCuti());
+
+        summary.setKuotaCuti(12);
+        summary.setKuotaPastCuti(6);
+        summary.setKuotaPastTwoCuti(1);
+        cutiSummaryRepository.save(summary);
+
+        cutiService.addCutiUser(user, 3);
+        summary = cutiSummaryRepository.findByUserAndTahun(user, localDate.getYear());
+        Assertions.assertEquals(4, summary.getKuotaPastTwoCuti());
+        Assertions.assertEquals(6, summary.getKuotaPastCuti());
+        Assertions.assertEquals(12, summary.getKuotaCuti());
+
+        summary.setKuotaCuti(8);
+        summary.setKuotaPastCuti(0);
+        summary.setKuotaPastTwoCuti(0);
+        cutiSummaryRepository.save(summary);
+
+        cutiService.addCutiUser(user, 5);
+        summary = cutiSummaryRepository.findByUserAndTahun(user, localDate.getYear());
+        Assertions.assertEquals(0, summary.getKuotaPastTwoCuti());
+        Assertions.assertEquals(1, summary.getKuotaPastCuti());
+        Assertions.assertEquals(12, summary.getKuotaCuti());
+    }
 
 }

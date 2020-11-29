@@ -31,6 +31,7 @@ public class UserCommons {
     }
 
     public Integer getAgeYear(Date tanggalLahir) {
+        if(Objects.isNull(tanggalLahir)) return null;
         LocalDate today = LocalDate.now();
         LocalDate userday = tanggalLahir.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         Period diff = Period.between(userday, today);
@@ -38,6 +39,7 @@ public class UserCommons {
     }
 
     public Integer getAgeMonth(Date tanggalLahir) {
+        if(Objects.isNull(tanggalLahir)) return null;
         LocalDate today = LocalDate.now();
         LocalDate userday = tanggalLahir.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         Period diff = Period.between(userday, today);

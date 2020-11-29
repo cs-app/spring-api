@@ -1,5 +1,6 @@
 package com.neta.teman.dawai.api;
 
+import com.neta.teman.dawai.api.applications.commons.UserCommons;
 import com.neta.teman.dawai.api.services.CutiService;
 import com.neta.teman.dawai.api.services.DocumentService;
 import com.neta.teman.dawai.api.services.ReportService;
@@ -14,6 +15,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @Slf4j
 @SpringBootApplication
 public class TemanDawaiApiApplication implements ApplicationRunner {
+
+    @Autowired
+    UserCommons userCommons;
 
     @Autowired
     CutiService cutiService;

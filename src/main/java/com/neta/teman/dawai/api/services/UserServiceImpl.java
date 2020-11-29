@@ -374,7 +374,7 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
         if (Objects.isNull(employee)) return error(404, "employee not found");
         EmployeeSKP skp = new EmployeeSKP();
         skp.setTahun(request.getTahun());
-        skp.setNilaiRata(request.getNilai());
+        skp.setNilaiRata(request.getKeterangan());
         skp.setPath(request.getName());
         employee.getSkps().add(skp);
         userRepository.save(user);
