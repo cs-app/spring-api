@@ -19,15 +19,15 @@ public class ReportConverter {
     public static List<Profile> profile(Map map, User user) {
         List<Profile> profiles = new ArrayList<>();
         Employee employee = user.getEmployee();
-        newProfile(profiles, "NIP", employee.getNip());
-        newProfile(profiles, "Nama", employee.getNama());
-        newProfile(profiles, "Status Pegawai (Aktif/Pensiun/Pindah/CTLN)", employee.getStatusAktif());
-        newProfile(profiles, "Tempat, Tanggal Lahir", map.get("tempat_lahir") + ", " + DTFomat.format(employee.getTanggalLahir()));
-        newProfile(profiles, "Alamat Tinggal", employee.getAlamat());
-        newProfile(profiles, "No. KTP", employee.getKtp());
-        newProfile(profiles, "No. KK", employee.getKk());
-        newProfile(profiles, "Jenis Kelamin", employee.getKelamin());
-        newProfile(profiles, "Status Perkawinan", employee.getStatusDiri());
+        newProfile(profiles, "1   NIP", employee.getNip());
+        newProfile(profiles, "2   Nama", employee.getNama());
+        newProfile(profiles, "3   Status Pegawai (Aktif/Pensiun/Pindah/CTLN)", employee.getStatusAktif());
+        newProfile(profiles, "4   Tempat, Tanggal Lahir", map.get("tempat_lahir") + ", " + DTFomat.format(employee.getTanggalLahir()));
+        newProfile(profiles, "5   Alamat Tinggal", employee.getAlamat());
+        newProfile(profiles, "6   No. KTP", employee.getNik());
+        newProfile(profiles, "7   No. KK", employee.getKk());
+        newProfile(profiles, "8   Jenis Kelamin", employee.getKelamin());
+        newProfile(profiles, "9   Status Perkawinan", employee.getStatusDiri());
         String tglPernikahan = "";
         List<EmployeeFamily> families = employee.getFamilies();
         for (EmployeeFamily f : families) {
@@ -36,7 +36,7 @@ public class ReportConverter {
                 break;
             }
         }
-        newProfile(profiles, "Tgl. Pernikahan", tglPernikahan);
+        newProfile(profiles, "10  Tgl. Pernikahan", tglPernikahan);
         List<EmployeeContact> contacts = user.getEmployee().getContacts();
         String noTlp = "";
         String email = "";
@@ -45,11 +45,78 @@ public class ReportConverter {
                 noTlp = c.getValue();
             } else email = c.getValue();
         }
-        newProfile(profiles, "No. HP", noTlp);
-//        newProfile(profiles, "No. Tlp", map.get("kelamin"));
-        newProfile(profiles, "Email", email);
-        newProfile(profiles, "Perkiraan Pensiun", employee.getPerkiraanPensiun());
+        newProfile(profiles, "11  No. HP", noTlp);
+        newProfile(profiles, "12  Email", email);
+        newProfile(profiles, "13  Perkiraan Pensiun", employee.getPerkiraanPensiun());
+        // orang tua
+        /*
+         * 1 = pasangan = suami, istri
+         * 2 = anak = anak
+         * 3 = orangtua = bapakkandung, ibukandung
+         * 4 = mertua = bapakmertua, ibumertua
+         * 5 = saudara = saudarakandung
+         * */
+        List<Profile> profilesOrangTua = new ArrayList<>();
+        List<Profile> profilesPasangan = new ArrayList<>();
+        List<Profile> profilesAnak = new ArrayList<>();
+        List<Profile> profilesMertua = new ArrayList<>();
+        List<Profile> profilesSaudara = new ArrayList<>();
+        List<EmployeeFamily> familyList = user.getEmployee().getFamilies();
+        int seqSaudara = 1;
+        int seqKeluarga = 2;
+        for (EmployeeFamily e : familyList) {
+            if (1 == e.getType()) {
+                profilesPasangan.add(new Profile(appendSpace(6) + "1a. Nama Istri/Suami", e.getName()));
+                profilesPasangan.add(new Profile(appendSpace(6) + "1b. Pekerjaan", e.getOccupation()));
+            }
+            if (2 == e.getType()) {
+                profilesAnak.add(new Profile(appendSpace(6) + seqKeluarga + "a. Nama", e.getName()));
+                profilesAnak.add(new Profile(appendSpace(6) + seqKeluarga + "b. Pekerjaan", e.getOccupation()));
+                seqKeluarga++;
+            }
+            if (3 == e.getType()) {
+                // ayah
+                if ("BAPAKKANDUNG".equalsIgnoreCase(e.getFamilyStatus())) {
+                    profilesOrangTua.add(new Profile(appendSpace(6) + "1a. Nama Ayah", e.getName()));
+                    profilesOrangTua.add(new Profile(appendSpace(6) + "1b. Pekerjaan", e.getOccupation()));
+                }
+                if ("IBUKANDUNG".equalsIgnoreCase(e.getFamilyStatus())) {
+                    profilesOrangTua.add(new Profile(appendSpace(6) + "2a. Nama Ibu", e.getName()));
+                    profilesOrangTua.add(new Profile(appendSpace(6) + "2b. Pekerjaan", e.getOccupation()));
+                }
+
+            }
+            if (4 == e.getType()) {
+
+            }
+            if (5 == e.getType()) {
+                if ("SAUDARAKANDUNG".equalsIgnoreCase(e.getFamilyStatus())) {
+                    profilesSaudara.add(new Profile(appendSpace(6) + seqSaudara + "a. Nama", e.getName()));
+                    profilesSaudara.add(new Profile(appendSpace(6) + seqSaudara + "b. Pekerjaan", e.getOccupation()));
+                    seqSaudara++;
+                }
+            }
+        }
+        newProfile(profiles, "14  Orang Tua", "");
+        profilesOrangTua.sort(Comparator.comparing(Profile::getTitle));
+        profiles.addAll(profilesOrangTua);
+        newProfile(profiles, "15  Saudara Kandung", "");
+        profilesSaudara.sort(Comparator.comparing(Profile::getTitle));
+        profiles.addAll(profilesSaudara);
+        newProfile(profiles, "16  Keluarga", "");
+        profilesAnak.sort(Comparator.comparing(Profile::getTitle));
+        profilesPasangan.addAll(profilesAnak);
+        profiles.addAll(profilesPasangan);
         return profiles;
+    }
+
+    private static String appendSpace(int total) {
+        String space = "\u00A0";
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < total; i++) {
+            sb.append(space);
+        }
+        return sb.toString();
     }
 
     private static void newProfile(List<Profile> profiles, String key, Object val) {

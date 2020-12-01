@@ -318,6 +318,8 @@ public class SimpegConverter {
         List<SimpegPangkat> newPangkat = source.getPangkat().stream().filter(o -> {
             if (Objects.isNull(employee.getPangkats())) return true;
             for (EmployeePangkatHis ph : employee.getPangkats()) {
+                if (Objects.isNull(ph.getPangkatGolongan())) continue;
+                if (Objects.isNull(ph.getPangkatGolongan().getGolongan())) continue;
                 if (ph.getPangkatGolongan().getGolongan().equalsIgnoreCase(o.getGol())) {
                     return false;
                 }

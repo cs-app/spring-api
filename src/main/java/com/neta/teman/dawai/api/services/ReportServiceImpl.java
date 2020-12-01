@@ -160,19 +160,20 @@ public class ReportServiceImpl implements ReportService {
             JRBeanCollectionDataSource mutasiDataSource = new JRBeanCollectionDataSource(ReportConverter.mutasi(user));
             JRBeanCollectionDataSource pendukungDataSource = new JRBeanCollectionDataSource(ReportConverter.pendukung(user));
 
-//            userMapOrigin.put("SUB_DIR", "C:\\Users\\demOn\\Documents\\Workspace\\Zuliadin\\teman-dawai-api\\reports\\template\\");
             userMapOrigin.put("SUB_DIR", basePathReport + File.separator + "template" + File.separator);
+            userMapOrigin.put("SUB_DIR", basePathReport + File.separator);
             userMapOrigin.put("CONTAINER_DATASOURCE", container);
             userMapOrigin.put("FAMILY_DATASOURCE", familyDataSource);
             userMapOrigin.put("EDUCATION_DATASOURCE", educationDataSource);
             userMapOrigin.put("MUTASI_DATASOURCE", mutasiDataSource);
             userMapOrigin.put("PENDUKUNG_DATASOURCE", pendukungDataSource);
 
-            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(new File(basePathReport + File.separator + "template" + File.separator + "pegawai_cv.jasper"));
+//            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(new File(basePathReport + File.separator + "template" + File.separator + "pegawai_cv.jasper"));
+            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(new File(basePathReport + File.separator + "pegawai_cv.jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasperReport, userMapOrigin, profileDataSource);
             JRPdfExporter exporter = new JRPdfExporter();
             exporter.setExporterInput(new SimpleExporterInput(print));
-//            exporter.setExporterOutput(new SimpleOutputStreamExporterOutput("reports/export/cv.pdf"));
+            exporter.setExporterOutput(new SimpleOutputStreamExporterOutput("reports/export/cv.pdf"));
 //            if (Desktop.isDesktopSupported()) {
 //                try {
 //                    File myFile = new File("reports/export/cv.pdf");
