@@ -22,6 +22,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,8 +80,8 @@ public class ReportServiceImpl implements ReportService {
             map.put("LAMA_CUTI", String.valueOf(cuti.getTotalDays()));
             map.put("START", DTFomat.format(cuti.getStartDate()));
             map.put("FINISH", DTFomat.format(cuti.getFinishDate()));
-
-            CutiSummary cutiSummary = cutiSummaryRepository.findByUser(user);
+            LocalDate localDate = LocalDate.now();
+            CutiSummary cutiSummary = cutiSummaryRepository.findByUserAndTahun(user, localDate.getYear());
 
             map.put("N", String.valueOf(cutiSummary.getKuotaCuti()));
             map.put("N-1", String.valueOf(cutiSummary.getKuotaPastCuti()));
@@ -155,18 +156,36 @@ public class ReportServiceImpl implements ReportService {
             JRBeanCollectionDataSource profileDataSource = new JRBeanCollectionDataSource(ReportConverter.profile(userMapOrigin, user));
             // sub report datasource
             JRBeanCollectionDataSource container = new JRBeanCollectionDataSource(ReportConverter.container());
-            JRBeanCollectionDataSource familyDataSource = new JRBeanCollectionDataSource(ReportConverter.family(user));
+            //JRBeanCollectionDataSource familyDataSource = new JRBeanCollectionDataSource(ReportConverter.family(user));
             JRBeanCollectionDataSource educationDataSource = new JRBeanCollectionDataSource(ReportConverter.education(user));
             JRBeanCollectionDataSource mutasiDataSource = new JRBeanCollectionDataSource(ReportConverter.mutasi(user));
+            JRBeanCollectionDataSource pangkatDataSource = new JRBeanCollectionDataSource(ReportConverter.pangkat(user));
+            // JRBeanCollectionDataSource jabatanDataSource = new JRBeanCollectionDataSource(ReportConverter.jabatan(user));
+            JRBeanCollectionDataSource pelatihanJabatanDataSource = new JRBeanCollectionDataSource(ReportConverter.pelatihanJabatan(user));
+            JRBeanCollectionDataSource pelatihanTeknisDataSource = new JRBeanCollectionDataSource(ReportConverter.pelatihanTeknis(user));
             JRBeanCollectionDataSource pendukungDataSource = new JRBeanCollectionDataSource(ReportConverter.pendukung(user));
+            JRBeanCollectionDataSource skpDataSource = new JRBeanCollectionDataSource(ReportConverter.skp(user));
+            JRBeanCollectionDataSource creditDataSource = new JRBeanCollectionDataSource(ReportConverter.credit(user));
+            JRBeanCollectionDataSource lencanaDataSource = new JRBeanCollectionDataSource(ReportConverter.lancana(user));
+            JRBeanCollectionDataSource cutiDataSource = new JRBeanCollectionDataSource(ReportConverter.cuti(cutiSummaryRepository.findByUser(user)));
+            JRBeanCollectionDataSource hukumanDisiplinDataSource = new JRBeanCollectionDataSource(ReportConverter.disiplin(user));
+            JRBeanCollectionDataSource prediksiPensiunDataSource = new JRBeanCollectionDataSource(ReportConverter.pensiun(user));
 
-            userMapOrigin.put("SUB_DIR", basePathReport + File.separator + "template" + File.separator);
-            userMapOrigin.put("SUB_DIR", basePathReport + File.separator);
+            userMapOrigin.put("SUB_DIR", basePathReport);
             userMapOrigin.put("CONTAINER_DATASOURCE", container);
-            userMapOrigin.put("FAMILY_DATASOURCE", familyDataSource);
             userMapOrigin.put("EDUCATION_DATASOURCE", educationDataSource);
             userMapOrigin.put("MUTASI_DATASOURCE", mutasiDataSource);
+            userMapOrigin.put("PANGKAT_DATASOURCE", pangkatDataSource);
             userMapOrigin.put("PENDUKUNG_DATASOURCE", pendukungDataSource);
+            userMapOrigin.put("PELATIHAN_JABATAN_DATASOURCE", pelatihanJabatanDataSource);
+            userMapOrigin.put("PELATIHAN_TEKNIS_DATASOURCE", pelatihanTeknisDataSource);
+            userMapOrigin.put("SKP_DATASOURCE", skpDataSource);
+            userMapOrigin.put("CREDIT_DATASOURCE", creditDataSource);
+            userMapOrigin.put("LENCANA_DATASOURCE", lencanaDataSource);
+            userMapOrigin.put("CUTI_DATASOURCE", cutiDataSource);
+            userMapOrigin.put("HUKUMAN_DATASOURCE", hukumanDisiplinDataSource);
+            userMapOrigin.put("PREDIKSI_PENSIUN_DATASOURCE", prediksiPensiunDataSource);
+
 
 //            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(new File(basePathReport + File.separator + "template" + File.separator + "pegawai_cv.jasper"));
             JasperReport jasperReport = (JasperReport) JRLoader.loadObject(new File(basePathReport + File.separator + "pegawai_cv.jasper"));
@@ -174,15 +193,6 @@ public class ReportServiceImpl implements ReportService {
             JRPdfExporter exporter = new JRPdfExporter();
             exporter.setExporterInput(new SimpleExporterInput(print));
             exporter.setExporterOutput(new SimpleOutputStreamExporterOutput("reports/export/cv.pdf"));
-//            if (Desktop.isDesktopSupported()) {
-//                try {
-//                    File myFile = new File("reports/export/cv.pdf");
-//                    Desktop.getDesktop().open(myFile);
-//                } catch (IOException ex) {
-//                    // no application registered for PDFs
-//                }
-//            }
-
             SimplePdfReportConfiguration reportConfig = new SimplePdfReportConfiguration();
             reportConfig.setSizePageToContent(true);
             reportConfig.setForceLineBreakPolicy(false);
@@ -208,9 +218,7 @@ public class ReportServiceImpl implements ReportService {
         try {
             Map<String, Object> userMapOrigin = new HashMap<>();//new ObjectMapper().convertValue(employees, Map.class);
             JRBeanCollectionDataSource employeeDataSource = new JRBeanCollectionDataSource(ReportConverter.duk(employees));
-//            String path = "C:\\Users\\Lenovo\\JaspersoftWorkspace\\MyReports\\duk.jasper";
-            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(new File(basePathReport + File.separator + "template" + File.separator + "duk.jasper"));
-//            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(new File(path));
+            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(new File(basePathReport + File.separator + "duk.jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasperReport, userMapOrigin, employeeDataSource);
             JRPdfExporter exporter = new JRPdfExporter();
             exporter.setExporterInput(new SimpleExporterInput(print));
@@ -218,7 +226,6 @@ public class ReportServiceImpl implements ReportService {
             SimplePdfReportConfiguration reportConfig = new SimplePdfReportConfiguration();
             reportConfig.setSizePageToContent(true);
             reportConfig.setForceLineBreakPolicy(false);
-
             SimplePdfExporterConfiguration exportConfig = new SimplePdfExporterConfiguration();
             exportConfig.setMetadataAuthor("Teman Dawai");
             exportConfig.setEncrypted(true);

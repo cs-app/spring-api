@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pegawai_cv_keluarga" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="5" bottomMargin="20" uuid="7cd6ae74-8787-4bd0-86d4-3cc2c0c82b6d">
+<!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pegawai_cv_pendukung" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="5" bottomMargin="20" uuid="7cd6ae74-8787-4bd0-86d4-3cc2c0c82b6d">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
@@ -31,9 +31,9 @@
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement verticalAlignment="Middle">
-					<font isBold="true"/>
+					<font size="9" isBold="true"/>
 				</textElement>
-				<text><![CDATA[DATA PENDUKUNG]]></text>
+				<text><![CDATA[VII DATA PENDUKUNG]]></text>
 			</staticText>
 		</band>
 	</pageHeader>
@@ -41,11 +41,17 @@
 		<band height="18" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<textField>
-				<reportElement x="0" y="0" width="298" height="18" uuid="6ce3020e-1bd3-4f5a-93f1-acd3229c03f8"/>
+				<reportElement x="0" y="0" width="80" height="18" uuid="6ce3020e-1bd3-4f5a-93f1-acd3229c03f8"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="298" y="0" width="297" height="18" uuid="6b463ab8-30c6-44d7-935d-3cf94d8f9240"/>
+				<reportElement x="90" y="0" width="455" height="18" uuid="6b463ab8-30c6-44d7-935d-3cf94d8f9240"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{value}]]></textFieldExpression>
 			</textField>
 		</band>

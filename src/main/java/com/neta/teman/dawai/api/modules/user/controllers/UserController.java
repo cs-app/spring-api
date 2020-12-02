@@ -81,7 +81,7 @@ public class UserController extends BaseRestController {
 
     @PostMapping(value = "/update/profile/skp")
     public ResponseEntity updateProfileSKP(@RequestBody UserProfileUpdateRequest request) {
-        if (isNull(request.getNip(), request.getTahun(), request.getNilai())) {
+        if (isNull(request.getNip(), request.getTahun(), request.getKeterangan())) {
             return responseError(401, "invalid param!");
         }
         if (!isNull(request.getExt(), request.getFile())) {

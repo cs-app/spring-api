@@ -4,14 +4,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.neta.teman.dawai.api.applications.commons.BeanCopy;
 import com.neta.teman.dawai.api.applications.commons.DTFomat;
 import com.neta.teman.dawai.api.models.dao.*;
-import com.neta.teman.dawai.api.models.reports.Duk;
-import com.neta.teman.dawai.api.models.reports.Profile;
+import com.neta.teman.dawai.api.models.reports.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class ReportConverter {
@@ -162,22 +163,56 @@ public class ReportConverter {
     public static Collection<?> education(User user) {
         List<EmployeeEducation> education = user.getEmployee().getEducations();
         if (Objects.isNull(education)) return new ArrayList<>();
-        return education;
+        List<ProfileEducation> educations = BeanCopy.copyCollection(education, ProfileEducation.class);
+        AtomicInteger index = new AtomicInteger();
+        return educations.stream().map(o -> {
+            o.setRow(index.incrementAndGet());
+            return o;
+        }).collect(Collectors.toList());
     }
 
     public static Collection<?> mutasi(User user) {
         List<EmployeeMutasi> education = user.getEmployee().getMutasis();
         if (Objects.isNull(education)) return new ArrayList<>();
-        return education;
+        AtomicInteger index = new AtomicInteger();
+        return education.stream().map(o -> new ProfileMutasiPangkatJabatanPelatihan(index.incrementAndGet(), o)).collect(Collectors.toList());
+    }
+
+    public static Collection<?> pangkat(User user) {
+        List<EmployeePangkatHis> education = user.getEmployee().getPangkats();
+        if (Objects.isNull(education)) return new ArrayList<>();
+        AtomicInteger index = new AtomicInteger();
+        return education.stream().map(o -> new ProfilePangkat(index.incrementAndGet(), o)).collect(Collectors.toList());
+    }
+
+    public static Collection<?> jabatan(User user) {
+        List<EmployeePangkatHis> education = user.getEmployee().getPangkats();
+        if (Objects.isNull(education)) return new ArrayList<>();
+        AtomicInteger index = new AtomicInteger();
+        return education.stream().map(o -> new ProfileMutasiPangkatJabatanPelatihan(index.incrementAndGet(), o.getPangkatGolongan())).collect(Collectors.toList());
+    }
+
+    public static Collection<?> pelatihanJabatan(User user) {
+        List<EmployeePelatihan> education = user.getEmployee().getPelatihans().stream().filter(o -> "JABATAN".equalsIgnoreCase(o.getType())
+        ).collect(Collectors.toList());
+        AtomicInteger index = new AtomicInteger();
+        return education.stream().map(o -> new ProfilePelatihan(index.incrementAndGet(), o)).collect(Collectors.toList());
+    }
+
+    public static Collection<?> pelatihanTeknis(User user) {
+        List<EmployeePelatihan> education = user.getEmployee().getPelatihans().stream().filter(o -> "TEKNIS".equalsIgnoreCase(o.getType())
+        ).collect(Collectors.toList());
+        AtomicInteger index = new AtomicInteger();
+        return education.stream().map(o -> new ProfilePelatihan(index.incrementAndGet(), o)).collect(Collectors.toList());
     }
 
     public static Collection<?> pendukung(User user) {
         List<Profile> profiles = new ArrayList<>();
         Employee employee = user.getEmployee();
-        newProfile(profiles, "ID Karpeg", employee.getNoKarpeg());
-        newProfile(profiles, "NPWP", employee.getNpwp());
-        newProfile(profiles, "ID Taspen", employee.getNoTaspen());
-        newProfile(profiles, "ID Karis", employee.getNoKarisSu());
+        newProfile(profiles, "1." + appendSpace(1) + "ID Karpeg", employee.getNoKarpeg());
+        newProfile(profiles, "2." + appendSpace(1) + "NPWP", employee.getNpwp());
+        newProfile(profiles, "3." + appendSpace(1) + "ID Taspen", employee.getNoTaspen());
+        newProfile(profiles, "4." + appendSpace(1) + "ID Karis", employee.getNoKarisSu());
         return profiles;
     }
 
@@ -185,7 +220,9 @@ public class ReportConverter {
         List<Duk> profiles = new ArrayList<>();
         for (Employee o : employees) {
             Duk duk = BeanCopy.copy(o, Duk.class);
-            duk.setGolongan(o.getPangkatDetail().getGol());
+            if (Objects.nonNull(o.getPangkatDetail())) {
+                duk.setGolongan(o.getPangkatDetail().getGol());
+            }
             duk.setTmtGol(DTFomat.format(o.getTmtGol()));
             duk.setMasaWaktuDiPangkat(toReadable(o.getTmtGol()));
             duk.setTmtJabatan(DTFomat.format(o.getTmtJabatan()));
@@ -193,10 +230,12 @@ public class ReportConverter {
             duk.setTmtCpns(DTFomat.format(o.getTglMulaiCPNS()));
             duk.setMasaKerjaTahunDanBulan(toReadable(o.getTglMulaiCPNS()));
             // pendidikan
-            EmployeeEducation education = o.getEducations().get(o.getEducations().size() - 1);
-            duk.setPendidikan(education.getType());
-            duk.setPendidikanInstansi(education.getValue());
-            duk.setPendidikanJurusan(education.getMajors());
+            if (o.getEducations().size() > 0) {
+                EmployeeEducation education = o.getEducations().get(o.getEducations().size() - 1);
+                duk.setPendidikan(education.getType());
+                duk.setPendidikanInstansi(education.getValue());
+                duk.setPendidikanJurusan(education.getMajors());
+            }
             // tanggal lahir
             duk.setTanggalLahir(DTFomat.format(o.getTanggalLahir()));
             duk.setPensiunTMT(toPensiunDate(o.getTanggalLahir()));
@@ -207,6 +246,7 @@ public class ReportConverter {
     }
 
     private static String toPensiun(Date date) {
+        if (Objects.isNull(date)) return null;
         LocalDate userday = date.toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate().plusYears(58);
@@ -214,6 +254,7 @@ public class ReportConverter {
     }
 
     private static String toPensiunDate(Date date) {
+        if (Objects.isNull(date)) return null;
         LocalDate userday = date.toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate().plusYears(58);
@@ -222,6 +263,7 @@ public class ReportConverter {
     }
 
     private static String toReadable(Date date) {
+        if (Objects.isNull(date)) return null;
         LocalDate today = LocalDate.now();
         LocalDate userday = date.toInstant()
                 .atZone(ZoneId.systemDefault())
@@ -233,4 +275,57 @@ public class ReportConverter {
         return sb.toString();
     }
 
+    public static Collection<?> skp(User user) {
+        List<EmployeeSKP> education = user.getEmployee().getSkps();
+        AtomicInteger index = new AtomicInteger();
+        return education.stream().map(o -> new ProfilePelatihan(index.incrementAndGet(), o)).collect(Collectors.toList());
+    }
+
+    public static Collection<?> credit(User user) {
+        List<EmployeeCreditScore> education = user.getEmployee().getCreditScores();
+        AtomicInteger index = new AtomicInteger();
+        return education.stream().map(o -> new ProfilePelatihan(index.incrementAndGet(), o)).collect(Collectors.toList());
+    }
+
+    public static Collection<?> lancana(User user) {
+        List<EmployeeSatyaLencana> education = user.getEmployee().getSatyaLencanas();
+        AtomicInteger index = new AtomicInteger();
+        return education.stream().map(o -> new ProfilePelatihan(index.incrementAndGet(), o)).collect(Collectors.toList());
+    }
+
+    public static Collection<?> disiplin(User user) {
+        List<EmployeeHukumanDisiplin> education = user.getEmployee().getHukumanDisiplins();
+        AtomicInteger index = new AtomicInteger();
+        return education.stream().map(o -> new ProfilePelatihan(index.incrementAndGet(), o)).collect(Collectors.toList());
+    }
+
+    public static Collection<?> cuti(List<CutiSummary> cutiSummaries) {
+        AtomicInteger index = new AtomicInteger();
+        return cutiSummaries.stream().map(o -> new ProfilePelatihan(index.incrementAndGet(), o)).collect(Collectors.toList());
+    }
+
+    public static Collection<?> pensiun(User user) {
+        List<ProfilePelatihan> result = new ArrayList<>();
+        AtomicInteger index = new AtomicInteger();
+        ProfilePelatihan pp = new ProfilePelatihan();
+        pp.setGolongan("TMT Pensiun");
+        if (Objects.isNull(user.getEmployee().getTanggalLahir())) {
+            pp.setPangkat("");
+        } else {
+            LocalDate today = LocalDate.now();
+            LocalDate userday = user.getEmployee().getTanggalLahir().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            LocalDate userpen = userday.plusYears(58);
+            Period diff = Period.between(today, userpen);
+            if (diff.getYears() >= 0) {
+                pp.setPangkat(":" + appendSpace(1) + DTFomat.format(userpen) + " (" + diff.getYears() + " Tahun, " + diff.getMonths() + " Bulan)");
+            } else {
+                pp.setPangkat(":" + appendSpace(1) + DTFomat.format(userpen));
+            }
+        }
+        result.add(pp);
+        return result;
+//        LocalDate date = user
+        //return cutiSummaries.stream().map(o -> new ProfilePelatihan(index.incrementAndGet(), o)).collect(Collectors.toList());
+        //return null;
+    }
 }

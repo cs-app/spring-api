@@ -224,8 +224,8 @@ public class CutiServiceImpl extends SimpegServiceImpl implements CutiService {
         List<User> users = userRepository.findAll();
         LocalDate today = LocalDate.now();
         for (User o : users) {
-            CutiSummary cutiSummaryExist = cutiSummaryRepository.findByUser(o);
-            // migrasi jika beda tahun
+            CutiSummary cutiSummaryExist = cutiSummaryRepository.findByUserAndTahun(o, today.getYear());
+            // kalo kosong migrasiin
             if (Objects.nonNull(cutiSummaryExist)) {
                 // clone
                 if (cutiSummaryExist.getTahun() < today.getYear()) {

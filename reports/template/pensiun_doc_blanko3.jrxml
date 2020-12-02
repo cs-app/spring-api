@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pensiun_doc_1_usulan" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="952f33ad-87f6-4682-b175-76eda3ba2011">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="232">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="20" uuid="12ee934f-3513-4e54-989a-27eecc2410c7"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[DAFTAR SUSUNAN KELUARGA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="50" width="150" height="20" uuid="e00c43cc-2c47-4c03-86ee-9defc73f2a7e"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Nama]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="70" width="150" height="20" uuid="5c417310-9e34-49e4-b565-e32eaa688974"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[NIP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="90" width="150" height="20" uuid="465847f0-4a00-4732-ba14-1eed87adcacd"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Nomor seri KARPEG]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="110" width="150" height="20" uuid="5c93e77b-5221-4f80-8b75-44a9bef7d378"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Pangkat dan Golongan ruang]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="130" width="150" height="20" uuid="daf6a9e1-d44e-46f5-b8ac-86619f42229f"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[ALamat rumah sekarang]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="170" width="150" height="20" uuid="07facbb7-a149-4df8-bc99-ab3a9ba8d0c8"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Alamat rumah sesudah pensiun]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="61">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="30" uuid="11b956ae-af35-4397-bb21-5bd7ee6d9860"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[DAFTAR SUSUNAN KELUARGA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="30" width="30" height="30" uuid="bda817ef-bdcc-4cde-b5bc-f6052ed422f7"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="31" width="164" height="30" uuid="482ea8d7-f2e5-4b8e-a58f-6d57cc7fa2db"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[NAMA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="195" y="31" width="70" height="30" uuid="071393da-1296-45ad-9556-dc4f0805ef1b"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[HUBUNGAN KELUARGA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="265" y="31" width="80" height="30" uuid="dd309af1-75c8-4804-b0f2-530a8112bf9a"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[TANGGAL LAHIR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="345" y="30" width="80" height="30" uuid="cd1d210c-315a-4b0f-8eeb-21f7638af00b"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[PEKERJAAN SEKOLAH*-2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="425" y="31" width="100" height="30" uuid="e095df56-b0e1-4a61-93b9-4fde9e5e9d41"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[TANGGAL PERKAWINAN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="525" y="30" width="30" height="30" uuid="8168dd68-b63e-41b3-960b-71f7ce5f62d6"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[KET]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<columnFooter>
+		<band height="130"/>
+	</columnFooter>
+	<lastPageFooter>
+		<band height="251">
+			<staticText>
+				<reportElement x="370" y="120" width="184" height="30" uuid="7f6a43e5-1950-48b2-af9d-1feceff2baf7"/>
+				<text><![CDATA[
+NIP. ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="370" y="0" width="184" height="20" uuid="69062e24-2109-466a-a6fa-19d2588aca99"/>
+				<text><![CDATA[Jakarta,]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="370" y="20" width="184" height="20" uuid="46d2ecf3-6033-4093-bd3b-7c9047cffcbf"/>
+				<text><![CDATA[Pegawai Negeri SIpil yang bersangkutan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="20" width="184" height="20" uuid="85a4049b-a3e5-4e34-9a50-999519704599"/>
+				<text><![CDATA[Disahkan Oleh]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="40" width="184" height="20" uuid="e6b5da9c-4a95-4596-981c-2fe5fb08335a"/>
+				<text><![CDATA[CAMAT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="120" width="184" height="30" uuid="60e57a71-38f2-4389-a2e3-d22705b7180d"/>
+				<text><![CDATA[
+NIP. ]]></text>
+			</staticText>
+		</band>
+	</lastPageFooter>
+</jasperReport>

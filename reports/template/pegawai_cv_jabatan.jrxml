@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pegawai_cv_keluarga" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="5" bottomMargin="20" uuid="7cd6ae74-8787-4bd0-86d4-3cc2c0c82b6d">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pegawai_cv_jabatan" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="5" bottomMargin="20" uuid="7cd6ae74-8787-4bd0-86d4-3cc2c0c82b6d">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
@@ -17,11 +17,14 @@
 	<field name="tmt" class="java.util.Date">
 		<fieldDescription><![CDATA[tmt]]></fieldDescription>
 	</field>
-	<field name="tahun" class="java.lang.Integer">
-		<fieldDescription><![CDATA[tahun]]></fieldDescription>
+	<field name="golongan" class="java.lang.String">
+		<fieldDescription><![CDATA[golongan]]></fieldDescription>
 	</field>
 	<field name="pangkat" class="java.lang.String">
 		<fieldDescription><![CDATA[pangkat]]></fieldDescription>
+	</field>
+	<field name="row" class="java.lang.Integer">
+		<fieldDescription><![CDATA[row]]></fieldDescription>
 	</field>
 	<background>
 		<band splitType="Stretch"/>
@@ -30,13 +33,13 @@
 		<band height="20" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<staticText>
-				<reportElement x="0" y="0" width="555" height="20" uuid="fa33a641-f1f5-45fd-99eb-ddc5aa0c9f67">
+				<reportElement x="0" y="0" width="545" height="20" uuid="fa33a641-f1f5-45fd-99eb-ddc5aa0c9f67">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement verticalAlignment="Middle">
 					<font size="9" isBold="true"/>
 				</textElement>
-				<text><![CDATA[III. RIWAYAT MUTASI]]></text>
+				<text><![CDATA[V. RIWAYAT JABATAN]]></text>
 			</staticText>
 		</band>
 	</pageHeader>
@@ -44,7 +47,7 @@
 		<band height="18" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<staticText>
-				<reportElement x="30" y="0" width="80" height="18" uuid="ceaf9a99-1412-4de8-a6d2-035f55687c5f">
+				<reportElement x="360" y="0" width="80" height="18" uuid="ceaf9a99-1412-4de8-a6d2-035f55687c5f">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d556d7b8-7ec1-4317-b8da-72713769c5df"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -60,7 +63,7 @@
 				<text><![CDATA[TMT]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="110" y="0" width="50" height="18" uuid="b5643143-9020-4c19-a223-ad0ff465555b">
+				<reportElement x="30" y="0" width="130" height="18" uuid="b5643143-9020-4c19-a223-ad0ff465555b">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="06f20a6b-399e-4a58-822e-a8f78bed1cf6"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -73,10 +76,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[TAHUN]]></text>
+				<text><![CDATA[GOLONGAN]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="160" y="0" width="394" height="18" uuid="ece046e3-0e47-4110-9588-5441fc00a7cd">
+				<reportElement x="160" y="0" width="200" height="18" uuid="ece046e3-0e47-4110-9588-5441fc00a7cd">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7e511abf-646d-4b2b-b198-e5397ddc2b4b"/>
 				</reportElement>
 				<box>
@@ -104,14 +107,14 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[TMT]]></text>
+				<text><![CDATA[NO]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="18" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
-			<textField pattern="dd-MMM-yyyy">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="30" height="18" uuid="26e92e96-a04e-4132-9168-f7fd54e0166e">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d556d7b8-7ec1-4317-b8da-72713769c5df"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -125,10 +128,10 @@
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{tmt}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{row}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="110" y="0" width="50" height="18" uuid="f52dff22-04bd-4e71-a6b6-602e2b9b01d5">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="30" y="0" width="130" height="18" uuid="f52dff22-04bd-4e71-a6b6-602e2b9b01d5">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="06f20a6b-399e-4a58-822e-a8f78bed1cf6"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -141,10 +144,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{tahun}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{golongan}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="160" y="0" width="393" height="18" uuid="9f8b9ea3-0af4-4d08-a820-93dfe500a226">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="160" y="0" width="200" height="18" uuid="9f8b9ea3-0af4-4d08-a820-93dfe500a226">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7e511abf-646d-4b2b-b198-e5397ddc2b4b"/>
 				</reportElement>
 				<box leftPadding="4" rightPadding="4">
@@ -158,8 +161,8 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{pangkat}]]></textFieldExpression>
 			</textField>
-			<textField pattern="dd-MMM-yyyy">
-				<reportElement x="30" y="0" width="80" height="18" uuid="7fd81501-aaf1-47cb-93f2-eb40f651536e">
+			<textField isStretchWithOverflow="true" pattern="dd-MMM-yyyy" isBlankWhenNull="true">
+				<reportElement x="360" y="0" width="80" height="18" uuid="7fd81501-aaf1-47cb-93f2-eb40f651536e">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d556d7b8-7ec1-4317-b8da-72713769c5df"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>

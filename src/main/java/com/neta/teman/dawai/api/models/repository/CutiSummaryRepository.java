@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface CutiSummaryRepository extends JpaRepository<CutiSummary, Long>, JpaSpecificationExecutor<CutiSummary> {
 
@@ -14,5 +16,5 @@ public interface CutiSummaryRepository extends JpaRepository<CutiSummary, Long>,
 
     CutiSummary findByUserAndTahun(User user, int year);
 
-    CutiSummary findByUser(User user);
+    List<CutiSummary> findByUser(User user);
 }

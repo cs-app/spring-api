@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pegawai_cv" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="823c9a6e-1e33-4116-9dbb-e45f9bae7499">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="NO_DATA_ADAPTER"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -17,6 +17,16 @@
 	<parameter name="MUTASI_DATASOURCE" class="net.sf.jasperreports.engine.JRDataSource"/>
 	<parameter name="PENDUKUNG_DATASOURCE" class="net.sf.jasperreports.engine.JRDataSource"/>
 	<parameter name="CONTAINER_DATASOURCE" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<parameter name="PANGKAT_DATASOURCE" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<parameter name="PELATIHAN_TEKNIS_DATASOURCE" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<parameter name="PELATIHAN_JABATAN_DATASOURCE" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<parameter name="DISIPLIN_DATASOURCE" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<parameter name="SKP_DATASOURCE" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<parameter name="CREDIT_DATASOURCE" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<parameter name="LENCANA_DATASOURCE" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<parameter name="CUTI_DATASOURCE" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<parameter name="HUKUMAN_DATASOURCE" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<parameter name="PREDIKSI_PENSIUN_DATASOURCE" class="net.sf.jasperreports.engine.JRDataSource"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -71,7 +81,9 @@
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6c075e9d-0271-4079-819c-485e2f1c9939"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -79,7 +91,9 @@
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e5a58098-e911-4163-949f-e51a1f68ae1c"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{value}]]></textFieldExpression>
 			</textField>
 			<staticText>
@@ -110,6 +124,33 @@
 				</subreportParameter>
 				<subreportParameter name="PENDUKUNG_DATASOURCE">
 					<subreportParameterExpression><![CDATA[$P{PENDUKUNG_DATASOURCE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="PANGKAT_DATASOURCE">
+					<subreportParameterExpression><![CDATA[$P{PANGKAT_DATASOURCE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="PELATIHAN_TEKNIS_DATASOURCE">
+					<subreportParameterExpression><![CDATA[$P{PELATIHAN_TEKNIS_DATASOURCE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="PELATIHAN_JABATAN_DATASOURCE">
+					<subreportParameterExpression><![CDATA[$P{PELATIHAN_JABATAN_DATASOURCE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SKP_DATASOURCE">
+					<subreportParameterExpression><![CDATA[$P{SKP_DATASOURCE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CREDIT_DATASOURCE">
+					<subreportParameterExpression><![CDATA[$P{CREDIT_DATASOURCE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="LENCANA_DATASOURCE">
+					<subreportParameterExpression><![CDATA[$P{LENCANA_DATASOURCE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CUTI_DATASOURCE">
+					<subreportParameterExpression><![CDATA[$P{CUTI_DATASOURCE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="HUKUMAN_DATASOURCE">
+					<subreportParameterExpression><![CDATA[$P{HUKUMAN_DATASOURCE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="PREDIKSI_PENSIUN_DATASOURCE">
+					<subreportParameterExpression><![CDATA[$P{PREDIKSI_PENSIUN_DATASOURCE}]]></subreportParameterExpression>
 				</subreportParameter>
 				<dataSourceExpression><![CDATA[$P{CONTAINER_DATASOURCE}]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{SUB_DIR} + "pegawai_cv_container.jasper"]]></subreportExpression>

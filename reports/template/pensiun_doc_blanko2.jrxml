@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pensiun_doc_1_usulan" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="952f33ad-87f6-4682-b175-76eda3ba2011">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="415">
+			<staticText>
+				<reportElement x="30" y="0" width="140" height="30" uuid="a8287edc-1bb9-4d86-b499-08f4210407b3"/>
+				<text><![CDATA[Surat Permintaan Pembayaran
+Pensiun Pertama]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="30" height="19" uuid="5d339647-dbfb-47d7-9945-aeed9ab89623"/>
+				<text><![CDATA[Hal  :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="307" y="0" width="248" height="70" uuid="11013ab7-1b5b-4024-89a6-0052fa55ac2f"/>
+				<text><![CDATA[Kepada
+Yth, Kepala Kantor Pelayanan Perbendaharaan Negara
+di
+Jakarta
+Melalui Kementrian Pendidikan dan Kebudayaan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="100" width="524" height="100" uuid="2f0a3550-fcdd-445b-aad1-712dcbf8ac77"/>
+				<textElement textAlignment="Justified"/>
+				<text><![CDATA[Dengan hormat,
+Sehubungan dengan surat keputusan Presiden/Menteri/Pimpinan Lembaga Badan Kepegawaian Negara Nomor : ..................................... tanggal .......................................... tentang Pemberhentian degan sebagai Pegawai Negeri Sipil, dengan ini saya mengajukan permintaan agar pensiun saya dapat dibayarkan mulai .................................... dan dapat diterima pada kantor Kas Negara/Kantor Pos/ /Bank Pemerintah di BNI 46 Kantor Cabang KCP Kemendikbud
+(Rekening Nomor: .......................................)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="232" width="524" height="78" uuid="811e3f2a-ea94-46e6-bb5f-23c5345382b7"/>
+				<text><![CDATA[Pemohon :
+
+Nama		: .........................................................
+NIP/KARPEG	: .........................................................
+Alamat		: .........................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="320" width="524" height="30" uuid="9912c7f6-2cfb-4985-a3cc-87dc5ba8be25"/>
+				<text><![CDATA[Atas perhatian saudara, saya sampaikan terimakasih.]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnFooter>
+		<band height="130"/>
+	</columnFooter>
+	<lastPageFooter>
+		<band height="251">
+			<staticText>
+				<reportElement x="411" y="111" width="144" height="30" uuid="7f6a43e5-1950-48b2-af9d-1feceff2baf7"/>
+				<text><![CDATA[
+NIP. ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="387" y="0" width="168" height="60" uuid="69062e24-2109-466a-a6fa-19d2588aca99"/>
+				<text><![CDATA[Pemohon,]]></text>
+			</staticText>
+		</band>
+	</lastPageFooter>
+</jasperReport>
