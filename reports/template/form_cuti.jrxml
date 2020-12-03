@@ -1332,9 +1332,9 @@
 				<textFieldExpression><![CDATA[$P{NIPL}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="440" y="696" width="115" height="70" uuid="dcdac01b-7556-4f59-8404-4a9c72ac4ed2"/>
+				<reportElement x="440" y="750" width="115" height="16" uuid="dcdac01b-7556-4f59-8404-4a9c72ac4ed2"/>
 				<box topPadding="0" leftPadding="8" bottomPadding="4" rightPadding="8">
-					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1345,9 +1345,9 @@
 				<textFieldExpression><![CDATA[$P{ATASAN_NIP}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="440" y="850" width="115" height="70" uuid="5460ccc8-59be-46bd-9156-79d13d0e6ab3"/>
+				<reportElement x="440" y="904" width="115" height="18" uuid="5460ccc8-59be-46bd-9156-79d13d0e6ab3"/>
 				<box topPadding="0" leftPadding="8" bottomPadding="4" rightPadding="8">
-					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1401,6 +1401,32 @@
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="440" y="696" width="115" height="54" uuid="70028ff6-9bb9-4ad7-a9bd-fb50f43e0e8e"/>
+				<box padding="4">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[approve by system]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="440" y="850" width="115" height="54" uuid="cda88826-bad2-4cd8-92c8-5306e20ea26c"/>
+				<box padding="4">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[approve by system]]></text>
 			</staticText>
 		</band>
 	</columnHeader>

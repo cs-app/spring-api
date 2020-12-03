@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pensiun_doc_1_usulan" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="952f33ad-87f6-4682-b175-76eda3ba2011">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="82" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="10" width="100" height="72" uuid="45cf9e35-cf65-4194-9fe8-f7c7d89a9441"/>
+				<imageExpression><![CDATA["/image/tutwurihandayani.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="100" y="0" width="455" height="50" uuid="19c41f50-4c48-4f4b-b19d-2f08af719af6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[KEMENTRIAN PENDIDIKAN DAN KEBUDAYAAN DIREKTORAT JENDERAL PENDIDIKAN ANAK USIA DINI, PENDIDIKAN DASAR DAN PENDIDIKAN MENENGAJ DIREKTORAT SEKOLAH MENENGAH ATAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="50" width="455" height="30" uuid="c59759ae-7f04-42d5-9955-94336f10692a"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Alamat Kantor: Jalan R.S. Fatmawati Cipete, Jakarta Setalatan 12410 Telp. 021-7694140 (hunting), 021-7667960 Laman www.sma.kemendikbud.go.id]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="510">
+			<staticText>
+				<reportElement x="0" y="10" width="555" height="20" uuid="d830e1a7-c02a-4c38-8e5d-012cfc050978"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[SURAT PENGANTAR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="192" y="30" width="170" height="20" uuid="c4eea4f5-2e49-40f3-bc7d-a3270d3e0370"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Nomor: .......................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="70" width="180" height="20" uuid="93990096-ea6f-4810-ab4f-6afdff144943"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[Yang bertanda tangan dibawah ini]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="0" width="555" height="1" uuid="198b7287-8aad-478a-a785-a52507f1159c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</line>
+			<staticText>
+				<reportElement x="0" y="110" width="180" height="20" uuid="04076671-2e0f-4bbc-9dc6-f189205d0bff"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[Nama]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="130" width="180" height="20" uuid="8e0fd341-a8c4-48b4-ac24-70de9b9659d6"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[NIP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="150" width="180" height="20" uuid="b02b46ef-48c3-4f5e-ab09-561c4e92ff8c"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[Pangkat/Golongan/Ruang]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="170" width="180" height="20" uuid="f0221318-573b-4afa-a722-b3f15eda51b1"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[Jabatan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="190" width="374" height="60" uuid="9a1fe5bc-76e1-4e0b-8960-ed733ebd0538"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<text><![CDATA[Direktorat Sekolah Menengah Atas
+Direktorat Jenderal Pendidikan Anak Usia Dini,
+Pendidikan Dasar dan Pendidikan Menengah
+Kementrian Pendidikan dan Kebudayaan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="260" width="200" height="20" uuid="8e5da574-fdbe-43d3-b264-021dcbeebb56"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[Menyatakan dengan sesungguhnya bahwa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="298" width="180" height="20" uuid="64c1141b-0556-4476-8d43-f9f92027ed6a"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[Nama]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="318" width="180" height="20" uuid="74e793eb-aa06-4b9c-9d22-781cc32b5828"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[NIP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="338" width="180" height="20" uuid="334b3e2a-a171-4054-bf10-6bccdaf2eac3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[Pangkat/Golongan/Ruang]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="358" width="180" height="20" uuid="c67f46c8-b412-4c62-a1eb-95059581cfc5"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[Jabatan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="400" width="310" height="20" uuid="527bc462-e388-4e92-9349-57c573fd6fa0"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[Tidak pernah dijatuhi hukuman disiplin tingkat sedang maupun berat.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="440" width="554" height="50" uuid="114802d2-7c41-49f6-94aa-e9d607f3aa23"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top"/>
+				<text><![CDATA[Demikian surat pernyataan ini dibuat dengan sesungguhnya dengan mengingat sumpah jabatan apabila dikemudian hari ternyata isi surat ini tidak benar yang mengakibatkan kerugian bagi negara maka, saya bersedia menanggung kerugian tersebut.]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<lastPageFooter>
+		<band height="251">
+			<staticText>
+				<reportElement x="404" y="111" width="144" height="30" uuid="7f6a43e5-1950-48b2-af9d-1feceff2baf7"/>
+				<text><![CDATA[Ekawati, S.Sos
+NIP. 196404241987032001]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="0" width="168" height="60" uuid="69062e24-2109-466a-a6fa-19d2588aca99"/>
+				<text><![CDATA[Jakarta, ..................................
+
+A.n. Direktur Sekolah Menengah Atas
+       Kepala Sub Bagian Tata Usaha]]></text>
+			</staticText>
+		</band>
+	</lastPageFooter>
+</jasperReport>
