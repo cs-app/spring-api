@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<!-- Created with Jaspersoft Studio version 6.15.0.final using JasperReports Library version 6.15.0-dd49bfb94918336b8321d5507193f0169ead4e95  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pensiun_doc_1_usulan" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="952f33ad-87f6-4682-b175-76eda3ba2011">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="NAMA" class="java.lang.String"/>
+	<parameter name="NIP" class="java.lang.String"/>
+	<parameter name="NAMATTD" class="java.lang.String"/>
+	<parameter name="NIPTTD" class="java.lang.String"/>
+	<parameter name="KARPEG" class="java.lang.String"/>
+	<parameter name="PANGKAT_GOLONGAN" class="java.lang.String"/>
+	<parameter name="UNIT" class="java.lang.String"/>
+	<parameter name="ALAMAT" class="java.lang.String"/>
+	<parameter name="JABATAN" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -12,7 +21,7 @@
 		<band height="82" splitType="Stretch">
 			<image>
 				<reportElement x="0" y="10" width="100" height="72" uuid="45cf9e35-cf65-4194-9fe8-f7c7d89a9441"/>
-				<imageExpression><![CDATA["C:/Users/Lenovo/Pictures/tutwurihandayani.png"]]></imageExpression>
+				<imageExpression><![CDATA["image/tutwurihandayani.png"]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="100" y="0" width="455" height="50" uuid="19c41f50-4c48-4f4b-b19d-2f08af719af6"/>
@@ -106,11 +115,13 @@ Jakarta]]></text>
 				<text><![CDATA[1.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="40" y="160" width="170" height="69" uuid="8bf907a1-c66d-4f8c-8405-1fb9f296fd2c"/>
+				<reportElement x="40" y="160" width="170" height="35" uuid="8bf907a1-c66d-4f8c-8405-1fb9f296fd2c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
 				<box padding="4">
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Top"/>
@@ -143,6 +154,16 @@ Jakarta]]></text>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</line>
+			<textField>
+				<reportElement x="40" y="195" width="170" height="34" uuid="efc749d7-bac6-45fb-a0b0-1d366bc34c96"/>
+				<box topPadding="0" leftPadding="4" bottomPadding="0" rightPadding="4">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[$P{NAMA}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnFooter>

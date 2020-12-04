@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
+<!-- Created with Jaspersoft Studio version 6.15.0.final using JasperReports Library version 6.15.0-dd49bfb94918336b8321d5507193f0169ead4e95  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pensiun_doc_1_usulan" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="952f33ad-87f6-4682-b175-76eda3ba2011">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="NAMA" class="java.lang.String"/>
+	<parameter name="NIP" class="java.lang.String"/>
+	<parameter name="NAMATTD" class="java.lang.String"/>
+	<parameter name="NIPTTD" class="java.lang.String"/>
+	<parameter name="KARPEG" class="java.lang.String"/>
+	<parameter name="PANGKAT_GOLONGAN" class="java.lang.String"/>
+	<parameter name="UNIT" class="java.lang.String"/>
+	<parameter name="ALAMAT" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -9,7 +17,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<pageHeader>
-		<band height="415">
+		<band height="472">
 			<staticText>
 				<reportElement x="30" y="0" width="140" height="30" uuid="a8287edc-1bb9-4d86-b499-08f4210407b3"/>
 				<text><![CDATA[Surat Permintaan Pembayaran
@@ -35,33 +43,73 @@ Sehubungan dengan surat keputusan Presiden/Menteri/Pimpinan Lembaga Badan Kepega
 (Rekening Nomor: .......................................)]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="30" y="232" width="524" height="78" uuid="811e3f2a-ea94-46e6-bb5f-23c5345382b7"/>
-				<text><![CDATA[Pemohon :
-
-Nama		: .........................................................
-NIP/KARPEG	: .........................................................
-Alamat		: .........................................................]]></text>
+				<reportElement x="30" y="232" width="524" height="18" uuid="811e3f2a-ea94-46e6-bb5f-23c5345382b7"/>
+				<text><![CDATA[Pemohon :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="30" y="320" width="524" height="30" uuid="9912c7f6-2cfb-4985-a3cc-87dc5ba8be25"/>
+				<reportElement x="30" y="390" width="524" height="30" uuid="9912c7f6-2cfb-4985-a3cc-87dc5ba8be25"/>
 				<text><![CDATA[Atas perhatian saudara, saya sampaikan terimakasih.]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="30" y="250" width="100" height="20" uuid="66b6a7f6-1dcb-43df-8ce2-ea9138bf6b47"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Nama]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="130" y="250" width="375" height="20" uuid="602b353a-7b0c-4c06-9151-b74991bd3e04"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{NAMA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="30" y="270" width="100" height="20" uuid="297a7d24-1176-4a6c-9140-eff2ac7506c1"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[NIP/KARPEG]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="130" y="270" width="126" height="20" uuid="ec1f57d1-893c-462c-b56b-7fa295c30d98"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{NIP}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="30" y="290" width="100" height="20" uuid="bcdd9aa3-ce32-45cc-960c-3097374b7420"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Alamat]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="130" y="290" width="375" height="20" uuid="81e54a29-4a03-456a-b07a-c3d47cd77058"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{ALAMAT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="257" y="270" width="224" height="20" uuid="a9b4f4ce-ed91-4093-aa8f-07089b1a2aaa"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{KARPEG}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
-	<columnFooter>
-		<band height="130"/>
-	</columnFooter>
 	<lastPageFooter>
 		<band height="251">
 			<staticText>
-				<reportElement x="411" y="111" width="144" height="30" uuid="7f6a43e5-1950-48b2-af9d-1feceff2baf7"/>
-				<text><![CDATA[
-NIP. ]]></text>
+				<reportElement x="370" y="120" width="39" height="30" uuid="7f6a43e5-1950-48b2-af9d-1feceff2baf7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[NIP. ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="387" y="0" width="168" height="60" uuid="69062e24-2109-466a-a6fa-19d2588aca99"/>
 				<text><![CDATA[Pemohon,]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="409" y="120" width="146" height="30" uuid="d5645a32-30a5-4978-9a1d-b41b31b5ea19"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{NIPTTD}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="100" width="175" height="20" uuid="2e6f1431-d8d4-40d5-a474-3c3fa222e494"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{NAMATTD}]]></textFieldExpression>
+			</textField>
 		</band>
 	</lastPageFooter>
 </jasperReport>
