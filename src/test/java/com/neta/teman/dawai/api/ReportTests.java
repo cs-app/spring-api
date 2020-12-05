@@ -103,7 +103,7 @@ class ReportTests {
 
     @Test
     void printPensiunNaikPangkat() throws JsonProcessingException {
-        reportService.printNaikPangkat(2020, null);
+        reportService.printNaikPangkat(2018,3, null);
     }
 
 

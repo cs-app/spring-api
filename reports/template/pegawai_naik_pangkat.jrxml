@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pensiun_doc_1_usulan" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="952f33ad-87f6-4682-b175-76eda3ba2011">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="net.sf.jasperreports.export.xls.exclude.origin.keep.first.band.1" value="columnHeader"/>
 	<parameter name="SUB_DIR" class="java.lang.String"/>
 	<parameter name="LAMPIRAN_DATASOURCE" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<parameter name="PERIODE" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -84,11 +85,6 @@ Jakarta
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 			</line>
-			<staticText>
-				<reportElement x="0" y="150" width="554" height="20" uuid="8e5da574-fdbe-43d3-b264-021dcbeebb56"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<text><![CDATA[Bersama ini kami sampaikan berkas usulan Kenaikan Pangkat per ........... atas nama:]]></text>
-			</staticText>
 			<staticText>
 				<reportElement x="0" y="180" width="30" height="30" uuid="bb1c1d4f-fa9f-43f4-8483-bbcfe77b4e24"/>
 				<box>
@@ -233,6 +229,11 @@ Jakarta
 				</textElement>
 				<text><![CDATA[Posisi Diusulkan]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="0" y="150" width="555" height="20" uuid="a53ebf63-1fe0-423b-bc8b-9e9b6db05352"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PERIODE}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<detail>
@@ -292,7 +293,7 @@ Jakarta
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{col4}]]></textFieldExpression>
@@ -307,7 +308,7 @@ Jakarta
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{col5}]]></textFieldExpression>
@@ -322,7 +323,7 @@ Jakarta
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{col6}]]></textFieldExpression>
@@ -337,7 +338,7 @@ Jakarta
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{col7}]]></textFieldExpression>

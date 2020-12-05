@@ -24,10 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -494,6 +491,9 @@ public class ReportServiceImpl implements ReportService {
             JRBeanCollectionDataSource lampiranDataSource = new JRBeanCollectionDataSource(converter.naikPangkat(users));
             JasperReport jasperReport = (JasperReport) JRLoader.loadObject(new File(basePathReport + File.separator + "pegawai_naik_pangkat.jasper"));
             userMapOrigin.put("SUB_DIR", basePathReport);
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(tahun, bulan, 1);
+            userMapOrigin.put("PERIODE", "Bersama ini kami sampaikan berkas usulan Kenaikan Pangkat per " + DTFomat.formatUntilMonth(calendar.getTime()) + " atas nama:");
             userMapOrigin.put("LAMPIRAN_DATASOURCE", lampiranDataSource);
             JasperPrint print = JasperFillManager.fillReport(jasperReport, userMapOrigin, mainDataSource);
             JRPdfExporter exporter = new JRPdfExporter();

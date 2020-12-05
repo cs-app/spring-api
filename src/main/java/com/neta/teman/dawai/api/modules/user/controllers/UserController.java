@@ -241,7 +241,7 @@ public class UserController extends BaseRestController {
         ServiceResolver<User> resolver = userService.findByNip(nip);
         if (resolver.isError()) return responseError(resolver);
         List<EmployeePangkatHis> result = resolver.getResult().getEmployee().getPangkats();
-        result.sort(Comparator.comparing(EmployeePangkatHis::getTmt).reversed());
+        result.sort(Comparator.comparing(EmployeePangkatHis::getTmt, Comparator.nullsFirst(Comparator.naturalOrder())).reversed());
         return response(result);
     }
 
@@ -407,7 +407,7 @@ public class UserController extends BaseRestController {
     public ResponseEntity<StreamingResponseBody> downloadNaikPangkat(@PathVariable String tahun, @PathVariable String bulan) {
         String contentType = "application/octet-stream";
         StreamingResponseBody stream = out -> reportService.printNaikPangkat(Integer.parseInt(tahun), Integer.parseInt(bulan), out);
-        String fileName = "Naik Pangkat Pegawai "+tahun+"-"+bulan+".pdf";
+        String fileName = "Naik Pangkat Pegawai " + tahun + "-" + bulan + ".pdf";
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(contentType))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
@@ -478,7 +478,7 @@ public class UserController extends BaseRestController {
             if (0 == doc.getId().compareTo(documentId)) {
                 found = true;
                 filePath = doc.getPath();
-                fileName = nip + "_" + doc.getDocument().getName() + FilenameUtils.getExtension(filePath).replaceAll(" ", "_");
+                fileName = (nip + "_" + doc.getDocument().getName() + "." + FilenameUtils.getExtension(filePath)).replaceAll(" ", "_");
                 break;
             }
         }
@@ -493,7 +493,7 @@ public class UserController extends BaseRestController {
         String contentType = "application/octet-stream";
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(contentType))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + fileName + "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
                 .body(resource);
     }
 }

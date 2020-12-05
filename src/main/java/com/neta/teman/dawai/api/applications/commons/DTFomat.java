@@ -21,4 +21,9 @@ public class DTFomat {
     public static String format(LocalDate userpen) {
         return userpen.format(DateTimeFormatter.ofPattern("dd-MMM-yyyy"));
     }
+
+    public static String formatUntilMonth(Date date) {
+        if(Objects.isNull(date)) return "";
+        return new SimpleDateFormat("MMMM yyyy").format(date);
+    }
 }

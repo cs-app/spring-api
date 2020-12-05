@@ -424,15 +424,18 @@ public class ReportConverter {
             PangkatGolongan afterPG = after.getPangkatGolongan();
             if (Objects.isNull(beforePG) && Objects.isNull(afterPG)) {
                 masterCols.add(new MasterCol("" + index, employee.getNama(), employee.getNip(), "", "", "", "", employee.getJabatan()));
+                index++;
                 continue;
             } else if (Objects.isNull(beforePG)) {
                 masterCols.add(new MasterCol("" + index, employee.getNama(), employee.getNip(), "", "", afterPG.getGolongan(), afterPG.getNama(), employee.getJabatan()));
+                index++;
                 continue;
             } else if (Objects.isNull(afterPG)) {
+//                index++;
                 continue;
             } else {
                 masterCols.add(new MasterCol("" + index, employee.getNama(), employee.getNip(), beforePG.getGolongan(), beforePG.getNama(), afterPG.getGolongan(), afterPG.getNama(), employee.getJabatan()));
-
+                index++;
             }
         }
         return masterCols;
