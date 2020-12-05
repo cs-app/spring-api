@@ -12,6 +12,7 @@ import java.util.Objects;
 public class BeanCopy {
 
     public static <T> T copy(Object source, Class<T> tClass) {
+        if (Objects.isNull(source)) return null;
         T o = BeanUtils.instantiateClass(tClass);
         BeanUtils.copyProperties(source, o);
         return o;
@@ -23,6 +24,7 @@ public class BeanCopy {
 
     public static void copy(Object destination, String[] exclude, Object... sources) {
         for (Object source : sources) {
+            if (Objects.isNull(source)) continue;
             BeanUtils.copyProperties(source, destination, exclude);
         }
     }
@@ -34,8 +36,9 @@ public class BeanCopy {
 
     // collection
     public static <E, T> List<T> copyCollection(List<E> sources, List<T> destination, Class<T> tClass) {
-        if(Objects.isNull(sources)) return new ArrayList<>();
+        if (Objects.isNull(sources)) return new ArrayList<>();
         for (Object source : sources) {
+            if (Objects.isNull(source)) continue;
             T o = BeanUtils.instantiateClass(tClass);
             BeanUtils.copyProperties(source, o);
             destination.add(o);

@@ -304,7 +304,7 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
             if (!exist) {
                 EmployeePangkatHis his = new EmployeePangkatHis();
                 his.setSumberData(AppConstants.Source.TEMAN_DAWAI);
-//                his.setTmt(pangkat.getTmt());
+                his.setTmt(pangkat.getTmt());
                 his.setPangkatGolongan(pangkatGolongan);
                 employee.getPangkats().add(his);
                 updateUser.add(dbUser);
@@ -327,15 +327,7 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
         if (Objects.isNull(user)) return error(404, "user not found");
         Employee employee = user.getEmployee();
         if (Objects.isNull(employee)) return error(404, "user invalid");
-        List<EmployeePangkatHis> pangkatHis = employee.getPangkats().stream().filter(o -> {
-            if (Objects.isNull(employee.getPangkats())) return true;
-            for (EmployeePangkatHis ph : employee.getPangkats()) {
-                if (ph.getPangkatGolongan().getId().equals(pangkatGolongan.getId())) {
-                    return false;
-                }
-            }
-            return true;
-        }).collect(Collectors.toList());
+        List<EmployeePangkatHis> pangkatHis = employee.getPangkats().stream().filter(o -> !Objects.equals(o.getPangkatGolongan().getId(), pangkatGolongan.getId())).collect(Collectors.toList());
         employee.setPangkats(pangkatHis);
         userRepository.save(user);
         return success();

@@ -12,10 +12,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Data
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
@@ -180,11 +177,12 @@ public class UserResponse {
         Role role = user.getRole();
         Employee employee = user.getEmployee();
         BeanCopy.copy(this, user, employee);
-        List<EmployeeJabatan> jabatans = new ArrayList<>();
-        this.jabatanDetail = BeanCopy.copy(employee.getJabatanDetail(), EmployeeJabatan.class);
-        if (Objects.nonNull(employee.getJabatanDetail().getJabatan())) {
-            EmployeeJabatan.Jabatan jabatan = BeanCopy.copy(employee.getJabatanDetail().getJabatan(), EmployeeJabatan.Jabatan.class);
-            this.jabatanDetail.setJabatan(jabatan);
+        if (Objects.nonNull(employee.getJabatanDetail())) {
+            this.jabatanDetail = BeanCopy.copy(employee.getJabatanDetail(), EmployeeJabatan.class);
+            if (Objects.nonNull(employee.getJabatanDetail().getJabatan())) {
+                EmployeeJabatan.Jabatan jabatan = BeanCopy.copy(employee.getJabatanDetail().getJabatan(), EmployeeJabatan.Jabatan.class);
+                this.jabatanDetail.setJabatan(jabatan);
+            }
         }
         this.eselonDetail = BeanCopy.copy(employee.getEselonDetail(), EmployeeEselon.class);
         this.pangkatDetail = BeanCopy.copy(employee.getPangkatDetail(), EmployeePangkat.class);
@@ -194,6 +192,9 @@ public class UserResponse {
         this.families = BeanCopy.copyCollection(employee.getFamilies(), EmployeeFamily.class);
         this.mutasis = BeanCopy.copyCollection(employee.getMutasis(), EmployeeMutasi.class);
         this.pangkats = BeanCopy.copyCollection(employee.getPangkats(), EmployeePangkatHis.class);
+        if (Objects.nonNull(pangkats)) {
+            pangkats.sort(Comparator.comparing(EmployeePangkatHis::getTmt, Comparator.nullsFirst(Comparator.naturalOrder())).reversed());
+        }
         this.units = BeanCopy.copyCollection(employee.getUnits(), EmployeeUnit.class);
         this.documents = BeanCopy.copyCollection(employee.getDocuments(), EmployeeDocument.class);
         this.skps = BeanCopy.copyCollection(employee.getSkps(), EmployeeSKP.class);

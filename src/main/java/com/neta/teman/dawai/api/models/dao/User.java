@@ -39,12 +39,12 @@ public class User extends BaseEntity {
 
     @NotFound(action = NotFoundAction.IGNORE)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne(cascade = {CascadeType.ALL, CascadeType.MERGE, CascadeType.REFRESH}, optional = false)
+    @ManyToOne(cascade = {CascadeType.ALL, CascadeType.MERGE, CascadeType.REFRESH}, optional = false, fetch = FetchType.LAZY)
     Employee employee;
 
     @NotFound(action = NotFoundAction.IGNORE)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false, fetch = FetchType.LAZY)
     Role role;
 
 }

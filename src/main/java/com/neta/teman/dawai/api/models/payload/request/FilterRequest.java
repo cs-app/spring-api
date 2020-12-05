@@ -11,5 +11,8 @@ import lombok.EqualsAndHashCode;
 public class FilterRequest extends PageRequestRest {
 
     String filter;
+    String module;
+    Integer year;
+    Integer month;
 
 }

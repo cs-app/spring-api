@@ -8,6 +8,7 @@ import com.neta.teman.dawai.api.models.dao.*;
 import com.neta.teman.dawai.api.models.payload.request.*;
 import com.neta.teman.dawai.api.models.payload.response.UserResponse;
 import com.neta.teman.dawai.api.models.payload.response.PageResponse;
+import com.neta.teman.dawai.api.models.reports.Profile;
 import com.neta.teman.dawai.api.services.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
@@ -26,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -236,14 +238,15 @@ public class UserController extends BaseRestController {
     }
 
     @GetMapping(value = "/history/pangkat/{nip}")
-    public ResponseEntity<PageResponse> HistoryPangkat(@PathVariable String nip) {
+    public ResponseEntity<List<EmployeePangkatHis>> HistoryPangkat(@PathVariable String nip) {
         if (isNull(nip)) {
             return responseError(401, "empty nip");
         }
         ServiceResolver<User> resolver = userService.findByNip(nip);
         if (resolver.isError()) return responseError(resolver);
-        if (resolver.isError()) return responseError(resolver);
-        return response(resolver.getResult().getEmployee().getPangkats());
+        List<EmployeePangkatHis> result = resolver.getResult().getEmployee().getPangkats();
+        result.sort(Comparator.comparing(EmployeePangkatHis::getTmt).reversed());
+        return response(result);
     }
 
     @PostMapping(value = "/document")
