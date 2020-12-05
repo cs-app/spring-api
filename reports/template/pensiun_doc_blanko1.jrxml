@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.15.0.final using JasperReports Library version 6.15.0-dd49bfb94918336b8321d5507193f0169ead4e95  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pensiun_doc_1_usulan" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="952f33ad-87f6-4682-b175-76eda3ba2011">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="NAMA" class="java.lang.String"/>
+	<parameter name="NIP" class="java.lang.String"/>
+	<parameter name="KARPEG" class="java.lang.String"/>
+	<parameter name="PANGKAT_GOLONGAN" class="java.lang.String"/>
+	<parameter name="UNIT" class="java.lang.String"/>
+	<parameter name="ALAMAT" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="50">
+			<staticText>
+				<reportElement x="0" y="0" width="248" height="50" uuid="11013ab7-1b5b-4024-89a6-0052fa55ac2f"/>
+				<text><![CDATA[Yth. Menteri Pendidikan dan Kebudayaan
+Jalan Jenderal Sudirman, Senayan
+Jakarta
+]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<lastPageFooter>
+		<band height="717">
+			<staticText>
+				<reportElement x="30" y="60" width="150" height="20" uuid="5b05ef14-b1ed-4438-b42d-1860e366cf35"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Nama]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="80" width="150" height="20" uuid="9ae7f76e-2967-4f28-aebd-3e17b66ec544"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[NIP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="100" width="150" height="20" uuid="47d1eb26-289c-4216-ac41-e2a79e00ec61"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Nomor Seri KARPEG]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="120" width="150" height="20" uuid="316ea7aa-80c5-4feb-a23b-3aee02ae2d97"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Pangkat dan Golongan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="140" width="150" height="20" uuid="6e986c4c-1b23-46d9-be02-71b0b3f52d9e"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Unit Organisasi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="160" width="150" height="20" uuid="4d755f27-febd-462c-88a4-0866806577b9"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Alamat Rumah Sekarang]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="30" width="30" height="20" uuid="ef41aec0-19de-44cd-96cb-8d18f243334d"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[1.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="30" width="250" height="20" uuid="0c9b07e6-0610-431a-959c-384e13c695c8"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[yang bertandatangan dibawah ini saya :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="200" width="514" height="20" uuid="e20b6a81-b5fc-4603-b2a6-1e9e5be562b5"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Dengan ini mengajukan permintaan berhenti dengan hormat sebagai Pegawai Negeri Sipil dengan hak pensiun terhitung mulai akhir bulan.........tahun....  karena mencapai batas usia pensiun.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="230" width="30" height="20" uuid="d3cd0f2f-f483-4e77-a59b-b0b257ce3b2d"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[2.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="230" width="514" height="20" uuid="01ae17a8-f877-4cf6-98a7-0821ff8cd27b"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Sebagai bahan administrasi bersama ini saya lampirkan :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="250" width="20" height="200" uuid="9bca4781-aabe-41d1-83ae-7ed7f7ab63ee"/>
+				<text><![CDATA[a.
+b.
+c.
+d.
+e.
+f.
+g.
+h.
+i.
+j.
+k.
+l.
+m.
+n.
+o.
+p.
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="250" width="493" height="200" uuid="6e232ee4-6d06-4875-960c-aa68bc0fcc9a"/>
+				<text><![CDATA[Permohonan berhenti dengan hormat sebagai Pegawai Negeri Sipil dengan hak pensiun;
+Fotokopi Surat Keputusan pengangkatan pertama/CPNS, pengangkatan PNS dan pangkat/jabatan terakhir ;
+Fotokopi Surat Keputusan pengalaman kerja  sebelum diangkat CPNS (bila ada)
+Fotokopi Surat Nikah yang disahkan oleh Camat setempat;
+Surat Permintaan Pembayaran Pensiun Pertama (SP4);
+Daftar susunan keluarga yang disahkan oleh Kepala Kelurahan/Desa/Camat setempat;
+8 (delapan) buah Pasfoto yang berwarna ukuran 3x4 cm;
+Fotokopi Kartu Pegawai (KARPEG)
+Konversi Nomor Induk Pegawai (NIP)
+Fotokopi KARSU/KARIS
+Fotokopi Penilaian Prestasi Kerja PNS (SKP) 1 (satu) tahun terakhir;
+Fotokopi Kenaikan Gaji Berkala terakhir (KGB);
+Surat Keterangan tidak pernah dikenakan hukuman disiplin tingkat sedang atau berat;
+Surat Keterangan tidak sedang dalam menjalani proses pidana atau sedang dipidana penjara;
+Data Perorangan Calon Penerima Pensiun (DPCP)
+Fotokopi akte kelahiran anak yang masih menjadi tanggungan dalam daftar gaji, fotokopi akta nikah anak di bawah 21 tahun (bila ada), Surat Keterangan kuliah usia 21 tahun ke atas.
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="470" width="30" height="20" uuid="1251eb2d-27a4-434b-93f7-20537737fe7a"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[3.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="31" y="470" width="514" height="20" uuid="cf825697-6d2c-4928-af3e-12b08edee2ee"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Dengan ini saya  nyatakan, bahwa saya  akan menjalankan Bebas Tugas  mulai awal bulan.......tahun .......]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="500" width="514" height="20" uuid="ca22da17-238f-4e3c-80d3-ee587622bc3d"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[demikian surat permintaan saya buat agar dapat digunakan sebagaimana mestinya.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="500" width="30" height="20" uuid="5da0b057-371c-4515-97e5-bfb020875af3"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[4.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="75" y="550" width="210" height="70" uuid="8235df75-5d3a-4826-a383-ca2d78fcb5b2"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Mengetahui						
+Kepala Sub Bagian Tata Usaha
+Direktorat Sekolah Menengah Atas
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="290" y="590" width="210" height="20" uuid="c2217289-762d-4c56-bd92-30a60f145272"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Hormat saya,]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="75" y="660" width="210" height="40" uuid="0e788c8f-6b98-42cc-931c-1624bb054c01"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[Ekawati, S.Sos						
+NIP. 196406241987042001]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="180" y="60" width="375" height="20" uuid="783c02bb-3ac1-45a1-8241-2fa88a522f0e"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{NAMA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="80" width="375" height="20" uuid="f1f2c751-143b-48e9-b578-70f5503c241b"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{NIP}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="100" width="375" height="20" uuid="15c6cbc2-d5b9-4d3e-8937-7aba625090da"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{KARPEG}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="120" width="375" height="20" uuid="523ad1f5-e4a5-40ef-8580-56d2e24306da"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PANGKAT_GOLONGAN}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="140" width="375" height="20" uuid="60f9f347-45e5-42fb-a604-2585c595cb19"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{UNIT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="160" width="375" height="20" uuid="9a9f789a-459f-410e-a8d7-e0db5617bee6"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{ALAMAT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
+</jasperReport>

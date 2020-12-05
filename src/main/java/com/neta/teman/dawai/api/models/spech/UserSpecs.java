@@ -1,6 +1,7 @@
 package com.neta.teman.dawai.api.models.spech;
 
 import com.neta.teman.dawai.api.applications.base.BaseSpecs;
+import com.neta.teman.dawai.api.applications.commons.DateTimeUtils;
 import com.neta.teman.dawai.api.models.dao.*;
 import com.neta.teman.dawai.api.models.repository.PangkatGolonganRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -10,9 +11,14 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 
 @Slf4j
@@ -103,4 +109,47 @@ public class UserSpecs extends BaseSpecs {
     }
 
 
+    public Specification<User> pagePensiun(String name) {
+        return (root, query, criteriaBuilder) -> {
+            StringBuilder key = new StringBuilder();
+            key.append("%").append(Objects.isNull(name) ? "" : name).append("%");
+            String searchKey = key.toString();
+            Join<User, Employee> employeeJoin = root.join("employee", JoinType.LEFT);
+            LocalDate today = LocalDate.now();
+            LocalDate ago58Year = today.minusYears(58);
+            Date date = Date.from(ago58Year.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            //Expression<LocalDate> nowLiteral = criteriaBuilder.literal(ago58Year);
+            Predicate empBod = criteriaBuilder.lessThan(employeeJoin.get("tanggalLahir").as(Date.class), date);
+            Predicate empNama = criteriaBuilder.like(employeeJoin.get("nama"), searchKey);
+            query.orderBy(criteriaBuilder.desc(root.get("id")));
+            return criteriaBuilder.and(empBod, empNama);
+        };
+    }
+
+    public Specification<User> pageNaikPangkat(String name, Integer year, Integer month) {
+        return (root, query, criteriaBuilder) -> {
+            StringBuilder key = new StringBuilder();
+            key.append("%").append(Objects.isNull(name) ? "" : name).append("%");
+            String searchKey = key.toString();
+            Join<User, Employee> employeeJoin = root.join("employee", JoinType.LEFT);
+            Join<Employee, EmployeePangkatHis> pangkatHisJoin = employeeJoin.join("pangkats", JoinType.LEFT);
+            // start date
+            Calendar startOfMonth = Calendar.getInstance();
+            startOfMonth.set(year, month, 1);
+            startOfMonth.clear(Calendar.MILLISECOND);
+            Calendar endOfMonth = Calendar.getInstance();
+            endOfMonth.set(year, month, 1);
+            endOfMonth.clear(Calendar.MILLISECOND);
+            Date dateEnd = DateTimeUtils.endOfMonth(endOfMonth);
+            Predicate betweenTMT = criteriaBuilder.between(pangkatHisJoin.get("tmt"), DateTimeUtils.startOfDay(startOfMonth.getTime()), DateTimeUtils.endOfDay(dateEnd));
+//            LocalDate today = LocalDate.now();
+//            LocalDate ago58Year = today.minusYears(58);
+//            Date date = Date.from(ago58Year.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            //Expression<LocalDate> nowLiteral = criteriaBuilder.literal(ago58Year);
+//            Predicate empBod = criteriaBuilder.lessThan(employeeJoin.get("tanggalLahir").as(Date.class), date);
+            Predicate empNama = criteriaBuilder.like(employeeJoin.get("nama"), searchKey);
+            query.orderBy(criteriaBuilder.desc(root.get("id")));
+            return criteriaBuilder.and(betweenTMT, empNama);
+        };
+    }
 }

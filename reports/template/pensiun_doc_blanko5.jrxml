@@ -4,6 +4,9 @@
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="SUB_DIR" class="java.lang.String"/>
 	<parameter name="CONTAINER_DATASOURCE" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<parameter name="PROFILE_DATASOURCE" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<parameter name="FAMILY_PASANGAN_DATASOURCE" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<parameter name="FAMILY_ANAK_DATASOURCE" class="net.sf.jasperreports.engine.JRDataSource"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -11,7 +14,8 @@
 		<band splitType="Stretch"/>
 	</background>
 	<pageHeader>
-		<band height="220">
+		<band height="210">
+			<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
 			<staticText>
 				<reportElement x="0" y="0" width="555" height="20" uuid="12ee934f-3513-4e54-989a-27eecc2410c7"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
@@ -55,55 +59,67 @@
 				<text><![CDATA[SLIP]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="180" width="555" height="40" uuid="420f0183-3377-40f3-a73d-cb76601b1d16"/>
+				<reportElement x="0" y="180" width="555" height="30" uuid="420f0183-3377-40f3-a73d-cb76601b1d16"/>
 				<textElement verticalAlignment="Top"/>
 				<text><![CDATA[DATA PERORANGAN CALON PENERIMA PENSIUN (DPCPC) PEGAWAI NEGERI SIPIL YANG TELAH MENCAPAI BATAS USIA PENSIUN]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="150" y="50" width="250" height="20" uuid="7d8ea6cc-6cbe-4a5e-9af0-a74ac74d418a"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[: KEMENTRIAN PENDIDIKAN DAN KEBUDAYAAN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="70" width="150" height="20" uuid="70717ef2-5fbe-4645-ae48-2e7b4cc6c1f7"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[: DKI JAKARTA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="90" width="150" height="20" uuid="4c5a8188-497c-4367-b351-ce8fdb55835a"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[: JAKARTA SELATAN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="110" width="150" height="20" uuid="d9daf0e8-694c-4cb4-a058-831939b2ac5e"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[: DIREKTORAT SMA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="130" width="150" height="20" uuid="277c95cc-67c8-44a6-816d-490fcc75ebbe"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="150" width="150" height="20" uuid="554c17cb-79a3-4d0e-94c6-3cb35ea48a64"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[:]]></text>
+			</staticText>
 		</band>
 	</pageHeader>
-	<columnHeader>
-		<band height="61"/>
-	</columnHeader>
-	<columnFooter>
-		<band height="130"/>
-	</columnFooter>
-	<lastPageFooter>
-		<band height="166">
-			<staticText>
-				<reportElement x="370" y="120" width="184" height="30" uuid="7f6a43e5-1950-48b2-af9d-1feceff2baf7"/>
-				<text><![CDATA[
-NIP. ]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="370" y="0" width="184" height="20" uuid="69062e24-2109-466a-a6fa-19d2588aca99"/>
-				<text><![CDATA[Jakarta,]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="370" y="20" width="184" height="20" uuid="46d2ecf3-6033-4093-bd3b-7c9047cffcbf"/>
-				<text><![CDATA[Pegawai Negeri SIpil yang bersangkutan]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="20" width="184" height="20" uuid="85a4049b-a3e5-4e34-9a50-999519704599"/>
-				<text><![CDATA[Disahkan Oleh]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="40" width="184" height="20" uuid="e6b5da9c-4a95-4596-981c-2fe5fb08335a"/>
-				<text><![CDATA[CAMAT]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="120" width="184" height="30" uuid="60e57a71-38f2-4389-a2e3-d22705b7180d"/>
-				<text><![CDATA[
-NIP. ]]></text>
-			</staticText>
-		</band>
-	</lastPageFooter>
-	<summary>
-		<band height="281">
+	<detail>
+		<band height="50">
 			<subreport>
-				<reportElement x="0" y="0" width="555" height="281" uuid="639c5a47-8326-42c0-a133-bf8700db159d"/>
+				<reportElement x="0" y="0" width="555" height="50" uuid="639c5a47-8326-42c0-a133-bf8700db159d"/>
+				<subreportParameter name="SUB_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUB_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CONTAINER_DATASOURCE">
+					<subreportParameterExpression><![CDATA[$P{CONTAINER_DATASOURCE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="PROFILE_DATASOURCE">
+					<subreportParameterExpression><![CDATA[$P{PROFILE_DATASOURCE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="FAMILY_PASANGAN_DATASOURCE">
+					<subreportParameterExpression><![CDATA[$P{FAMILY_PASANGAN_DATASOURCE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="FAMILY_ANAK_DATASOURCE">
+					<subreportParameterExpression><![CDATA[$P{FAMILY_ANAK_DATASOURCE}]]></subreportParameterExpression>
+				</subreportParameter>
 				<dataSourceExpression><![CDATA[$P{CONTAINER_DATASOURCE}]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{SUB_DIR} + "pensiun_doc_blanko5_container.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
+	</detail>
+	<summary>
+		<band height="343"/>
 	</summary>
 </jasperReport>

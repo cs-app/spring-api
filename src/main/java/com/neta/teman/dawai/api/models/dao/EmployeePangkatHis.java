@@ -20,6 +20,7 @@ public class EmployeePangkatHis extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Temporal(TemporalType.DATE)
     private Date tmt;
 
     private String sumberData;

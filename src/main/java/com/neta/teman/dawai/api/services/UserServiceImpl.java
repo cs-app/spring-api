@@ -259,6 +259,12 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
 
     @Override
     public ServiceResolver<Page<User>> loadPage(FilterRequest request) {
+        if ("pensiun".equalsIgnoreCase(request.getModule())) {
+            return success(userRepository.findAll(userSpecs.pagePensiun(request.getFilter()), request.pageRequest()));
+        }
+        if ("naikpangkat".equalsIgnoreCase(request.getModule())) {
+            return success(userRepository.findAll(userSpecs.pageNaikPangkat(request.getFilter(), request.getYear(), request.getMonth()), request.pageRequest()));
+        }
         return success(userRepository.findAll(userSpecs.page(request.getFilter()), request.pageRequest()));
     }
 

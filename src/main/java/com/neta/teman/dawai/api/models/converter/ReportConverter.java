@@ -1,11 +1,14 @@
 package com.neta.teman.dawai.api.models.converter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.neta.teman.dawai.api.applications.commons.BeanCopy;
 import com.neta.teman.dawai.api.applications.commons.DTFomat;
+import com.neta.teman.dawai.api.applications.commons.FamilyCommons;
+import com.neta.teman.dawai.api.applications.commons.UserCommons;
 import com.neta.teman.dawai.api.models.dao.*;
 import com.neta.teman.dawai.api.models.reports.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -15,9 +18,23 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Slf4j
+@Component
 public class ReportConverter {
 
-    public static List<Profile> profile(Map map, User user) {
+    @Autowired
+    UserCommons userCommons;
+
+    @Autowired
+    FamilyCommons familyCommons;
+
+    public List<Profile> defaultDatasource(Map map, User user) {
+        List<Profile> profiles = new ArrayList<>();
+        Employee employee = user.getEmployee();
+        newProfile(profiles, "1   NIP", employee.getNip());
+        return profiles;
+    }
+
+    public List<Profile> profile(Map map, User user) {
         List<Profile> profiles = new ArrayList<>();
         Employee employee = user.getEmployee();
         newProfile(profiles, "1   NIP", employee.getNip());
@@ -111,7 +128,7 @@ public class ReportConverter {
         return profiles;
     }
 
-    private static String appendSpace(int total) {
+    private String appendSpace(int total) {
         String space = "\u00A0";
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < total; i++) {
@@ -120,7 +137,7 @@ public class ReportConverter {
         return sb.toString();
     }
 
-    private static void newProfile(List<Profile> profiles, String key, Object val) {
+    private void newProfile(List<Profile> profiles, String key, Object val) {
         if (Objects.isNull(val)) {
             profiles.add(new Profile(key, ""));
             return;
@@ -128,7 +145,15 @@ public class ReportConverter {
         profiles.add(new Profile(key, String.valueOf(val)));
     }
 
-    public static Collection<?> family(User user) {
+    private void newProfile(List<Profile> profiles, String num, String key, Object val) {
+        if (Objects.isNull(val)) {
+            profiles.add(new Profile(num, key, ""));
+            return;
+        }
+        profiles.add(new Profile(num, key, String.valueOf(val)));
+    }
+
+    public Collection<?> family(User user) {
         List<EmployeeFamily> employeeFamilies = user.getEmployee().getFamilies();
         if (Objects.isNull(employeeFamilies)) return new ArrayList<>();
         for (EmployeeFamily o : employeeFamilies) {
@@ -153,14 +178,14 @@ public class ReportConverter {
         return employeeFamilies;
     }
 
-    public static Collection<?> container() {
+    public Collection<?> container() {
         ArrayList<Profile> detail = new ArrayList<>();
         detail.add(new Profile("P", "Q"));
         return detail;
 
     }
 
-    public static Collection<?> education(User user) {
+    public Collection<?> education(User user) {
         List<EmployeeEducation> education = user.getEmployee().getEducations();
         if (Objects.isNull(education)) return new ArrayList<>();
         List<ProfileEducation> educations = BeanCopy.copyCollection(education, ProfileEducation.class);
@@ -171,42 +196,42 @@ public class ReportConverter {
         }).collect(Collectors.toList());
     }
 
-    public static Collection<?> mutasi(User user) {
+    public Collection<?> mutasi(User user) {
         List<EmployeeMutasi> education = user.getEmployee().getMutasis();
         if (Objects.isNull(education)) return new ArrayList<>();
         AtomicInteger index = new AtomicInteger();
         return education.stream().map(o -> new ProfileMutasiPangkatJabatanPelatihan(index.incrementAndGet(), o)).collect(Collectors.toList());
     }
 
-    public static Collection<?> pangkat(User user) {
+    public Collection<?> pangkat(User user) {
         List<EmployeePangkatHis> education = user.getEmployee().getPangkats();
         if (Objects.isNull(education)) return new ArrayList<>();
         AtomicInteger index = new AtomicInteger();
         return education.stream().map(o -> new ProfilePangkat(index.incrementAndGet(), o)).collect(Collectors.toList());
     }
 
-    public static Collection<?> jabatan(User user) {
+    public Collection<?> jabatan(User user) {
         List<EmployeePangkatHis> education = user.getEmployee().getPangkats();
         if (Objects.isNull(education)) return new ArrayList<>();
         AtomicInteger index = new AtomicInteger();
         return education.stream().map(o -> new ProfileMutasiPangkatJabatanPelatihan(index.incrementAndGet(), o.getPangkatGolongan())).collect(Collectors.toList());
     }
 
-    public static Collection<?> pelatihanJabatan(User user) {
+    public Collection<?> pelatihanJabatan(User user) {
         List<EmployeePelatihan> education = user.getEmployee().getPelatihans().stream().filter(o -> "JABATAN".equalsIgnoreCase(o.getType())
         ).collect(Collectors.toList());
         AtomicInteger index = new AtomicInteger();
         return education.stream().map(o -> new ProfilePelatihan(index.incrementAndGet(), o)).collect(Collectors.toList());
     }
 
-    public static Collection<?> pelatihanTeknis(User user) {
+    public Collection<?> pelatihanTeknis(User user) {
         List<EmployeePelatihan> education = user.getEmployee().getPelatihans().stream().filter(o -> "TEKNIS".equalsIgnoreCase(o.getType())
         ).collect(Collectors.toList());
         AtomicInteger index = new AtomicInteger();
         return education.stream().map(o -> new ProfilePelatihan(index.incrementAndGet(), o)).collect(Collectors.toList());
     }
 
-    public static Collection<?> pendukung(User user) {
+    public Collection<?> pendukung(User user) {
         List<Profile> profiles = new ArrayList<>();
         Employee employee = user.getEmployee();
         newProfile(profiles, "1." + appendSpace(1) + "ID Karpeg", employee.getNoKarpeg());
@@ -216,7 +241,7 @@ public class ReportConverter {
         return profiles;
     }
 
-    public static Collection<?> duk(List<Employee> employees) {
+    public Collection<?> duk(List<Employee> employees) {
         List<Duk> profiles = new ArrayList<>();
         for (Employee o : employees) {
             Duk duk = BeanCopy.copy(o, Duk.class);
@@ -245,7 +270,7 @@ public class ReportConverter {
         return profiles;
     }
 
-    private static String toPensiun(Date date) {
+    private String toPensiun(Date date) {
         if (Objects.isNull(date)) return null;
         LocalDate userday = date.toInstant()
                 .atZone(ZoneId.systemDefault())
@@ -253,7 +278,7 @@ public class ReportConverter {
         return "" + userday.getYear();
     }
 
-    private static String toPensiunDate(Date date) {
+    private String toPensiunDate(Date date) {
         if (Objects.isNull(date)) return null;
         LocalDate userday = date.toInstant()
                 .atZone(ZoneId.systemDefault())
@@ -262,7 +287,7 @@ public class ReportConverter {
         return DTFomat.format(datePensiun);
     }
 
-    private static String toReadable(Date date) {
+    private String toReadable(Date date) {
         if (Objects.isNull(date)) return null;
         LocalDate today = LocalDate.now();
         LocalDate userday = date.toInstant()
@@ -275,36 +300,36 @@ public class ReportConverter {
         return sb.toString();
     }
 
-    public static Collection<?> skp(User user) {
+    public Collection<?> skp(User user) {
         List<EmployeeSKP> education = user.getEmployee().getSkps();
         AtomicInteger index = new AtomicInteger();
         return education.stream().map(o -> new ProfilePelatihan(index.incrementAndGet(), o)).collect(Collectors.toList());
     }
 
-    public static Collection<?> credit(User user) {
+    public Collection<?> credit(User user) {
         List<EmployeeCreditScore> education = user.getEmployee().getCreditScores();
         AtomicInteger index = new AtomicInteger();
         return education.stream().map(o -> new ProfilePelatihan(index.incrementAndGet(), o)).collect(Collectors.toList());
     }
 
-    public static Collection<?> lancana(User user) {
+    public Collection<?> lancana(User user) {
         List<EmployeeSatyaLencana> education = user.getEmployee().getSatyaLencanas();
         AtomicInteger index = new AtomicInteger();
         return education.stream().map(o -> new ProfilePelatihan(index.incrementAndGet(), o)).collect(Collectors.toList());
     }
 
-    public static Collection<?> disiplin(User user) {
+    public Collection<?> disiplin(User user) {
         List<EmployeeHukumanDisiplin> education = user.getEmployee().getHukumanDisiplins();
         AtomicInteger index = new AtomicInteger();
         return education.stream().map(o -> new ProfilePelatihan(index.incrementAndGet(), o)).collect(Collectors.toList());
     }
 
-    public static Collection<?> cuti(List<CutiSummary> cutiSummaries) {
+    public Collection<?> cuti(List<CutiSummary> cutiSummaries) {
         AtomicInteger index = new AtomicInteger();
         return cutiSummaries.stream().map(o -> new ProfilePelatihan(index.incrementAndGet(), o)).collect(Collectors.toList());
     }
 
-    public static Collection<?> pensiun(User user) {
+    public Collection<?> pensiun(User user) {
         List<ProfilePelatihan> result = new ArrayList<>();
         AtomicInteger index = new AtomicInteger();
         ProfilePelatihan pp = new ProfilePelatihan();
@@ -327,5 +352,89 @@ public class ReportConverter {
 //        LocalDate date = user
         //return cutiSummaries.stream().map(o -> new ProfilePelatihan(index.incrementAndGet(), o)).collect(Collectors.toList());
         //return null;
+    }
+
+    public Collection<?> blanko3ProfileFamilyAnak(Map<String, Object> userMapOrigin, User user) {
+        List<MasterCol> masterCols = new ArrayList<>();
+        if (Objects.isNull(user.getEmployee())) return masterCols;
+        List<EmployeeFamily> employeeFamilies = user.getEmployee().getFamilies();
+        if (Objects.isNull(employeeFamilies)) return masterCols;
+        int index = 1;
+        for (EmployeeFamily fm : employeeFamilies) {
+            masterCols.add(new MasterCol("" + index, fm.getName(), familyCommons.alias(fm.getFamilyStatus()), DTFomat.format(fm.getDob()), fm.getOccupation(), DTFomat.format(fm.getMob()), ""));
+            index++;
+        }
+        return masterCols;
+    }
+
+    public Collection<?> blanko5Profile(Map<String, Object> map, User user) {
+        List<Profile> profiles = new ArrayList<>();
+        Employee employee = user.getEmployee();
+        newProfile(profiles, "A.", "NAMA", ": " + employee.getNama());
+        newProfile(profiles, "B.", "NIP", ": " + employee.getNip());
+        newProfile(profiles, "C.", "TEMPAT, TANGGAL LAHIR", ": " + map.get("tempat_lahir") + ", " + DTFomat.format(employee.getTanggalLahir()));
+        newProfile(profiles, "D.", "JABATAN PEKERJAAN", ": " + employee.getJabatan());
+        newProfile(profiles, "E.", "GAJI POKOK TERAKHIR", ": ");
+        newProfile(profiles, "F.", "MASA KERJA GOLONGAN", ": ");
+        newProfile(profiles, "G.", "MASA KERJA PENSIUN", ": ");
+        newProfile(profiles, "H.", "MASA KERJA SEBELUM DIANGKAT PNS", ": ");
+        newProfile(profiles, "I.", "PENDIDIKAN SEBAGAI DASAR PENGANGKATAN PERTAMA MULAI MASUK PNS", ": ");
+        newProfile(profiles, "J.", "KENAIKAN PANGKAT", ": " + "");
+        return profiles;
+    }
+
+    public Collection<?> blanko5ProfileFamilyPasangan(Map<String, Object> userMapOrigin, User user) {
+        List<MasterCol> masterCols = new ArrayList<>();
+        if (Objects.isNull(user.getEmployee())) return masterCols;
+        List<EmployeeFamily> employeeFamilies = user.getEmployee().getFamilies();
+        if (Objects.isNull(employeeFamilies)) return masterCols;
+        int index = 1;
+        for (EmployeeFamily fm : employeeFamilies) {
+            if (fm.getType() == 1) {
+                masterCols.add(new MasterCol("" + index, fm.getName(), DTFomat.format(fm.getDob()), DTFomat.format(fm.getMob()), fm.getFamilyStatus() + " Ke: " + index));
+                index++;
+            }
+        }
+        return masterCols;
+    }
+
+    public Collection<?> blanko5ProfileFamilyAnak(Map<String, Object> userMapOrigin, User user) {
+        List<MasterCol> masterCols = new ArrayList<>();
+        if (Objects.isNull(user.getEmployee())) return masterCols;
+        List<EmployeeFamily> employeeFamilies = user.getEmployee().getFamilies();
+        if (Objects.isNull(employeeFamilies)) return masterCols;
+        int index = 1;
+        for (EmployeeFamily fm : employeeFamilies) {
+            if (fm.getType() == 2) {
+                masterCols.add(new MasterCol("" + index, fm.getName(), "✓", "", ""));
+                index++;
+            }
+        }
+        return masterCols;
+    }
+
+    public Collection<?> naikPangkat(List<User> users) {
+        List<MasterCol> masterCols = new ArrayList<>();
+        int index = 1;
+        for (User user : users) {
+            EmployeePangkatHis before = userCommons.pangkatSebelumNaik(user);
+            EmployeePangkatHis after = userCommons.pangkatSebelumNaik(user);
+            Employee employee = user.getEmployee();
+            PangkatGolongan beforePG = before.getPangkatGolongan();
+            PangkatGolongan afterPG = after.getPangkatGolongan();
+            if (Objects.isNull(beforePG) && Objects.isNull(afterPG)) {
+                masterCols.add(new MasterCol("" + index, employee.getNama(), employee.getNip(), "", "", "", "", employee.getJabatan()));
+                continue;
+            } else if (Objects.isNull(beforePG)) {
+                masterCols.add(new MasterCol("" + index, employee.getNama(), employee.getNip(), "", "", afterPG.getGolongan(), afterPG.getNama(), employee.getJabatan()));
+                continue;
+            } else if (Objects.isNull(afterPG)) {
+                continue;
+            } else {
+                masterCols.add(new MasterCol("" + index, employee.getNama(), employee.getNip(), beforePG.getGolongan(), beforePG.getNama(), afterPG.getGolongan(), afterPG.getNama(), employee.getJabatan()));
+
+            }
+        }
+        return masterCols;
     }
 }

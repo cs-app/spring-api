@@ -65,4 +65,9 @@ public class DateTimeUtils {
         }
         return days;
     }
+
+    public static Date endOfMonth(Calendar cal) {
+        cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DATE));
+        return cal.getTime();
+    }
 }

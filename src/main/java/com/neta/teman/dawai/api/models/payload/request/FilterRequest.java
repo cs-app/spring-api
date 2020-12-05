@@ -10,8 +10,8 @@ import lombok.EqualsAndHashCode;
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class FilterRequest extends PageRequestRest {
 
-    String filter;
     String module;
+    String filter;
     Integer year;
     Integer month;
 

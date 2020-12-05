@@ -1,8 +1,6 @@
 package com.neta.teman.dawai.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.neta.teman.dawai.api.applications.constants.AppConstants;
-import com.neta.teman.dawai.api.models.converter.ReportConverter;
 import com.neta.teman.dawai.api.models.dao.Cuti;
 import com.neta.teman.dawai.api.models.dao.Employee;
 import com.neta.teman.dawai.api.models.dao.User;
@@ -10,11 +8,6 @@ import com.neta.teman.dawai.api.models.repository.CutiRepository;
 import com.neta.teman.dawai.api.models.repository.EmployeeRepository;
 import com.neta.teman.dawai.api.services.ReportService;
 import com.neta.teman.dawai.api.services.UserService;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.util.JRSaver;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -25,9 +18,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.test.context.TestPropertySource;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 @SpringBootTest
@@ -63,7 +53,7 @@ class ReportTests {
     }
 
     @Test
-    void printCUti() throws JsonProcessingException {
+    void printCuti() throws JsonProcessingException {
         User user = userService.findByNip("196406241987032001").getResult();
         List<Cuti> cuti = cutiRepository.findAllByUser(user);
         reportService.printCuti(user, cuti.get(0), null);
@@ -72,8 +62,48 @@ class ReportTests {
     @Test
     void printDUK() throws JsonProcessingException {
         List<Employee> employees = employeeRepository.findAll();
-//        ReportConverter.duk(employees);
         reportService.printDUK(employees, null);
+    }
+
+    @Test
+    void printPensiunAjuan() throws JsonProcessingException {
+        User user = userService.findByNip("196406241987032001").getResult();
+        reportService.printPensiunAjuan(user, null);
+    }
+
+    @Test
+    void printPensiunBlanko1() throws JsonProcessingException {
+        User user = userService.findByNip("196406241987032001").getResult();
+        reportService.printBlanko1(user, null);
+    }
+
+    @Test
+    void printPensiunBlanko2() throws JsonProcessingException {
+        User user = userService.findByNip("196406241987032001").getResult();
+        reportService.printBlanko2(user, null);
+    }
+
+    @Test
+    void printPensiunBlanko3() throws JsonProcessingException {
+        User user = userService.findByNip("196406241987032001").getResult();
+        reportService.printBlanko3(user, null);
+    }
+
+    @Test
+    void printPensiunBlanko4() throws JsonProcessingException {
+        User user = userService.findByNip("196406241987032001").getResult();
+        reportService.printBlanko4(user, null);
+    }
+
+    @Test
+    void printPensiunBlanko5() throws JsonProcessingException {
+        User user = userService.findByNip("196406241987032001").getResult();
+        reportService.printBlanko5(user, null);
+    }
+
+    @Test
+    void printPensiunNaikPangkat() throws JsonProcessingException {
+        reportService.printNaikPangkat(2020, null);
     }
 
 

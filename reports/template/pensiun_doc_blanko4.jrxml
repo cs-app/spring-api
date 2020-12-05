@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<!-- Created with Jaspersoft Studio version 6.15.0.final using JasperReports Library version 6.15.0-dd49bfb94918336b8321d5507193f0169ead4e95  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pensiun_doc_1_usulan" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="952f33ad-87f6-4682-b175-76eda3ba2011">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="NAMA" class="java.lang.String"/>
+	<parameter name="NIP" class="java.lang.String"/>
+	<parameter name="NAMATTD" class="java.lang.String"/>
+	<parameter name="NIPTTD" class="java.lang.String"/>
+	<parameter name="KARPEG" class="java.lang.String"/>
+	<parameter name="PANGKAT_GOLONGAN" class="java.lang.String"/>
+	<parameter name="UNIT" class="java.lang.String"/>
+	<parameter name="ALAMAT" class="java.lang.String"/>
+	<parameter name="JABATAN" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -12,7 +21,7 @@
 		<band height="82" splitType="Stretch">
 			<image>
 				<reportElement x="0" y="10" width="100" height="72" uuid="45cf9e35-cf65-4194-9fe8-f7c7d89a9441"/>
-				<imageExpression><![CDATA["/image/tutwurihandayani.png"]]></imageExpression>
+				<imageExpression><![CDATA["image/tutwurihandayani.png"]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="100" y="0" width="455" height="50" uuid="19c41f50-4c48-4f4b-b19d-2f08af719af6"/>
@@ -32,6 +41,7 @@
 	</title>
 	<pageHeader>
 		<band height="510">
+			<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
 			<staticText>
 				<reportElement x="0" y="10" width="555" height="20" uuid="d830e1a7-c02a-4c38-8e5d-012cfc050978"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
@@ -115,6 +125,46 @@ Kementrian Pendidikan dan Kebudayaan]]></text>
 				<textElement textAlignment="Justified" verticalAlignment="Top"/>
 				<text><![CDATA[Demikian surat pernyataan ini dibuat dengan sesungguhnya dengan mengingat sumpah jabatan apabila dikemudian hari ternyata isi surat ini tidak benar yang mengakibatkan kerugian bagi negara maka, saya bersedia menanggung kerugian tersebut.]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="180" y="110" width="375" height="20" uuid="41f969f2-2492-47eb-a46e-b82b5ab9e5fe"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{NAMA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="130" width="375" height="20" uuid="0d47c662-6bde-4941-ac94-bcfc655fd5a2"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{NIP}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="150" width="375" height="20" uuid="6cab24cb-b6c9-48bb-a504-f7e92ab4a953"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PANGKAT_GOLONGAN}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="170" width="375" height="20" uuid="fd31ba13-1297-42da-8e4c-4590a77c1f82"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{JABATAN}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="300" width="375" height="20" uuid="c22a706a-1f0b-45b0-80e4-1e39e5c16d6f"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{NAMA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="320" width="375" height="20" uuid="1720700f-b87f-4bda-803c-c9f8566ed019"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{NIP}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="340" width="375" height="20" uuid="4c9d6069-ca1b-4323-b294-e8adbb47069e"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PANGKAT_GOLONGAN}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="360" width="375" height="20" uuid="74478168-17f7-42be-be69-fcc327e4f26a"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{JABATAN}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<lastPageFooter>
