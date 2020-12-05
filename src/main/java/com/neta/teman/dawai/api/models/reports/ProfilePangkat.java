@@ -7,6 +7,7 @@ import com.neta.teman.dawai.api.models.dao.PangkatGolongan;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.Objects;
 
 @Data
 public class ProfilePangkat {
@@ -21,6 +22,8 @@ public class ProfilePangkat {
 
     public ProfilePangkat(int row, EmployeePangkatHis his) {
         BeanCopy.copy(this, his);
+        if (Objects.isNull(his)) return;
+        if (Objects.isNull(his.getPangkatGolongan())) return;
         PangkatGolongan o = his.getPangkatGolongan();
         this.pangkat = o.getNama();
         this.golongan = o.getGolongan();

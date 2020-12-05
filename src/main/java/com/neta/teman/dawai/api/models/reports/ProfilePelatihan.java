@@ -26,7 +26,8 @@ public class ProfilePelatihan {
 
     String ambil;
 
-    public ProfilePelatihan(){}
+    public ProfilePelatihan() {
+    }
 
     public ProfilePelatihan(int row, EmployeePelatihan o) {
         BeanCopy.copy(this, o);
@@ -69,7 +70,9 @@ public class ProfilePelatihan {
         this.golongan = Objects.isNull(o) ? "" : String.valueOf(new Date(o.getTahun()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear());
         this.pangkat = String.valueOf(o.getKuotaCuti());
         this.ambil = String.valueOf(o.getKuotaCuti());
-        this.sisa = String.valueOf(o.getKuotaPastCuti() + o.getKuotaPastTwoCuti());
+        if (Objects.nonNull(o.getKuotaPastCuti()) && Objects.nonNull(o.getKuotaPastTwoCuti())) {
+            this.sisa = String.valueOf(o.getKuotaPastCuti() + o.getKuotaPastTwoCuti());
+        } else this.sisa = "0";
         this.row = row;
     }
 }

@@ -31,7 +31,7 @@ public class UserCommons {
     }
 
     public Integer getAgeYear(Date tanggalLahir) {
-        if(Objects.isNull(tanggalLahir)) return null;
+        if (Objects.isNull(tanggalLahir)) return null;
         LocalDate today = LocalDate.now();
         LocalDate userday = tanggalLahir.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         Period diff = Period.between(userday, today);
@@ -39,7 +39,7 @@ public class UserCommons {
     }
 
     public Integer getAgeMonth(Date tanggalLahir) {
-        if(Objects.isNull(tanggalLahir)) return null;
+        if (Objects.isNull(tanggalLahir)) return null;
         LocalDate today = LocalDate.now();
         LocalDate userday = tanggalLahir.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         Period diff = Period.between(userday, today);
@@ -120,5 +120,17 @@ public class UserCommons {
         his.setSumberData(AppConstants.Source.TEMAN_DAWAI);
         his.setPangkatGolongan(pangkatGolongan);
         return his;
+    }
+
+    public EmployeePangkatHis pangkatSebelumNaik(User user) {
+        List<EmployeePangkatHis> pangkatHis = user.getEmployee().getPangkats();
+        if (pangkatHis.size() == 1) return pangkatHis.get(0);
+        return pangkatHis.get(pangkatHis.size() - 2);
+    }
+
+    public EmployeePangkatHis pangkatNaik(User user) {
+        List<EmployeePangkatHis> pangkatHis = user.getEmployee().getPangkats();
+        if (pangkatHis.size() == 1) return pangkatHis.get(0);
+        return pangkatHis.get(pangkatHis.size() - 1);
     }
 }

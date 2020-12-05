@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -402,6 +403,53 @@ public class UserController extends BaseRestController {
                 .contentType(MediaType.parseMediaType(contentType))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + path + "\"")
                 .body(resource);
+    }
+
+    @GetMapping(value = "/download/pensiun/{nip}/{blankoId}")
+    public ResponseEntity<StreamingResponseBody> downloadProfilePensiunFile(@PathVariable String nip, @PathVariable() String blankoId) {
+        ServiceResolver<User> resolver = userService.findByNip(nip);
+        if (resolver.isError()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        User user = resolver.getResult();
+        if (Objects.isNull(user)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        Employee employee = user.getEmployee();
+        if (Objects.isNull(employee)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        String fileName = employee.getNip() + "_" + DTFomat.format(new Date()) + "_" + employee.getNama() + "blanko_" + blankoId + ".pdf";
+        StreamingResponseBody stream = null;
+        int value = Integer.parseInt(blankoId);
+        switch (value) {
+            case 0:
+                stream = out -> reportService.printPensiunAjuan(user, out);
+                break;
+            case 1:
+                stream = out -> reportService.printBlanko1(user, out);
+                break;
+            case 2:
+                stream = out -> reportService.printBlanko2(user, out);
+                break;
+            case 3:
+                stream = out -> reportService.printBlanko3(user, out);
+                break;
+            case 4:
+                stream = out -> reportService.printBlanko4(user, out);
+                break;
+            case 5:
+                stream = out -> reportService.printBlanko5(user, out);
+                break;
+        }
+        if (Objects.isNull(stream)) {
+            return ResponseEntity.badRequest().build();
+        }
+        // StreamingResponseBody stream = out -> reportService.printCuti(user, cutiResolver.getResult(), out);
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\"" + fileName + "\"")
+                .body(stream);
     }
 
     @GetMapping(value = "/view/digital/{nip}/{documentId}")
