@@ -5,6 +5,7 @@ import com.neta.teman.dawai.api.models.dao.Document;
 import com.neta.teman.dawai.api.models.dao.EmployeeDocument;
 import com.neta.teman.dawai.api.models.dao.User;
 import com.neta.teman.dawai.api.models.payload.request.*;
+import com.neta.teman.dawai.api.models.payload.response.UserResponse;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -60,4 +61,6 @@ public interface UserService extends RoleService {
     ServiceResolver updateProfilePelatihan(UserProfileUpdateRequest request);
 
     ServiceResolver removePelatihan(Long id);
+
+    ServiceResolver<List<UserResponse>> proyeksiPangkat(int tahun, int bulan);
 }

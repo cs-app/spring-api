@@ -1,10 +1,12 @@
 package com.neta.teman.dawai.api.services;
 
 import com.neta.teman.dawai.api.applications.base.ServiceResolver;
+import com.neta.teman.dawai.api.applications.commons.DTFomat;
 import com.neta.teman.dawai.api.applications.constants.AppConstants;
 import com.neta.teman.dawai.api.models.converter.SimpegConverter;
 import com.neta.teman.dawai.api.models.dao.*;
 import com.neta.teman.dawai.api.models.payload.request.*;
+import com.neta.teman.dawai.api.models.payload.response.UserResponse;
 import com.neta.teman.dawai.api.models.repository.*;
 import com.neta.teman.dawai.api.models.spech.UserSpecs;
 import com.neta.teman.dawai.api.plugins.simpeg.models.SimpegAuth;
@@ -17,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -472,6 +476,74 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
     public ServiceResolver removePelatihan(Long id) {
         pelatihanRepository.deleteById(id);
         return success();
+    }
+
+    @Override
+    public ServiceResolver<List<UserResponse>> proyeksiPangkat(int tahun, int bulan) {
+        List<PangkatGolongan> pangkatGolongans = pangkatGolonganRepository.findAll().stream().filter(o -> o.getId() != 18L).sorted(Comparator.comparing(PangkatGolongan::getId)).collect(Collectors.toList());
+        List<UserResponse> userList = userRepository.findAll().stream().filter(u -> {
+            List<EmployeePangkatHis> his = u.getEmployee().getPangkats();
+            return his.size() > 0;
+        }).map(u -> {
+            UserResponse o = new UserResponse(u);
+            // pangkat his sudah terurut berdasarkan pangkat, dan bukan pensiun
+            List<EmployeePangkatHis> his = o.getPangkats().stream().filter(ep -> ep.getPangkatGolongan().getId() != 18L).sorted(Comparator.comparing(eps -> eps.getPangkatGolongan().getId())).collect(Collectors.toList());
+            for (EmployeePangkatHis up : his) {
+                log.info("{}, {}, {}", u.getEmployee().getNama(), DTFomat.format(up.getTmt()), up.getPangkatGolongan().getGolongan());
+            }
+            // last hist
+            EmployeePangkatHis lastHis = his.get(his.size() - 1);
+            log.info("pangkat terakhir {} {} {}", u.getEmployee().getNama(), DTFomat.format(lastHis.getTmt()), lastHis.getPangkatGolongan().getGolongan());
+            // validasi pendidikan
+            String educationType = userCommons.lastEducation(u);
+            // max S1 = iii/d, atau id = 12
+            if (educationType.contains("S1") && lastHis.getPangkatGolongan().getId() < 12) {
+                // stop process S1
+                List<PangkatGolongan> pangkatGolongansMax = pangkatGolongans.stream().filter(pg -> (pg.getId() > lastHis.getPangkatGolongan().getId() && pg.getId() <= 12)).collect(Collectors.toList());
+                AtomicInteger index = new AtomicInteger(0);
+                LocalDate start = lastHis.getTmt().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                for (PangkatGolongan tmpPangkat : pangkatGolongansMax) {
+                    LocalDate indexDate = start.plusYears(index.addAndGet(4));
+                    EmployeePangkatHis tmpHis = new EmployeePangkatHis();
+                    tmpHis.setTmt(Date.from(indexDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+                    tmpHis.setSumberData(AppConstants.Source.TEMAN_DAWAI);
+                    tmpHis.setPangkatGolongan(tmpPangkat);
+                    his.add(tmpHis);
+                }
+                log.info("user {} pendidikan {} naik golongan {}", u.getEmployee().getNama(), educationType, lastHis.getPangkatGolongan().getGolongan());
+            } else if (educationType.contains("S2") && lastHis.getPangkatGolongan().getId() < 13) {
+                // stop process S2
+                List<PangkatGolongan> pangkatGolongansMax = pangkatGolongans.stream().filter(pg -> (pg.getId() > lastHis.getPangkatGolongan().getId() && pg.getId() <= 13)).collect(Collectors.toList());
+                AtomicInteger index = new AtomicInteger(0);
+                LocalDate start = new Date(lastHis.getTmt().getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                for (PangkatGolongan tmpPangkat : pangkatGolongansMax) {
+                    LocalDate indexDate = start.plusYears(index.addAndGet(4));
+                    EmployeePangkatHis tmpHis = new EmployeePangkatHis();
+                    tmpHis.setTmt(Date.from(indexDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+                    tmpHis.setSumberData(AppConstants.Source.TEMAN_DAWAI);
+                    tmpHis.setPangkatGolongan(tmpPangkat);
+                    his.add(tmpHis);
+                }
+                log.info("user {} pendidikan {} naik golongan {}", u.getEmployee().getNama(), educationType, lastHis.getPangkatGolongan().getGolongan());
+            } else {
+                log.info("{} {} sudah mencapai batas maksimum {}, {}", u.getUsername(), u.getEmployee().getNama(), educationType, lastHis.getPangkatGolongan().getGolongan());
+            }
+            o.setPangkats(his);
+            return o;
+        }).collect(Collectors.toList());
+        // filter kenaikan pangkat
+
+        List<UserResponse> responses = userList.stream().filter(ur -> {
+            for (EmployeePangkatHis his : ur.getPangkats()) {
+                LocalDate tmt = new Date(his.getTmt().getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                log.info("y {} and m {}", tmt.getYear(), tmt.getMonthValue());
+                if (tahun == tmt.getYear() && bulan == tmt.getMonthValue()) {
+                    return true;
+                }
+            }
+            return false;
+        }).collect(Collectors.toList());
+        return success(responses);
     }
 
     private void buildEmployee(Employee employee, SimpegAuth simpegAuth, String username) {
