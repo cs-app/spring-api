@@ -24,6 +24,8 @@ public class CutiSummaryHistory extends BaseEntity {
     @ManyToOne(optional = false)
     private User user;
 
+    private Integer kuotaCutiAwal;
+
     private Integer tahun;
 
     private Integer kuotaCuti;

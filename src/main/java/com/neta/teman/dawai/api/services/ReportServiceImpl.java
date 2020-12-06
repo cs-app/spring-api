@@ -171,6 +171,7 @@ public class ReportServiceImpl implements ReportService {
             JRBeanCollectionDataSource skpDataSource = new JRBeanCollectionDataSource(converter.skp(user));
             JRBeanCollectionDataSource creditDataSource = new JRBeanCollectionDataSource(converter.credit(user));
             JRBeanCollectionDataSource lencanaDataSource = new JRBeanCollectionDataSource(converter.lancana(user));
+            Calendar calendar = Calendar.getInstance();
             JRBeanCollectionDataSource cutiDataSource = new JRBeanCollectionDataSource(converter.cuti(cutiSummaryRepository.findByUser(user)));
             JRBeanCollectionDataSource hukumanDisiplinDataSource = new JRBeanCollectionDataSource(converter.disiplin(user));
             JRBeanCollectionDataSource prediksiPensiunDataSource = new JRBeanCollectionDataSource(converter.pensiun(user));

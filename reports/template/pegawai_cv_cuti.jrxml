@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pegawai_cv_jabatan" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="5" bottomMargin="20" uuid="7cd6ae74-8787-4bd0-86d4-3cc2c0c82b6d">
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pegawai_cv_jabatan" pageWidth="555" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="5" bottomMargin="20" uuid="7cd6ae74-8787-4bd0-86d4-3cc2c0c82b6d">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
-	<property name="com.jaspersoft.studio.unit." value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -45,7 +36,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="9" isBold="true"/>
 				</textElement>
-				<text><![CDATA[VI. RIWAYAT CUTI]]></text>
+				<text><![CDATA[XI. RIWAYAT CUTI]]></text>
 			</staticText>
 		</band>
 	</pageHeader>
@@ -136,7 +127,7 @@
 	<detail>
 		<band height="18" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="30" height="18" uuid="26e92e96-a04e-4132-9168-f7fd54e0166e">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d556d7b8-7ec1-4317-b8da-72713769c5df"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -152,7 +143,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{row}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="30" y="0" width="130" height="18" uuid="f52dff22-04bd-4e71-a6b6-602e2b9b01d5">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="06f20a6b-399e-4a58-822e-a8f78bed1cf6"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -168,7 +159,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{golongan}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="160" y="0" width="200" height="18" uuid="9f8b9ea3-0af4-4d08-a820-93dfe500a226">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7e511abf-646d-4b2b-b198-e5397ddc2b4b"/>
 				</reportElement>
@@ -183,7 +174,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{pangkat}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="dd-MMM-yyyy" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" pattern="dd-MMM-yyyy" isBlankWhenNull="true">
 				<reportElement x="360" y="0" width="80" height="18" uuid="7fd81501-aaf1-47cb-93f2-eb40f651536e">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d556d7b8-7ec1-4317-b8da-72713769c5df"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -199,7 +190,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ambil}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="dd-MMM-yyyy" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" pattern="dd-MMM-yyyy" isBlankWhenNull="true">
 				<reportElement x="440" y="0" width="80" height="18" uuid="78b3f243-e57b-431a-b748-112334935764">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d556d7b8-7ec1-4317-b8da-72713769c5df"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>

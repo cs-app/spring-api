@@ -67,12 +67,10 @@ public class ProfilePelatihan {
 
     public ProfilePelatihan(int row, CutiSummary o) {
         BeanCopy.copy(this, o);
-        this.golongan = Objects.isNull(o) ? "" : String.valueOf(new Date(o.getTahun()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear());
-        this.pangkat = String.valueOf(o.getKuotaCuti());
-        this.ambil = String.valueOf(o.getKuotaCuti());
-        if (Objects.nonNull(o.getKuotaPastCuti()) && Objects.nonNull(o.getKuotaPastTwoCuti())) {
-            this.sisa = String.valueOf(o.getKuotaPastCuti() + o.getKuotaPastTwoCuti());
-        } else this.sisa = "0";
         this.row = row;
+        this.golongan = String.valueOf(o.getTahun());
+        this.pangkat = String.valueOf(o.getKuotaCutiAwal());
+        this.ambil = String.valueOf(o.getKuotaCutiAwal() - (o.getKuotaCuti() + o.getKuotaPastCuti() + o.getKuotaPastTwoCuti()));
+        this.sisa = String.valueOf((o.getKuotaCuti() + o.getKuotaPastCuti() + o.getKuotaPastTwoCuti()));
     }
 }

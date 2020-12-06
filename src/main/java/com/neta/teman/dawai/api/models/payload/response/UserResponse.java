@@ -173,6 +173,8 @@ public class UserResponse {
 
     List<EmployeePelatihan> pelatihans;
 
+    List<ProyeksiKenaikan> proyeksiKenaikans;
+
     public UserResponse(User user) {
         Role role = user.getRole();
         Employee employee = user.getEmployee();
@@ -313,6 +315,19 @@ public class UserResponse {
         String namaUnitKerja3;
         String ukGroupId;
         String namaUnitKerja2;
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = true)
+    @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+    public static class ProyeksiKenaikan extends BaseEntity {
+
+        Integer tahun;
+
+        Integer bulan;
+
+        PangkatGolongan pangkatGolongan;
+
     }
 
 

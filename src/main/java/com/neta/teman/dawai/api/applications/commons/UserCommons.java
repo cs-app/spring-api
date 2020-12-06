@@ -3,6 +3,8 @@ package com.neta.teman.dawai.api.applications.commons;
 import com.neta.teman.dawai.api.applications.constants.AppConstants;
 import com.neta.teman.dawai.api.models.dao.*;
 import com.neta.teman.dawai.api.models.repository.PangkatGolonganRepository;
+import com.neta.teman.dawai.api.models.repository.UserRepository;
+import com.neta.teman.dawai.api.models.spech.UserSpecs;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,6 +22,12 @@ public class UserCommons {
 
     @Autowired
     PangkatGolonganRepository pangkatGolonganRepository;
+
+    @Autowired
+    UserSpecs userSpecs;
+
+    @Autowired
+    UserRepository userRepository;
 
     public String lastEducation(User user) {
         if (Objects.isNull(user)) return null;
@@ -55,31 +63,27 @@ public class UserCommons {
         Employee employee = user.getEmployee();
         if (Objects.isNull(employee)) return null;
         if (Objects.isNull(employee.getTanggalLahir())) return null;
-        if (Objects.isNull(employee.getJabatanDetail())) return null;
-        if (Objects.isNull(employee.getJabatanDetail().getJabatan())) return null;
         LocalDate today = LocalDate.now();
         LocalDate userday = employee.getTanggalLahir().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         Period diff = Period.between(userday, today);
         log.info("different year from dob {}, user {}", diff.getYears(), user.getEmployee().getNama());
         if (diff.getYears() < 57) return null;
         log.info("last year flag pensiun");
-        boolean isPensiun = false;
         for (EmployeePangkatHis his : employee.getPangkats()) {
             PangkatGolongan pg = his.getPangkatGolongan();
             if (Objects.isNull(pg)) continue;
-            if (18 == pg.getId()) {
-                isPensiun = true;
-                break;
+            if (Objects.equals(pg.getId(), pangkatGolongan.getId())) {
+                log.info("user already pensiun {}", user.getUsername());
+                return null;
             }
         }
-        if (!isPensiun) {
-            EmployeePangkatHis his = new EmployeePangkatHis();
-            his.setSumberData(AppConstants.Source.TEMAN_DAWAI);
-            his.setPangkatGolongan(pangkatGolongan);
-            log.info("user pensiun {} {}", user.getUsername(), his.getPangkatGolongan());
-            return his;
-        } else log.info("user already pensiun {}", user.getEmployee().getNama());
-        return null;
+        LocalDate localDate = userday.plusYears(58);
+        EmployeePangkatHis his = new EmployeePangkatHis();
+        his.setSumberData(AppConstants.Source.TEMAN_DAWAI);
+        his.setTmt(Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        his.setPangkatGolongan(pangkatGolongan);
+        log.info("user pensiun {} {}", user.getUsername(), his.getPangkatGolongan());
+        return his;
     }
 
 

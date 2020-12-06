@@ -87,7 +87,6 @@ public class RoleServiceImpl extends SimpegServiceImpl {
             List<PangkatGolongan> pangkatGolongans = new ObjectMapper().readValue(values, new TypeReference<List<PangkatGolongan>>() {
             });
             for (PangkatGolongan o : pangkatGolongans) {
-//                log.info("Pangkat Golongan data {} - {}", o.getGroup(), o.getGolongan());
                 Object[] params = new Object[]{o.getId()};
                 String query = "SELECT COUNT(1) FROM APP_PANGKAT_GOLONGAN WHERE ID = ?";
                 int foundInDB = jdbcTemplate.queryForObject(query, params, Integer.class);
@@ -99,10 +98,9 @@ public class RoleServiceImpl extends SimpegServiceImpl {
                 // update
                 PangkatGolongan golongan = pangkatGolonganRepository.findById(o.getId()).orElse(null);
                 if (Objects.isNull(golongan)) continue;
-                BeanUtils.copyProperties(o, golongan, "id");
+                BeanUtils.copyProperties(o, golongan, "id", "documentPangkat");
                 pangkatGolonganRepository.save(signature(golongan));
             }
-//            log.info("\n{}", values);
         } catch (JsonProcessingException e) {
             log.error("error read json role", e);
         }

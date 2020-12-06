@@ -142,11 +142,14 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
         PangkatGolongan pangkatGolongan = pangkatGolonganRepository.findById(18L).orElse(null);
         if (Objects.isNull(pangkatGolongan)) return;
         for (User user : users) {
-            // user
             EmployeePangkatHis pensiun = userCommons.pensiun(user, pangkatGolongan);
             if (Objects.nonNull(pensiun)) user.getEmployee().getPangkats().add(pensiun);
             EmployeePangkatHis naikPangkat = userCommons.naikPangkat(user);
             if (Objects.nonNull(naikPangkat)) user.getEmployee().getPangkats().add(naikPangkat);
+            if(Objects.isNull(pensiun) && Objects.isNull(naikPangkat)) {
+                continue;
+            }
+            userRepository.save(user);
         }
     }
 

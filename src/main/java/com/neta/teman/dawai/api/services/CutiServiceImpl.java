@@ -223,39 +223,42 @@ public class CutiServiceImpl extends SimpegServiceImpl implements CutiService {
     public void initCutiPegawai() {
         List<User> users = userRepository.findAll();
         LocalDate today = LocalDate.now();
+        int thisYear = today.getYear();
+        int lastYear = (thisYear - 1);
         for (User o : users) {
-            CutiSummary cutiSummaryExist = cutiSummaryRepository.findByUserAndTahun(o, today.getYear());
-            // kalo kosong migrasiin
-            if (Objects.nonNull(cutiSummaryExist)) {
-                // clone
-                if (cutiSummaryExist.getTahun() < today.getYear()) {
-                    CutiSummary cloneCuti = BeanCopy.copy(cutiSummaryExist, CutiSummary.class);
-                    int lastYear = cloneCuti.getKuotaCuti();
-                    int last1Year = cloneCuti.getKuotaPastCuti();
-                    cutiSummaryExist.setTahun(today.getYear());
-                    cutiSummaryExist.setKuotaCuti(12);
-                    cutiSummaryExist.setKuotaPastCuti(Math.min(lastYear, 6));
-                    cutiSummaryExist.setKuotaPastTwoCuti(Math.min(last1Year, 6));
-                    cutiSummaryRepository.save(signature(cutiSummaryExist));
-                    CutiSummaryHistory history = BeanCopy.copy(cutiSummaryExist, CutiSummaryHistory.class);
+            CutiSummary cutiThisYear = cutiSummaryRepository.findByUserAndTahun(o, thisYear);
+            if (Objects.isNull(cutiThisYear)) {
+                CutiSummary cutiLastYear = cutiSummaryRepository.findByUserAndTahun(o, lastYear);
+                if (Objects.isNull(cutiLastYear)) {
+                    // init baru
+                    CutiSummary cutiSummary = new CutiSummary();
+                    cutiSummary.setTahun(today.getYear());
+                    cutiSummary.setUser(o);
+                    cutiSummary.setKuotaCutiAwal(12);
+                    cutiSummary.setKuotaCuti(12);
+                    cutiSummary.setKuotaPastCuti(0);
+                    cutiSummary.setKuotaPastTwoCuti(0);
+                    cutiSummaryRepository.save(signature(cutiSummary));
+                    CutiSummaryHistory history = BeanCopy.copy(cutiSummary, CutiSummaryHistory.class);
+                    history.setId(null);
+                    history.setUser(o);
+                    cutiSummaryHistoryRepository.save(signature(history));
+                    log.debug("create cuti for user {}", o.getEmployee().getNip());
+                } else {
+                    // migrasi ambil sisa cuti tahun sebelumnya
+                    cutiThisYear = new CutiSummary();
+                    cutiThisYear.setTahun(today.getYear());
+                    cutiThisYear.setKuotaCuti(12);
+                    cutiThisYear.setKuotaPastCuti(Math.min(cutiLastYear.getKuotaCuti(), 6));
+                    cutiThisYear.setKuotaPastTwoCuti(Math.min(cutiLastYear.getKuotaPastCuti(), 6));
+                    cutiThisYear.setKuotaCutiAwal(12 + cutiThisYear.getKuotaPastCuti() + cutiThisYear.getKuotaPastTwoCuti());
+                    cutiSummaryRepository.save(signature(cutiThisYear));
+                    CutiSummaryHistory history = BeanCopy.copy(cutiThisYear, CutiSummaryHistory.class);
                     history.setId(null);
                     history.setUser(o);
                     cutiSummaryHistoryRepository.save(signature(history));
                 }
-                continue;
             }
-            CutiSummary cutiSummary = new CutiSummary();
-            cutiSummary.setTahun(today.getYear());
-            cutiSummary.setUser(o);
-            cutiSummary.setKuotaCuti(12);
-            cutiSummary.setKuotaPastCuti(0);
-            cutiSummary.setKuotaPastTwoCuti(0);
-            cutiSummaryRepository.save(signature(cutiSummary));
-            CutiSummaryHistory history = BeanCopy.copy(cutiSummary, CutiSummaryHistory.class);
-            history.setId(null);
-            history.setUser(o);
-            cutiSummaryHistoryRepository.save(signature(history));
-            log.debug("create cuti for user {}", o.getEmployee().getNip());
         }
         log.info("finish initialize cuti user");
     }

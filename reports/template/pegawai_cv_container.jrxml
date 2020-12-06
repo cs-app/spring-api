@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pegawai_cv_container" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7cd6ae74-8787-4bd0-86d4-3cc2c0c82b6d">
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pegawai_cv_container" pageWidth="535" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="535" leftMargin="0" rightMargin="0" topMargin="20" bottomMargin="20" uuid="7cd6ae74-8787-4bd0-86d4-3cc2c0c82b6d">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="NO_DATA_ADAPTER"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<parameter name="SUB_DIR" class="java.lang.String"/>
 	<parameter name="FAMILY_DATASOURCE" class="net.sf.jasperreports.engine.JRDataSource"/>
 	<parameter name="EDUCATION_DATASOURCE" class="net.sf.jasperreports.engine.JRDataSource"/>
@@ -34,7 +43,7 @@
 		<band height="50" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<subreport>
-				<reportElement isPrintRepeatedValues="false" x="0" y="0" width="555" height="50" uuid="75943835-e3e5-47c6-aa15-8fc0378868c1"/>
+				<reportElement isPrintRepeatedValues="false" x="0" y="0" width="535" height="50" uuid="75943835-e3e5-47c6-aa15-8fc0378868c1"/>
 				<dataSourceExpression><![CDATA[$P{EDUCATION_DATASOURCE}]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{SUB_DIR} + "pegawai_cv_pendidikan.jasper"]]></subreportExpression>
 			</subreport>
@@ -42,7 +51,7 @@
 		<band height="55">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<subreport>
-				<reportElement isPrintRepeatedValues="false" x="0" y="0" width="555" height="55" uuid="75943835-e3e5-47c6-aa15-8fc0378868c1"/>
+				<reportElement isPrintRepeatedValues="false" x="0" y="0" width="535" height="55" uuid="75943835-e3e5-47c6-aa15-8fc0378868c1"/>
 				<dataSourceExpression><![CDATA[$P{MUTASI_DATASOURCE}]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{SUB_DIR} + "pegawai_cv_mutasi.jasper"]]></subreportExpression>
 			</subreport>
@@ -50,21 +59,21 @@
 		<band height="55">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<subreport>
-				<reportElement isPrintRepeatedValues="false" x="0" y="0" width="555" height="55" uuid="bd1706d3-7d62-44c8-bce5-b036e685a8b3"/>
+				<reportElement isPrintRepeatedValues="false" x="0" y="0" width="535" height="55" uuid="bd1706d3-7d62-44c8-bce5-b036e685a8b3"/>
 				<dataSourceExpression><![CDATA[$P{PANGKAT_DATASOURCE}]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{SUB_DIR} + "pegawai_cv_pangkat.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 		<band height="50">
 			<subreport>
-				<reportElement isPrintRepeatedValues="false" x="0" y="0" width="555" height="50" uuid="16842b4c-add5-4cc5-95c5-b266382eecea"/>
+				<reportElement isPrintRepeatedValues="false" x="0" y="0" width="535" height="50" uuid="16842b4c-add5-4cc5-95c5-b266382eecea"/>
 				<dataSourceExpression><![CDATA[$P{PELATIHAN_JABATAN_DATASOURCE}]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{SUB_DIR} + "pegawai_cv_pelatihan_jabatan.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 		<band height="50">
 			<subreport>
-				<reportElement isPrintRepeatedValues="false" x="0" y="0" width="555" height="50" uuid="7e6f8013-14dd-4cb9-bb44-d4ae23c337ca"/>
+				<reportElement isPrintRepeatedValues="false" x="0" y="0" width="535" height="50" uuid="7e6f8013-14dd-4cb9-bb44-d4ae23c337ca"/>
 				<dataSourceExpression><![CDATA[$P{PELATIHAN_TEKNIS_DATASOURCE}]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{SUB_DIR} + "pegawai_cv_pelatihan_teknis.jasper"]]></subreportExpression>
 			</subreport>
@@ -72,51 +81,45 @@
 		<band height="50">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<subreport>
-				<reportElement isPrintRepeatedValues="false" x="0" y="0" width="555" height="50" uuid="75943835-e3e5-47c6-aa15-8fc0378868c1"/>
+				<reportElement isPrintRepeatedValues="false" x="0" y="0" width="535" height="50" uuid="75943835-e3e5-47c6-aa15-8fc0378868c1"/>
 				<dataSourceExpression><![CDATA[$P{PENDUKUNG_DATASOURCE}]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{SUB_DIR} + "pegawai_cv_pendukung.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 		<band height="50">
 			<subreport>
-				<reportElement isPrintRepeatedValues="false" x="0" y="0" width="555" height="50" uuid="840c9fc4-3882-4eb7-8745-db649d650f80"/>
+				<reportElement isPrintRepeatedValues="false" x="0" y="0" width="535" height="50" uuid="840c9fc4-3882-4eb7-8745-db649d650f80"/>
 				<dataSourceExpression><![CDATA[$P{SKP_DATASOURCE}]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{SUB_DIR} + "pegawai_cv_skp.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 		<band height="50">
 			<subreport>
-				<reportElement isPrintRepeatedValues="false" x="0" y="0" width="555" height="50" uuid="f0b8a43f-a6cd-41f3-91e8-e2a678b5e30f"/>
+				<reportElement isPrintRepeatedValues="false" x="0" y="0" width="535" height="50" uuid="f0b8a43f-a6cd-41f3-91e8-e2a678b5e30f"/>
 				<dataSourceExpression><![CDATA[$P{CREDIT_DATASOURCE}]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{SUB_DIR} + "pegawai_cv_credit.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 		<band height="50">
 			<subreport>
-				<reportElement isPrintRepeatedValues="false" x="0" y="0" width="555" height="50" uuid="c63dc6f0-d63f-4962-806f-d63d51bb3017"/>
+				<reportElement isPrintRepeatedValues="false" x="0" y="0" width="535" height="50" uuid="c63dc6f0-d63f-4962-806f-d63d51bb3017"/>
 				<dataSourceExpression><![CDATA[$P{LENCANA_DATASOURCE}]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{SUB_DIR} + "pegawai_cv_lencana.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 		<band height="50">
 			<subreport>
-				<reportElement isPrintRepeatedValues="false" x="0" y="0" width="555" height="50" uuid="64bc6691-c6a3-4bcb-875f-97e89544a9e8"/>
+				<reportElement isPrintRepeatedValues="false" x="0" y="0" width="535" height="50" uuid="64bc6691-c6a3-4bcb-875f-97e89544a9e8"/>
 				<dataSourceExpression><![CDATA[$P{CUTI_DATASOURCE}]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{SUB_DIR} + "pegawai_cv_cuti.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 		<band height="50">
 			<subreport>
-				<reportElement isPrintRepeatedValues="false" x="0" y="0" width="555" height="50" uuid="ae2ee60d-5b52-46b1-9486-511ae22a0ce1"/>
+				<reportElement isPrintRepeatedValues="false" x="0" y="0" width="535" height="50" uuid="ae2ee60d-5b52-46b1-9486-511ae22a0ce1"/>
 				<dataSourceExpression><![CDATA[$P{PREDIKSI_PENSIUN_DATASOURCE}]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{SUB_DIR} + "pegawai_cv_pensiun.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="50"/>
-	</columnFooter>
-	<summary>
-		<band height="50"/>
-	</summary>
 </jasperReport>

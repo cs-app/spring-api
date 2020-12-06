@@ -39,7 +39,7 @@ public class ReportConverter {
         Employee employee = user.getEmployee();
         newProfile(profiles, "1   NIP", employee.getNip());
         newProfile(profiles, "2   Nama", employee.getNama());
-        newProfile(profiles, "3   Status Pegawai (Aktif/Pensiun/Pindah/CTLN)", employee.getStatusAktif());
+        newProfile(profiles, "3   Status Pegawai", employee.getStatusAktif());//(Aktif/Pensiun/Pindah/CTLN)
         newProfile(profiles, "4   Tempat, Tanggal Lahir", map.get("tempat_lahir") + ", " + DTFomat.format(employee.getTanggalLahir()));
         newProfile(profiles, "5   Alamat Tinggal", employee.getAlamat());
         newProfile(profiles, "6   No. KTP", employee.getNik());

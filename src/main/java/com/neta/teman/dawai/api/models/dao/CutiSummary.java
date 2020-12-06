@@ -27,6 +27,8 @@ public class CutiSummary extends BaseEntity {
 
     private Integer tahun;
 
+    private Integer kuotaCutiAwal;
+
     private Integer kuotaCuti;
 
     private Integer kuotaPastCuti;
