@@ -44,7 +44,7 @@ class ReportTests {
 
     @BeforeAll
     void generatedTable() {
-        reportService.initTemplate();
+
     }
 
     @Test

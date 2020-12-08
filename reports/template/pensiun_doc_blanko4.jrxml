@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.15.0.final using JasperReports Library version 6.15.0-dd49bfb94918336b8321d5507193f0169ead4e95  -->
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pensiun_doc_1_usulan" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="952f33ad-87f6-4682-b175-76eda3ba2011">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="NAMA" class="java.lang.String"/>
@@ -40,7 +40,7 @@
 		</band>
 	</title>
 	<pageHeader>
-		<band height="510">
+		<band height="674">
 			<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
 			<staticText>
 				<reportElement x="0" y="10" width="555" height="20" uuid="d830e1a7-c02a-4c38-8e5d-012cfc050978"/>
@@ -165,22 +165,18 @@ Kementrian Pendidikan dan Kebudayaan]]></text>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{JABATAN}]]></textFieldExpression>
 			</textField>
-		</band>
-	</pageHeader>
-	<lastPageFooter>
-		<band height="251">
 			<staticText>
-				<reportElement x="404" y="111" width="144" height="30" uuid="7f6a43e5-1950-48b2-af9d-1feceff2baf7"/>
+				<reportElement x="404" y="601" width="144" height="30" uuid="7f6a43e5-1950-48b2-af9d-1feceff2baf7"/>
 				<text><![CDATA[Ekawati, S.Sos
 NIP. 196404241987032001]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="380" y="0" width="168" height="60" uuid="69062e24-2109-466a-a6fa-19d2588aca99"/>
+				<reportElement x="380" y="490" width="168" height="60" uuid="69062e24-2109-466a-a6fa-19d2588aca99"/>
 				<text><![CDATA[Jakarta, ..................................
 
 A.n. Direktur Sekolah Menengah Atas
        Kepala Sub Bagian Tata Usaha]]></text>
 			</staticText>
 		</band>
-	</lastPageFooter>
+	</pageHeader>
 </jasperReport>

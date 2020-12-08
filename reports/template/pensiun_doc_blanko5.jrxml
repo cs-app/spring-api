@@ -119,7 +119,4 @@
 			</subreport>
 		</band>
 	</detail>
-	<summary>
-		<band height="343"/>
-	</summary>
 </jasperReport>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.15.0.final using JasperReports Library version 6.15.0-dd49bfb94918336b8321d5507193f0169ead4e95  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pensiun_doc_1_usulan" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="952f33ad-87f6-4682-b175-76eda3ba2011">
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pensiun_doc_blanko_2" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="952f33ad-87f6-4682-b175-76eda3ba2011">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="NAMA" class="java.lang.String"/>
 	<parameter name="NIP" class="java.lang.String"/>
@@ -10,6 +10,7 @@
 	<parameter name="PANGKAT_GOLONGAN" class="java.lang.String"/>
 	<parameter name="UNIT" class="java.lang.String"/>
 	<parameter name="ALAMAT" class="java.lang.String"/>
+	<parameter name="BODY_MESSAGE" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -17,7 +18,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<pageHeader>
-		<band height="472">
+		<band height="480">
 			<staticText>
 				<reportElement x="30" y="0" width="140" height="30" uuid="a8287edc-1bb9-4d86-b499-08f4210407b3"/>
 				<text><![CDATA[Surat Permintaan Pembayaran
@@ -28,7 +29,7 @@ Pensiun Pertama]]></text>
 				<text><![CDATA[Hal  :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="307" y="0" width="248" height="70" uuid="11013ab7-1b5b-4024-89a6-0052fa55ac2f"/>
+				<reportElement x="286" y="0" width="249" height="70" uuid="11013ab7-1b5b-4024-89a6-0052fa55ac2f"/>
 				<text><![CDATA[Kepada
 Yth, Kepala Kantor Pelayanan Perbendaharaan Negara
 di
@@ -36,80 +37,73 @@ Jakarta
 Melalui Kementrian Pendidikan dan Kebudayaan]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="30" y="100" width="524" height="100" uuid="2f0a3550-fcdd-445b-aad1-712dcbf8ac77"/>
-				<textElement textAlignment="Justified"/>
-				<text><![CDATA[Dengan hormat,
-Sehubungan dengan surat keputusan Presiden/Menteri/Pimpinan Lembaga Badan Kepegawaian Negara Nomor : ..................................... tanggal .......................................... tentang Pemberhentian degan sebagai Pegawai Negeri Sipil, dengan ini saya mengajukan permintaan agar pensiun saya dapat dibayarkan mulai .................................... dan dapat diterima pada kantor Kas Negara/Kantor Pos/ /Bank Pemerintah di BNI 46 Kantor Cabang KCP Kemendikbud
-(Rekening Nomor: .......................................)]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="30" y="232" width="524" height="18" uuid="811e3f2a-ea94-46e6-bb5f-23c5345382b7"/>
+				<reportElement x="30" y="210" width="484" height="18" uuid="811e3f2a-ea94-46e6-bb5f-23c5345382b7"/>
 				<text><![CDATA[Pemohon :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="30" y="390" width="524" height="30" uuid="9912c7f6-2cfb-4985-a3cc-87dc5ba8be25"/>
+				<reportElement x="30" y="320" width="484" height="30" uuid="9912c7f6-2cfb-4985-a3cc-87dc5ba8be25"/>
 				<text><![CDATA[Atas perhatian saudara, saya sampaikan terimakasih.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="30" y="250" width="100" height="20" uuid="66b6a7f6-1dcb-43df-8ce2-ea9138bf6b47"/>
+				<reportElement x="30" y="228" width="100" height="20" uuid="66b6a7f6-1dcb-43df-8ce2-ea9138bf6b47"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Nama]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="130" y="250" width="375" height="20" uuid="602b353a-7b0c-4c06-9151-b74991bd3e04"/>
+				<reportElement x="130" y="228" width="385" height="20" uuid="602b353a-7b0c-4c06-9151-b74991bd3e04"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{NAMA}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="30" y="270" width="100" height="20" uuid="297a7d24-1176-4a6c-9140-eff2ac7506c1"/>
+				<reportElement x="30" y="248" width="100" height="20" uuid="297a7d24-1176-4a6c-9140-eff2ac7506c1"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[NIP/KARPEG]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="130" y="270" width="126" height="20" uuid="ec1f57d1-893c-462c-b56b-7fa295c30d98"/>
+				<reportElement x="130" y="248" width="120" height="20" uuid="ec1f57d1-893c-462c-b56b-7fa295c30d98"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{NIP}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="30" y="290" width="100" height="20" uuid="bcdd9aa3-ce32-45cc-960c-3097374b7420"/>
+				<reportElement x="30" y="268" width="100" height="20" uuid="bcdd9aa3-ce32-45cc-960c-3097374b7420"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Alamat]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="130" y="290" width="375" height="20" uuid="81e54a29-4a03-456a-b07a-c3d47cd77058"/>
+				<reportElement x="130" y="268" width="385" height="20" uuid="81e54a29-4a03-456a-b07a-c3d47cd77058"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{ALAMAT}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="257" y="270" width="224" height="20" uuid="a9b4f4ce-ed91-4093-aa8f-07089b1a2aaa"/>
+				<reportElement x="250" y="248" width="265" height="20" uuid="a9b4f4ce-ed91-4093-aa8f-07089b1a2aaa"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{KARPEG}]]></textFieldExpression>
 			</textField>
-		</band>
-	</pageHeader>
-	<lastPageFooter>
-		<band height="251">
+			<textField>
+				<reportElement x="30" y="90" width="505" height="100" uuid="8ae27355-cf8c-4dfb-8b71-6b517045b99f"/>
+				<textFieldExpression><![CDATA[$P{BODY_MESSAGE}]]></textFieldExpression>
+			</textField>
 			<staticText>
-				<reportElement x="370" y="120" width="39" height="30" uuid="7f6a43e5-1950-48b2-af9d-1feceff2baf7"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<reportElement x="367" y="460" width="23" height="20" uuid="7f6a43e5-1950-48b2-af9d-1feceff2baf7"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<text><![CDATA[NIP. ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="387" y="0" width="168" height="60" uuid="69062e24-2109-466a-a6fa-19d2588aca99"/>
+				<reportElement x="367" y="380" width="168" height="60" uuid="69062e24-2109-466a-a6fa-19d2588aca99"/>
 				<text><![CDATA[Pemohon,]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="409" y="120" width="146" height="30" uuid="d5645a32-30a5-4978-9a1d-b41b31b5ea19"/>
+				<reportElement x="390" y="460" width="145" height="20" uuid="d5645a32-30a5-4978-9a1d-b41b31b5ea19"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{NIPTTD}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="380" y="100" width="175" height="20" uuid="2e6f1431-d8d4-40d5-a474-3c3fa222e494"/>
+				<reportElement x="367" y="440" width="168" height="20" uuid="2e6f1431-d8d4-40d5-a474-3c3fa222e494"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{NAMATTD}]]></textFieldExpression>
 			</textField>
 		</band>
-	</lastPageFooter>
+	</pageHeader>
 </jasperReport>

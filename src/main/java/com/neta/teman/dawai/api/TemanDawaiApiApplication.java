@@ -37,13 +37,12 @@ public class TemanDawaiApiApplication implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
-//        reportService.initTemplate();
-//        documentService.initDocument();
+        documentService.initDocument();
         userService.initializeRole();
         userService.initializePangkatGolongan();
         userService.initializeJabatan();
-//        cutiService.initCutiPegawai();
-//        userService.updateAllUserData();
-//        userService.initializeNaikPangkatAndPensiun();
+        cutiService.initCutiPegawai();
+        userService.updateAllUserData();
+        userService.initializeNaikPangkatAndPensiun();
     }
 }

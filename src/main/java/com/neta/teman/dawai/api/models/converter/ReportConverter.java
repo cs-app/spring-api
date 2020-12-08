@@ -5,6 +5,7 @@ import com.neta.teman.dawai.api.applications.commons.DTFomat;
 import com.neta.teman.dawai.api.applications.commons.FamilyCommons;
 import com.neta.teman.dawai.api.applications.commons.UserCommons;
 import com.neta.teman.dawai.api.models.dao.*;
+import com.neta.teman.dawai.api.models.payload.response.UserResponse;
 import com.neta.teman.dawai.api.models.reports.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -435,6 +436,33 @@ public class ReportConverter {
                 continue;
             } else {
                 masterCols.add(new MasterCol("" + index, employee.getNama(), employee.getNip(), beforePG.getGolongan(), beforePG.getNama(), afterPG.getGolongan(), afterPG.getNama(), employee.getJabatan()));
+                index++;
+            }
+        }
+        return masterCols;
+    }
+
+    public Collection<?> naikPangkatReguler(List<UserResponse> responses) {
+        List<MasterCol> masterCols = new ArrayList<>();
+        int index = 1;
+        for (UserResponse user : responses) {
+            EmployeePangkatHis before = user.getPangkats().get(user.getPangkats().size() - 2);
+            EmployeePangkatHis after = user.getPangkats().get(user.getPangkats().size() - 1);
+            PangkatGolongan beforePG = before.getPangkatGolongan();
+            PangkatGolongan afterPG = after.getPangkatGolongan();
+            if (Objects.isNull(beforePG) && Objects.isNull(afterPG)) {
+                masterCols.add(new MasterCol("" + index, user.getNama(), user.getNip(), "", "", "", "", user.getJabatan()));
+                index++;
+                continue;
+            } else if (Objects.isNull(beforePG)) {
+                masterCols.add(new MasterCol("" + index, user.getNama(), user.getNip(), "", "", afterPG.getGolongan(), afterPG.getNama(), user.getJabatan()));
+                index++;
+                continue;
+            } else if (Objects.isNull(afterPG)) {
+//                index++;
+                continue;
+            } else {
+                masterCols.add(new MasterCol("" + index, user.getNama(), user.getNip(), beforePG.getGolongan(), beforePG.getNama(), afterPG.getGolongan(), afterPG.getNama(), user.getJabatan()));
                 index++;
             }
         }

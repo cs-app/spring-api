@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -193,6 +194,17 @@ public class UserController extends BaseRestController {
     }
 
     // end of user update
+
+    @PostMapping(value = "/list")
+    public ResponseEntity<List<UserResponse>> list(@RequestBody FilterRequest request) {
+        ServiceResolver<List<UserResponse>> resolver = userService.proyeksiPangkat(request.getYear(), request.getMonth());
+        if (resolver.isError()) return responseError(resolver);
+        List<UserResponse> response = resolver.getResult().stream().filter(o -> {
+            if (request.getFilter().trim().isEmpty()) return true;
+            return o.getNip().toUpperCase().contains(request.getFilter().toUpperCase()) || o.getNama().toUpperCase().contains(request.getFilter().toUpperCase());
+        }).collect(Collectors.toList());
+        return response(response);
+    }
 
     @PostMapping(value = "/page")
     public ResponseEntity<PageResponse> page(@RequestBody FilterRequest request) {
@@ -407,6 +419,18 @@ public class UserController extends BaseRestController {
     public ResponseEntity<StreamingResponseBody> downloadNaikPangkat(@PathVariable String tahun, @PathVariable String bulan) {
         String contentType = "application/octet-stream";
         StreamingResponseBody stream = out -> reportService.printNaikPangkat(Integer.parseInt(tahun), Integer.parseInt(bulan), out);
+        String fileName = "Naik Pangkat Pegawai " + tahun + "-" + bulan + ".pdf";
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+                .body(stream);
+    }
+
+    @GetMapping(value = "/download/naikpangkatreguler/{tahun}/{bulan}")
+    public ResponseEntity<StreamingResponseBody> downloadNaikPangkatReguler(@PathVariable String tahun, @PathVariable String bulan) {
+        String contentType = "application/octet-stream";
+        List<UserResponse> users = userService.proyeksiPangkat(Integer.parseInt(tahun), Integer.parseInt(bulan)).getResult();
+        StreamingResponseBody stream = out -> reportService.printNaikPangkatReguler(users, Integer.parseInt(tahun), Integer.parseInt(bulan), out);
         String fileName = "Naik Pangkat Pegawai " + tahun + "-" + bulan + ".pdf";
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(contentType))

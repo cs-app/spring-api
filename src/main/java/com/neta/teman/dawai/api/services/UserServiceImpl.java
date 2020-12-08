@@ -101,8 +101,7 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
                 employees.clear();
             }
         }
-        if (employees.size() > 0) employeeRepository.saveAll(employees);
-
+        if (!employees.isEmpty()) employeeRepository.saveAll(employees);
         // update data pendidikan
         int startPage = 0;
         Map<String, String> typePendidikan = new HashMap<>();
@@ -150,7 +149,7 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
             if (Objects.nonNull(pensiun)) user.getEmployee().getPangkats().add(pensiun);
             EmployeePangkatHis naikPangkat = userCommons.naikPangkat(user);
             if (Objects.nonNull(naikPangkat)) user.getEmployee().getPangkats().add(naikPangkat);
-            if(Objects.isNull(pensiun) && Objects.isNull(naikPangkat)) {
+            if (Objects.isNull(pensiun) && Objects.isNull(naikPangkat)) {
                 continue;
             }
             userRepository.save(user);
@@ -479,11 +478,13 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
     }
 
     @Override
-    public ServiceResolver<List<UserResponse>> proyeksiPangkat(int tahun, int bulan) {
+    public ServiceResolver<List<UserResponse>> proyeksiPangkat(int tahun, int bulanValue) {
+        int bulan = bulanValue + 1;
         List<PangkatGolongan> pangkatGolongans = pangkatGolonganRepository.findAll().stream().filter(o -> o.getId() != 18L).sorted(Comparator.comparing(PangkatGolongan::getId)).collect(Collectors.toList());
+        // filter user hanya jenis P
         List<UserResponse> userList = userRepository.findAll().stream().filter(u -> {
             List<EmployeePangkatHis> his = u.getEmployee().getPangkats();
-            return his.size() > 0;
+            return ("P".equalsIgnoreCase(u.getEmployee().getJabatanDetail().getJabatan().getJenisJabatan()) && !his.isEmpty());
         }).map(u -> {
             UserResponse o = new UserResponse(u);
             // pangkat his sudah terurut berdasarkan pangkat, dan bukan pensiun
@@ -524,7 +525,8 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
                     tmpHis.setPangkatGolongan(tmpPangkat);
                     his.add(tmpHis);
                 }
-                log.info("user {} pendidikan {} naik golongan {}", u.getEmployee().getNama(), educationType, lastHis.getPangkatGolongan().getGolongan());
+                PangkatGolongan naik = his.get(his.size()-1).getPangkatGolongan();
+                log.info("user {} pendidikan {} naik golongan dari {} ke {}", u.getEmployee().getNama(), educationType, lastHis.getPangkatGolongan().getGolongan(), naik.getGolongan());
             } else {
                 log.info("{} {} sudah mencapai batas maksimum {}, {}", u.getUsername(), u.getEmployee().getNama(), educationType, lastHis.getPangkatGolongan().getGolongan());
             }
@@ -535,6 +537,7 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
 
         List<UserResponse> responses = userList.stream().filter(ur -> {
             for (EmployeePangkatHis his : ur.getPangkats()) {
+                if (Objects.isNull(his.getTmt())) continue;
                 LocalDate tmt = new Date(his.getTmt().getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                 log.info("y {} and m {}", tmt.getYear(), tmt.getMonthValue());
                 if (tahun == tmt.getYear() && bulan == tmt.getMonthValue()) {

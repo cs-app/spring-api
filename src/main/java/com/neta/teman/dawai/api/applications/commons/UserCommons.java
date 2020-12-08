@@ -13,7 +13,9 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -85,7 +87,9 @@ public class UserCommons {
         return his;
     }
 
-
+    /**
+     * get last pangkat
+     */
     public EmployeePangkatHis naikPangkat(User user) {
         Employee employee = user.getEmployee();
         if (Objects.isNull(employee)) return null;
@@ -94,35 +98,41 @@ public class UserCommons {
         Jabatan jabatan = employee.getJabatanDetail().getJabatan();
         if (Objects.isNull(jabatan)) return null;
         if (!"P".equalsIgnoreCase(jabatan.getJenisJabatan())) return null;
-        List<EmployeePangkatHis> pangkatHis = employee.getPangkats();
-        if (Objects.isNull(pangkatHis)) return null;
+        List<EmployeePangkatHis> pangkatHis = employee.getPangkats().stream().filter(o -> o.getId() != 18L).collect(Collectors.toList());
         if (pangkatHis.isEmpty()) return null;
-        Long maxId = 0L;
-        AtomicReference<EmployeePangkatHis> lastPangkat = new AtomicReference<>();
-        for (EmployeePangkatHis his : pangkatHis) {
-            PangkatGolongan pangkatGolongan = his.getPangkatGolongan();
-            if (Objects.isNull(pangkatGolongan)) continue;
-            // 18 = id pensiun
-            if (pangkatGolongan.getId() == 18L) continue;
-            if (maxId < pangkatGolongan.getId()) {
-                maxId = pangkatGolongan.getId();
-                lastPangkat.set(his);
-            }
-        }
-        if (maxId == 0L) return null;
-        if (maxId == 17) return null;
-        EmployeePangkatHis last = lastPangkat.get();
-        if (Objects.isNull(last) || Objects.isNull(last.getTmt())) return null;
+        EmployeePangkatHis lastHis = pangkatHis.get(pangkatHis.size() - 1);
+        if (Objects.isNull(lastHis) || Objects.isNull(lastHis.getTmt())) return null;
         LocalDate today = LocalDate.now();
-        LocalDate userday = employee.getTanggalLahir().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate userday = new Date(lastHis.getTmt().getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         Period diff = Period.between(userday, today);
-        if (diff.getYears() < 4) return null;
-        PangkatGolongan pangkatGolongan = pangkatGolonganRepository.findById((maxId + 1L)).orElse(null);
-        if (Objects.isNull(pangkatGolongan)) return null;
-        EmployeePangkatHis his = new EmployeePangkatHis();
-        his.setSumberData(AppConstants.Source.TEMAN_DAWAI);
-        his.setPangkatGolongan(pangkatGolongan);
-        return his;
+        log.info("diff month {}", diff.getMonths());
+        if (diff.getMonths() < 45) return null; // 3 bulan sebelum
+        String educationType = lastEducation(user);
+        // max S1 = iii/d, atau id = 12
+        if (educationType.contains("S1") && lastHis.getPangkatGolongan().getId() < 12) {
+            // stop process S1
+            LocalDate indexDate = userday.plusYears(4);
+            EmployeePangkatHis tmpHis = new EmployeePangkatHis();
+            tmpHis.setTmt(Date.from(indexDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+            tmpHis.setSumberData(AppConstants.Source.TEMAN_DAWAI);
+            tmpHis.setPangkatGolongan(pangkatGolonganRepository.getOne(lastHis.getPangkatGolongan().getId() + 1));
+            log.info("user {} pendidikan {} naik golongan {}", employee.getNama(), educationType, tmpHis.getPangkatGolongan().getGolongan());
+            return tmpHis;
+
+        }
+        if (educationType.contains("S2") && lastHis.getPangkatGolongan().getId() < 13) {
+            // stop process S2
+            LocalDate indexDate = userday.plusYears(4);
+            EmployeePangkatHis tmpHis = new EmployeePangkatHis();
+            tmpHis.setTmt(Date.from(indexDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+            tmpHis.setSumberData(AppConstants.Source.TEMAN_DAWAI);
+            tmpHis.setPangkatGolongan(pangkatGolonganRepository.getOne(lastHis.getPangkatGolongan().getId() + 1));
+            log.info("user {} pendidikan {} naik golongan {}", employee.getNama(), educationType, tmpHis.getPangkatGolongan().getGolongan());
+            return tmpHis;
+        } else {
+            log.info("{} {} sudah mencapai batas maksimum {}, {}", user.getUsername(), employee.getNama(), educationType, lastHis.getPangkatGolongan().getGolongan());
+        }
+        return null;
     }
 
     public EmployeePangkatHis pangkatSebelumNaik(User user) {

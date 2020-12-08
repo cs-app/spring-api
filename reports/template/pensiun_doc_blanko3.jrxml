@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.15.0.final using JasperReports Library version 6.15.0-dd49bfb94918336b8321d5507193f0169ead4e95  -->
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pensiun_doc_1_usulan" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="952f33ad-87f6-4682-b175-76eda3ba2011">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="NAMA" class="java.lang.String"/>
@@ -38,7 +38,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<pageHeader>
-		<band height="232">
+		<band height="190">
 			<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
 			<staticText>
 				<reportElement x="0" y="0" width="555" height="20" uuid="12ee934f-3513-4e54-989a-27eecc2410c7"/>
@@ -46,58 +46,58 @@
 				<text><![CDATA[DAFTAR SUSUNAN KELUARGA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="30" y="50" width="150" height="20" uuid="e00c43cc-2c47-4c03-86ee-9defc73f2a7e"/>
+				<reportElement x="30" y="40" width="150" height="20" uuid="e00c43cc-2c47-4c03-86ee-9defc73f2a7e"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Nama]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="30" y="70" width="150" height="20" uuid="5c417310-9e34-49e4-b565-e32eaa688974"/>
+				<reportElement x="30" y="60" width="150" height="20" uuid="5c417310-9e34-49e4-b565-e32eaa688974"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[NIP]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="30" y="90" width="150" height="20" uuid="465847f0-4a00-4732-ba14-1eed87adcacd"/>
+				<reportElement x="30" y="80" width="150" height="20" uuid="465847f0-4a00-4732-ba14-1eed87adcacd"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Nomor seri KARPEG]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="30" y="110" width="150" height="20" uuid="5c93e77b-5221-4f80-8b75-44a9bef7d378"/>
+				<reportElement x="30" y="100" width="150" height="20" uuid="5c93e77b-5221-4f80-8b75-44a9bef7d378"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Pangkat dan Golongan ruang]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="30" y="130" width="150" height="20" uuid="daf6a9e1-d44e-46f5-b8ac-86619f42229f"/>
+				<reportElement x="30" y="120" width="150" height="20" uuid="daf6a9e1-d44e-46f5-b8ac-86619f42229f"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[ALamat rumah sekarang]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="30" y="170" width="150" height="20" uuid="07facbb7-a149-4df8-bc99-ab3a9ba8d0c8"/>
+				<reportElement x="30" y="160" width="150" height="20" uuid="07facbb7-a149-4df8-bc99-ab3a9ba8d0c8"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Alamat rumah sesudah pensiun]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="180" y="50" width="375" height="20" uuid="4534eedf-0e02-4bc6-bf86-729f8118433f"/>
+				<reportElement x="180" y="40" width="375" height="20" uuid="4534eedf-0e02-4bc6-bf86-729f8118433f"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{NAMA}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="180" y="70" width="375" height="20" uuid="e145e808-3d02-477f-bd92-ec8af3e2bbbc"/>
+				<reportElement x="180" y="60" width="375" height="20" uuid="e145e808-3d02-477f-bd92-ec8af3e2bbbc"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{NIP}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="180" y="90" width="375" height="20" uuid="164a47aa-ed3d-4a61-a457-ebc008882795"/>
+				<reportElement x="180" y="80" width="375" height="20" uuid="164a47aa-ed3d-4a61-a457-ebc008882795"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{KARPEG}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="180" y="130" width="375" height="40" uuid="c512ef2d-32d3-4229-9f7b-5819a074eab1"/>
+				<reportElement x="180" y="120" width="375" height="40" uuid="c512ef2d-32d3-4229-9f7b-5819a074eab1"/>
 				<box topPadding="5" leftPadding="0" bottomPadding="0" rightPadding="0"/>
 				<textElement verticalAlignment="Top"/>
 				<textFieldExpression><![CDATA[$P{ALAMAT}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="180" y="110" width="375" height="20" uuid="839041c7-3d70-4da4-9b9a-4a81da525725"/>
+				<reportElement x="180" y="100" width="375" height="20" uuid="839041c7-3d70-4da4-9b9a-4a81da525725"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{PANGKAT_GOLONGAN}]]></textFieldExpression>
 			</textField>
@@ -321,44 +321,44 @@
 			</textField>
 		</band>
 	</detail>
-	<lastPageFooter>
-		<band height="251">
+	<summary>
+		<band height="140">
 			<staticText>
-				<reportElement x="371" y="160" width="30" height="20" uuid="7f6a43e5-1950-48b2-af9d-1feceff2baf7"/>
+				<reportElement x="370" y="120" width="30" height="20" uuid="7f6a43e5-1950-48b2-af9d-1feceff2baf7"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[NIP. ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="371" y="30" width="184" height="20" uuid="69062e24-2109-466a-a6fa-19d2588aca99"/>
+				<reportElement x="370" y="20" width="184" height="20" uuid="69062e24-2109-466a-a6fa-19d2588aca99"/>
 				<text><![CDATA[Jakarta,]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="371" y="50" width="184" height="20" uuid="46d2ecf3-6033-4093-bd3b-7c9047cffcbf"/>
+				<reportElement x="370" y="40" width="184" height="20" uuid="46d2ecf3-6033-4093-bd3b-7c9047cffcbf"/>
 				<text><![CDATA[Pegawai Negeri SIpil yang bersangkutan]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1" y="50" width="184" height="20" uuid="85a4049b-a3e5-4e34-9a50-999519704599"/>
+				<reportElement x="0" y="40" width="184" height="20" uuid="85a4049b-a3e5-4e34-9a50-999519704599"/>
 				<text><![CDATA[Disahkan Oleh]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1" y="70" width="184" height="20" uuid="e6b5da9c-4a95-4596-981c-2fe5fb08335a"/>
+				<reportElement x="0" y="60" width="184" height="20" uuid="e6b5da9c-4a95-4596-981c-2fe5fb08335a"/>
 				<text><![CDATA[CAMAT]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1" y="160" width="184" height="20" uuid="60e57a71-38f2-4389-a2e3-d22705b7180d"/>
+				<reportElement x="0" y="120" width="184" height="20" uuid="60e57a71-38f2-4389-a2e3-d22705b7180d"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[NIP. ]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="401" y="160" width="154" height="20" uuid="e00c46ef-bea4-49ba-8ed8-5b0cc072706c"/>
+				<reportElement x="400" y="120" width="154" height="20" uuid="e00c46ef-bea4-49ba-8ed8-5b0cc072706c"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{NIPTTD}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="371" y="140" width="184" height="20" uuid="81861ac0-ed6d-4265-9b02-cc5ba5ebe101"/>
+				<reportElement x="370" y="100" width="184" height="20" uuid="81861ac0-ed6d-4265-9b02-cc5ba5ebe101"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{NAMATTD}]]></textFieldExpression>
 			</textField>
 		</band>
-	</lastPageFooter>
+	</summary>
 </jasperReport>

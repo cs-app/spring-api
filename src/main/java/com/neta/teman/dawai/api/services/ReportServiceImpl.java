@@ -48,10 +48,6 @@ public class ReportServiceImpl implements ReportService {
     @Autowired
     UserSpecs userSpecs;
 
-    @Override
-    public void initTemplate() {
-
-    }
 
     @Override
     public void printCuti(User user, Cuti cuti, OutputStream outputStream) {
@@ -305,6 +301,9 @@ public class ReportServiceImpl implements ReportService {
             userMapOrigin.put("PANGKAT_GOLONGAN", ": " + employee.getPangkat() + ", " + employee.getGol());
             userMapOrigin.put("UNIT", ": ");
             userMapOrigin.put("ALAMAT", ": " + employee.getAlamat());
+            userMapOrigin.put("BODY_MESSAGE", "Dengan hormat,\n" +
+                    "Sehubungan dengan surat keputusan Presiden/Menteri/Pimpinan Lembaga Badan Kepegawaian Negara Nomor : ..................................... tanggal .......................................... tentang Pemberhentian sebagai Pegawai Negeri Sipil, dengan ini saya mengajukan permintaan agar pensiun saya dapat dibayarkan mulai .................................... dan dapat diterima pada kantor Kas Negara/Kantor Pos/ /Bank Pemerintah di BNI 46 Kantor Cabang KCP Kemendikbud\n" +
+                    "(Rekening Nomor: " + (Objects.isNull(employee.getNoRekening()) ? "" : employee.getNoRekening()) + ")");
 
             JasperReport jasperReport = (JasperReport) JRLoader.loadObject(new File(basePathReport + File.separator + "pensiun_doc_blanko2.jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasperReport, userMapOrigin, mainDataSource);
@@ -520,6 +519,42 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
+    public void printNaikPangkatReguler(List<UserResponse> responses, int tahun, int bulan, OutputStream outputStream) {
+        try {
+            Map<String, Object> userMapOrigin = new HashMap<>();
+            //List<User> users = userRepository.findAll(userSpecs.pageNaikPangkat("", tahun, bulan));
+            JRBeanCollectionDataSource mainDataSource = new JRBeanCollectionDataSource(converter.naikPangkatReguler(responses));
+            JRBeanCollectionDataSource lampiranDataSource = new JRBeanCollectionDataSource(converter.naikPangkatReguler(responses));
+            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(new File(basePathReport + File.separator + "pegawai_naik_pangkat.jasper"));
+            userMapOrigin.put("SUB_DIR", basePathReport);
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(tahun, bulan, 1);
+            userMapOrigin.put("PERIODE", "Bersama ini kami sampaikan berkas usulan Kenaikan Pangkat per " + DTFomat.formatUntilMonth(calendar.getTime()) + " atas nama:");
+            userMapOrigin.put("LAMPIRAN_DATASOURCE", lampiranDataSource);
+            JasperPrint print = JasperFillManager.fillReport(jasperReport, userMapOrigin, mainDataSource);
+            JRPdfExporter exporter = new JRPdfExporter();
+            exporter.setExporterInput(new SimpleExporterInput(print));
+            exporter.setExporterOutput(new SimpleOutputStreamExporterOutput("reports/export/pegawai_naik_pangkat.pdf"));
+            SimplePdfReportConfiguration reportConfig = new SimplePdfReportConfiguration();
+            reportConfig.setSizePageToContent(true);
+            reportConfig.setForceLineBreakPolicy(false);
+
+            SimplePdfExporterConfiguration exportConfig = new SimplePdfExporterConfiguration();
+            exportConfig.setMetadataAuthor("Teman Dawai");
+            exportConfig.setEncrypted(true);
+            exportConfig.setAllowedPermissionsHint("PRINTING");
+            exporter.setConfiguration(reportConfig);
+            exporter.setConfiguration(exportConfig);
+            if (Objects.nonNull(outputStream)) {
+                exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(outputStream));
+            }
+            exporter.exportReport();
+        } catch (JRException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void printPensiunAjuan(User user, OutputStream outputStream) {
         try {
             Map<String, Object> userMapOrigin = new HashMap<>();
@@ -554,4 +589,6 @@ public class ReportServiceImpl implements ReportService {
             e.printStackTrace();
         }
     }
+
+
 }
