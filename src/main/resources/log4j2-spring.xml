@@ -60,7 +60,7 @@
         </AsyncLogger>
 
         <!-- Log apps with async-->
-        <AsyncLogger name="com.neta.emp.experience" includeLocation="true" additivity="false">
+        <AsyncLogger name="com.neta.teman.dawai.api" includeLocation="true" additivity="false">
             <AppenderRef ref="ConsoleAppender"/>
             <AppenderRef ref="FileAppender"/>
             <AppenderRef ref="FileAppenderError" level="error"/>

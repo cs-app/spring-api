@@ -446,9 +446,13 @@ public class ReportConverter {
         List<MasterCol> masterCols = new ArrayList<>();
         int index = 1;
         for (UserResponse user : responses) {
-            EmployeePangkatHis before = user.getPangkats().get(user.getPangkats().size() - 2);
+            if (user.getPangkats().size() == 0) continue;
+            EmployeePangkatHis before = null;
             EmployeePangkatHis after = user.getPangkats().get(user.getPangkats().size() - 1);
-            PangkatGolongan beforePG = before.getPangkatGolongan();
+            if (user.getPangkats().size() > 1) {
+                before = user.getPangkats().get(user.getPangkats().size() - 2);
+            }
+            PangkatGolongan beforePG = Objects.isNull(before) ? null : before.getPangkatGolongan();
             PangkatGolongan afterPG = after.getPangkatGolongan();
             if (Objects.isNull(beforePG) && Objects.isNull(afterPG)) {
                 masterCols.add(new MasterCol("" + index, user.getNama(), user.getNip(), "", "", "", "", user.getJabatan()));

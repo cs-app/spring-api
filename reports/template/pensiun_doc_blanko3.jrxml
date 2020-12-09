@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pensiun_doc_1_usulan" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="952f33ad-87f6-4682-b175-76eda3ba2011">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<parameter name="NAMA" class="java.lang.String"/>
 	<parameter name="NIP" class="java.lang.String"/>
 	<parameter name="NAMATTD" class="java.lang.String"/>
@@ -324,38 +333,38 @@
 	<summary>
 		<band height="140">
 			<staticText>
-				<reportElement x="370" y="120" width="30" height="20" uuid="7f6a43e5-1950-48b2-af9d-1feceff2baf7"/>
+				<reportElement x="350" y="120" width="40" height="20" uuid="7f6a43e5-1950-48b2-af9d-1feceff2baf7"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[NIP. ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="370" y="20" width="184" height="20" uuid="69062e24-2109-466a-a6fa-19d2588aca99"/>
+				<reportElement x="350" y="20" width="204" height="20" uuid="69062e24-2109-466a-a6fa-19d2588aca99"/>
 				<text><![CDATA[Jakarta,]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="370" y="40" width="184" height="20" uuid="46d2ecf3-6033-4093-bd3b-7c9047cffcbf"/>
+				<reportElement x="350" y="40" width="205" height="20" uuid="46d2ecf3-6033-4093-bd3b-7c9047cffcbf"/>
 				<text><![CDATA[Pegawai Negeri SIpil yang bersangkutan]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="40" width="184" height="20" uuid="85a4049b-a3e5-4e34-9a50-999519704599"/>
+				<reportElement x="20" y="40" width="184" height="20" uuid="85a4049b-a3e5-4e34-9a50-999519704599"/>
 				<text><![CDATA[Disahkan Oleh]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="60" width="184" height="20" uuid="e6b5da9c-4a95-4596-981c-2fe5fb08335a"/>
+				<reportElement x="20" y="60" width="184" height="20" uuid="e6b5da9c-4a95-4596-981c-2fe5fb08335a"/>
 				<text><![CDATA[CAMAT]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="120" width="184" height="20" uuid="60e57a71-38f2-4389-a2e3-d22705b7180d"/>
+				<reportElement x="20" y="120" width="184" height="20" uuid="60e57a71-38f2-4389-a2e3-d22705b7180d"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[NIP. ]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="400" y="120" width="154" height="20" uuid="e00c46ef-bea4-49ba-8ed8-5b0cc072706c"/>
+				<reportElement x="390" y="120" width="164" height="20" uuid="e00c46ef-bea4-49ba-8ed8-5b0cc072706c"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{NIPTTD}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="370" y="100" width="184" height="20" uuid="81861ac0-ed6d-4265-9b02-cc5ba5ebe101"/>
+				<reportElement x="350" y="100" width="204" height="20" uuid="81861ac0-ed6d-4265-9b02-cc5ba5ebe101"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{NAMATTD}]]></textFieldExpression>
 			</textField>

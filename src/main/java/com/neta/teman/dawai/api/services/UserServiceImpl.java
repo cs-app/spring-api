@@ -483,6 +483,10 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
         List<PangkatGolongan> pangkatGolongans = pangkatGolonganRepository.findAll().stream().filter(o -> o.getId() != 18L).sorted(Comparator.comparing(PangkatGolongan::getId)).collect(Collectors.toList());
         // filter user hanya jenis P
         List<UserResponse> userList = userRepository.findAll().stream().filter(u -> {
+            if (Objects.isNull(u.getEmployee())) return false;
+            if (Objects.isNull(u.getEmployee().getJabatanDetail())) return false;
+            if (Objects.isNull(u.getEmployee().getJabatanDetail().getJabatan())) return false;
+            if (Objects.isNull(u.getEmployee().getJabatanDetail().getJabatan().getJenisJabatan())) return false;
             List<EmployeePangkatHis> his = u.getEmployee().getPangkats();
             return ("P".equalsIgnoreCase(u.getEmployee().getJabatanDetail().getJabatan().getJenisJabatan()) && !his.isEmpty());
         }).map(u -> {
@@ -502,7 +506,8 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
                 // stop process S1
                 List<PangkatGolongan> pangkatGolongansMax = pangkatGolongans.stream().filter(pg -> (pg.getId() > lastHis.getPangkatGolongan().getId() && pg.getId() <= 12)).collect(Collectors.toList());
                 AtomicInteger index = new AtomicInteger(0);
-                LocalDate start = lastHis.getTmt().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                log.info("nama {}, {}, {}", u.getUsername(), u.getEmployee().getNama(), lastHis.getPangkatGolongan().getGolongan());
+                LocalDate start = new Date(lastHis.getTmt().getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                 for (PangkatGolongan tmpPangkat : pangkatGolongansMax) {
                     LocalDate indexDate = start.plusYears(index.addAndGet(4));
                     EmployeePangkatHis tmpHis = new EmployeePangkatHis();
@@ -525,7 +530,7 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
                     tmpHis.setPangkatGolongan(tmpPangkat);
                     his.add(tmpHis);
                 }
-                PangkatGolongan naik = his.get(his.size()-1).getPangkatGolongan();
+                PangkatGolongan naik = his.get(his.size() - 1).getPangkatGolongan();
                 log.info("user {} pendidikan {} naik golongan dari {} ke {}", u.getEmployee().getNama(), educationType, lastHis.getPangkatGolongan().getGolongan(), naik.getGolongan());
             } else {
                 log.info("{} {} sudah mencapai batas maksimum {}, {}", u.getUsername(), u.getEmployee().getNama(), educationType, lastHis.getPangkatGolongan().getGolongan());
@@ -536,13 +541,24 @@ public class UserServiceImpl extends RoleServiceImpl implements UserService {
         // filter kenaikan pangkat
 
         List<UserResponse> responses = userList.stream().filter(ur -> {
+            // filter index sesuai tahun dan bulan, dan 1 data sebelumnya
+            int index = 0;
             for (EmployeePangkatHis his : ur.getPangkats()) {
                 if (Objects.isNull(his.getTmt())) continue;
                 LocalDate tmt = new Date(his.getTmt().getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                 log.info("y {} and m {}", tmt.getYear(), tmt.getMonthValue());
                 if (tahun == tmt.getYear() && bulan == tmt.getMonthValue()) {
+                    List<EmployeePangkatHis> lastAndBefore = new ArrayList();
+                    if (index == 0) {
+                        lastAndBefore.add(his);
+                    } else {
+                        lastAndBefore.add(ur.getPangkats().get(index - 1));
+                        lastAndBefore.add(his);
+                    }
+                    ur.setPangkats(lastAndBefore);
                     return true;
                 }
+                index++;
             }
             return false;
         }).collect(Collectors.toList());

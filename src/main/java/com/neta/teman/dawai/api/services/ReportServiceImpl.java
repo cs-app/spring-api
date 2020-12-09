@@ -302,8 +302,8 @@ public class ReportServiceImpl implements ReportService {
             userMapOrigin.put("UNIT", ": ");
             userMapOrigin.put("ALAMAT", ": " + employee.getAlamat());
             userMapOrigin.put("BODY_MESSAGE", "Dengan hormat,\n" +
-                    "Sehubungan dengan surat keputusan Presiden/Menteri/Pimpinan Lembaga Badan Kepegawaian Negara Nomor : ..................................... tanggal .......................................... tentang Pemberhentian sebagai Pegawai Negeri Sipil, dengan ini saya mengajukan permintaan agar pensiun saya dapat dibayarkan mulai .................................... dan dapat diterima pada kantor Kas Negara/Kantor Pos/ /Bank Pemerintah di BNI 46 Kantor Cabang KCP Kemendikbud\n" +
-                    "(Rekening Nomor: " + (Objects.isNull(employee.getNoRekening()) ? "" : employee.getNoRekening()) + ")");
+                    "Sehubungan dengan surat keputusan Presiden/Menteri/Pimpinan Lembaga Badan Kepegawaian Negara Nomor : ..................................... tanggal .......................................... tentang Pemberhentian sebagai Pegawai Negeri Sipil, dengan ini saya mengajukan permintaan agar pensiun saya dapat dibayarkan mulai .................................... dan dapat diterima pada kantor Kas Negara/Kantor Pos/Bank Pemerintah di " +
+                    (Objects.isNull(employee.getNamaBank()) ? "" : employee.getNamaBank())+" (Rekening Nomor: " + (Objects.isNull(employee.getNoRekening()) ? "" : employee.getNoRekening()) + ")");
 
             JasperReport jasperReport = (JasperReport) JRLoader.loadObject(new File(basePathReport + File.separator + "pensiun_doc_blanko2.jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasperReport, userMapOrigin, mainDataSource);

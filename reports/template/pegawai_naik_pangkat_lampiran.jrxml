@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pensiun_doc_1_usulan" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="952f33ad-87f6-4682-b175-76eda3ba2011">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pensiun_doc_1_usulan" pageWidth="555" pageHeight="842" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="952f33ad-87f6-4682-b175-76eda3ba2011">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
@@ -45,7 +45,7 @@
 		<band height="60">
 			<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
 			<staticText>
-				<reportElement x="0" y="0" width="554" height="20" uuid="8e5da574-fdbe-43d3-b264-021dcbeebb56"/>
+				<reportElement x="0" y="0" width="555" height="20" uuid="8e5da574-fdbe-43d3-b264-021dcbeebb56"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<text><![CDATA[Lampiran]]></text>
 			</staticText>
@@ -63,7 +63,7 @@
 				<text><![CDATA[No.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="30" y="30" width="564" height="30" uuid="8f416d2f-0920-4a37-9083-02154336aa38"/>
+				<reportElement x="30" y="30" width="525" height="30" uuid="8f416d2f-0920-4a37-9083-02154336aa38"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -95,7 +95,7 @@
 				<textFieldExpression><![CDATA[$F{col1}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="30" y="0" width="564" height="20" uuid="869221ce-7f37-417a-b33b-1be557de43e3">
+				<reportElement x="30" y="0" width="525" height="20" uuid="869221ce-7f37-417a-b33b-1be557de43e3">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<box padding="4">
