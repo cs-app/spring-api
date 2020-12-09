@@ -360,12 +360,15 @@ Jakarta
 			</textField>
 		</band>
 	</detail>
-	<summary>
-		<band height="460">
+	<columnFooter>
+		<band height="333">
+			<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == $V{PAGE_COUNT}-1]]></printWhenExpression>
 			<staticText>
-				<reportElement x="411" y="181" width="144" height="30" uuid="7f6a43e5-1950-48b2-af9d-1feceff2baf7"/>
-				<text><![CDATA[Ekawati, S.Sos
-NIP. 196404241987032001]]></text>
+				<reportElement x="0" y="10" width="554" height="50" uuid="d370b833-663a-4077-92bf-623a9152d1c6"/>
+				<text><![CDATA[Sebagai dukungan kami sampaikan juga dukungan dokumen yang dibutuhkan (terlampir) untuk diproses sesuai peraturan perundang-undangan yang berlaku.
+
+Demikian, atas kerjasamanya kami ucapkan terima kasih
+]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="387" y="70" width="168" height="60" uuid="69062e24-2109-466a-a6fa-19d2588aca99"/>
@@ -375,17 +378,15 @@ A.n. Direktur Sekolah Menengah Atas
        Kepala Sub Bagian Tata Usaha]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="10" width="554" height="50" uuid="d370b833-663a-4077-92bf-623a9152d1c6"/>
-				<text><![CDATA[Sebagai dukungan kami sampaikan juga dukungan dokumen yang dibutuhkan (terlampir) untuk diproses sesuai peraturan perundang-undangan yang berlaku.
-
-Demikian, atas kerjasamanya kami ucapkan terima kasih
-]]></text>
+				<reportElement x="411" y="181" width="144" height="30" uuid="7f6a43e5-1950-48b2-af9d-1feceff2baf7"/>
+				<text><![CDATA[Ekawati, S.Sos
+NIP. 196404241987032001]]></text>
 			</staticText>
 			<subreport>
-				<reportElement x="0" y="260" width="555" height="200" uuid="7a8f0bfb-79fd-4f9e-b122-49a5bcb77c56"/>
+				<reportElement x="0" y="230" width="555" height="98" uuid="7a8f0bfb-79fd-4f9e-b122-49a5bcb77c56"/>
 				<dataSourceExpression><![CDATA[$P{LAMPIRAN_DATASOURCE}]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{SUB_DIR} + "pegawai_naik_pangkat_lampiran.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
-	</summary>
+	</columnFooter>
 </jasperReport>
