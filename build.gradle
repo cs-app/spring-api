@@ -4,7 +4,7 @@ plugins {
     id 'java'
 }
 
-group = 'com.neta.teman.dawai'
+group = 'com.neta.spring.api'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
