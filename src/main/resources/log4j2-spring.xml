@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN" monitorInterval="30">
     <Properties>
-        <Property name="LOG_NAME">teman-dawai-api</Property>
+        <Property name="LOG_NAME">spring-api</Property>
         <Property name="LOG_PATH">logs</Property>
         <Property name="LOG_PATTERN">
             %d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${hostName} --- [%15.15t] %-40.40c{1.} : %m%n%ex
@@ -60,14 +60,14 @@
         </AsyncLogger>
 
         <!-- Log apps with async-->
-        <AsyncLogger name="com.neta.teman.dawai.api" includeLocation="true" additivity="false">
+        <AsyncLogger name="com.neta.spring.api" includeLocation="true" additivity="false">
             <AppenderRef ref="ConsoleAppender"/>
             <AppenderRef ref="FileAppender"/>
             <AppenderRef ref="FileAppenderError" level="error"/>
         </AsyncLogger>
 
         <!-- Log apps with async-->
-        <AsyncLogger name="com.cise.test" includeLocation="true" additivity="false">
+        <AsyncLogger name="com.neta.spring.api.test" includeLocation="true" additivity="false">
             <AppenderRef ref="ConsoleAppender"/>
             <AppenderRef ref="FileAppender"/>
             <AppenderRef ref="FileAppenderError" level="error"/>
